@@ -1,4 +1,3 @@
-
 export enum GuideCategory {
   ROUTINE = 'ROUTINE',
   CRISIS = 'CRISIS',

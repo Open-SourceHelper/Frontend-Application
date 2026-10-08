@@ -1,4 +1,3 @@
-
 export enum GuidelineStatus {
   DRAFT = 'DRAFT',
   ACTIVE = 'ACTIVE',
