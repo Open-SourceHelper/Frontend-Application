@@ -6,6 +6,8 @@ const pageNotFound = () =>
   import('./shared/presentation/views/page-not-found/page-not-found').then((m) => m.PageNotFound);
 const child = () =>
   import('./child-profile/presentation/views/child-list/child-list').then((m) => m.ChildList);
+const clinical = () =>
+  import('./child-profile/presentation/views/clinical-list/clinical-list').then((m) => m.ClinicalList);
 
 const baseTitle = 'Kinemo';
 
@@ -14,5 +16,6 @@ export const routes: Routes = [
   { path: 'about', loadComponent: about, title: `${baseTitle} - About` },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'child-profile', loadComponent: child, title: `${baseTitle} - Child Profile` },
+  { path: 'clinical-profile', loadComponent: clinical, title: `${baseTitle} - Clinical Profile` },
   { path: '**', loadComponent: pageNotFound, title: `${baseTitle} - Page Not Found` },
 ];

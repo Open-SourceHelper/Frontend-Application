@@ -3,7 +3,7 @@ export const environment = {
   platformProviderApiBaseUrl: 'http://localhost:3000',
 
   platformProviderChildEndpointPath: '/children',
-  platformProviderClinicalProfileEndpointPath: '/clinical-profile',
+  platformProviderClinicalProfileEndpointPath: '/clinicalProfiles',
   platformProviderCaregiverAuthorizationEndpointPath: '/caregiver-authorization',
 
   platformProviderSignInEndpointPath: '/authentication/sign-in',
