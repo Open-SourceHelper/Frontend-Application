@@ -20,7 +20,7 @@ import {AlertType} from '../../../domain/model/alert-type';
   selector: 'app-routine-execution',
   imports: [DatePipe, MatButtonModule, MatButtonToggleModule, MatCardModule, MatIcon, MatProgressBar, MatError],
   templateUrl: './routine-execution.html',
-  styleUrl: './routine-execution.css'
+  styleUrls: ['../../routine-theme.css', './routine-execution.css']
 })
 export class RoutineExecution {
   readonly store = inject(RoutineActivityStore);
@@ -44,6 +44,30 @@ export class RoutineExecution {
    * First pending activity: the one the child is doing now.
    */
   readonly current = computed(() => this.activities().find(activity => activity.isPending) ?? null);
+
+  /**
+   * Activity that comes after the current one ("Después sigue").
+   */
+  readonly next = computed(() => {
+    const current = this.current();
+    return current ? this.activities().find(a => a.isPending && a !== current) ?? null : null;
+  });
+
+  /**
+   * Number of activities already completed.
+   */
+  readonly completedCount = computed(() =>
+    this.activities().filter(a => a.status === ActivityStatus.COMPLETED).length);
+
+  /**
+   * Today's date written in Spanish, e.g. "jueves, 8 de octubre".
+   */
+  readonly today = new Intl.DateTimeFormat('es', {weekday: 'long', day: 'numeric', month: 'long'}).format(new Date());
+
+  /**
+   * True while the transition timer is paused.
+   */
+  readonly paused = signal(false);
 
   /**
    * Percentage of activities already completed or skipped.
@@ -82,7 +106,7 @@ export class RoutineExecution {
    * Percentage of the timer already consumed.
    */
   readonly timerProgress = computed(() =>
-    this.timerTotal ? 100 - Math.round(100 * (this.remainingSeconds() ?? 0) / this.timerTotal) : 0);
+    this.timerTotal ? Math.round(100 * (this.remainingSeconds() ?? 0) / this.timerTotal) : 0);
 
   /**
    * Starts the countdown of the transition timer (US16).
@@ -92,6 +116,28 @@ export class RoutineExecution {
     this.stopTimer();
     this.timerTotal = activity.transitionDurationMinutes * 60;
     this.remainingSeconds.set(this.timerTotal);
+    this.runTimer(activity);
+  }
+
+  /**
+   * Pauses or resumes the transition timer.
+   * @param activity - Current activity.
+   */
+  togglePause(activity: RoutineActivity): void {
+    if (this.paused()) {
+      this.paused.set(false);
+      this.runTimer(activity);
+    } else {
+      if (this.timerId) clearInterval(this.timerId);
+      this.timerId = null;
+      this.paused.set(true);
+    }
+  }
+
+  /**
+   * Starts the countdown interval from the current remaining time.
+   */
+  private runTimer(activity: RoutineActivity): void {
     this.timerId = setInterval(() => {
       const next = (this.remainingSeconds() ?? 0) - 1;
       this.remainingSeconds.set(Math.max(next, 0));
@@ -110,6 +156,28 @@ export class RoutineExecution {
     this.timerId = null;
     this.remainingSeconds.set(null);
     this.alertActive.set(false);
+    this.paused.set(false);
+  }
+
+  /**
+   * Indicates if the timer screen (running, paused or alerting) must be shown.
+   */
+  readonly timerVisible = computed(() => this.remainingSeconds() !== null || this.alertActive());
+
+  /**
+   * Stroke offset of the circular timer (full circle = 2πr with r = 88).
+   */
+  readonly ringOffset = computed(() => {
+    const circumference = 2 * Math.PI * 88;
+    return circumference * (1 - this.timerProgress() / 100);
+  });
+
+  /**
+   * Duplicates the routine being executed (US28).
+   */
+  duplicate(id: number): void {
+    this.store.duplicateRoutine(id);
+    this.back();
   }
 
   /**
