@@ -20,7 +20,7 @@
       "id": "44bd0078-118f-4efa-901c-79dcdb297b92",
       "childId": "child-demo-001",
       "caregiverId": "caregiver-demo-001",
-      "description": "se murio",
+      "description": "Durante una actividad grupal presentó llanto intenso y dificultad para continuar.",
       "occurredAt": "2026-10-08T14:00:00.000Z",
       "crisisSeverity": "severe"
     }
@@ -30,7 +30,7 @@
       "id": "cbeaf9ba-b8b2-4e7d-8586-c06431994654",
       "observationId": "44bd0078-118f-4efa-901c-79dcdb297b92",
       "psychologistId": "psychologist-demo-001",
-      "content": "aaa",
+      "content": "Observación revisada. Se solicita registrar la duración del episodio y el contexto de la actividad para el seguimiento.",
       "createdAt": "2026-10-08T14:06:41.223Z"
     }
   ],
@@ -38,8 +38,8 @@
     {
       "id": "764ad956-cdae-4ac1-b8fc-df03064beeaa",
       "observationId": "44bd0078-118f-4efa-901c-79dcdb297b92",
-      "fileName": "aaaa",
-      "fileUrl": "https://web.whatsapp.com/",
+      "fileName": "Enlace de prueba (sin archivo adjunto)",
+      "fileUrl": "https://example.com/",
       "uploadedAt": "2026-10-08T14:12:59.402Z"
     }
   ]
