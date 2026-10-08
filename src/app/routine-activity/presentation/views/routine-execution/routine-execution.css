@@ -1,0 +1,32 @@
+:host { display: block; max-width: 760px; margin: 16px; }
+.header { display: flex; align-items: center; gap: 8px; }
+.header h1 { margin: 0; }
+.subtitle { margin: 2px 0 0; opacity: .7; }
+.progress { margin: 16px 0; }
+.error { display: block; margin-bottom: 12px; }
+.current { padding: 20px; transition: background-color 1.5s ease, box-shadow 1.5s ease; }
+.current.alert { background-color: #fff3cd; box-shadow: 0 0 0 3px #f2c94c inset; }
+.current-body { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+.pictogram { width: 140px; height: 140px; border-radius: 12px; object-fit: cover; border: 1px solid #ddd; }
+.pictogram.empty { display: grid; place-items: center; background: #f5f5f5; color: #bdbdbd; }
+.pictogram.empty mat-icon { font-size: 48px; width: 48px; height: 48px; }
+.current-info h2 { margin: 4px 0; font-size: 26px; }
+.current-info p { margin: 4px 0; }
+.step { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; opacity: .65; }
+.duration { display: flex; align-items: center; gap: 4px; opacity: .8; }
+.timer { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 20px 0 8px; }
+.timer mat-progress-bar { flex: 1 1 160px; }
+.clock { font-size: 28px; font-variant-numeric: tabular-nums; font-weight: 600; }
+.actions { display: flex; justify-content: flex-end; gap: 8px; }
+.done { display: flex; align-items: center; gap: 12px; }
+h3 { margin: 24px 0 8px; }
+.sequence { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.sequence li { display: flex; align-items: center; gap: 12px; padding: 8px 12px; border-radius: 8px; background: #fafafa; }
+.sequence li.now { background: #e8eaf6; font-weight: 600; }
+.sequence li.COMPLETED { opacity: .6; }
+.sequence li.SKIPPED { opacity: .5; text-decoration: line-through; }
+.sequence img, .dot { width: 36px; height: 36px; border-radius: 6px; object-fit: cover; }
+.dot { display: grid; place-items: center; background: #e0e0e0; font-size: 14px; }
+.name { flex: 1; }
+.meta { display: flex; align-items: center; gap: 4px; font-size: 13px; opacity: .8; }
+.info { margin: 16px; }
