@@ -23,6 +23,14 @@
       "description": "Durante una actividad grupal presentó llanto intenso y dificultad para continuar.",
       "occurredAt": "2026-10-08T14:00:00.000Z",
       "crisisSeverity": "severe"
+    },
+    {
+      "id": "234ea408-bade-4a00-b1d5-be61cd5723a1",
+      "childId": "child-demo-001",
+      "caregiverId": "caregiver-demo-001",
+      "description": "Durante una actividad de lectura, el niño presentó dificultades para mantener la atención y necesitó apoyo del cuidador.",
+      "occurredAt": "2026-10-08T14:37:00.000Z",
+      "crisisSeverity": "mild"
     }
   ],
   "psychologistComments": [
@@ -32,6 +40,13 @@
       "psychologistId": "psychologist-demo-001",
       "content": "Observación revisada. Se solicita registrar la duración del episodio y el contexto de la actividad para el seguimiento.",
       "createdAt": "2026-10-08T14:06:41.223Z"
+    },
+    {
+      "id": "4105e8ac-0ccc-46a5-ad6f-ec049a02e56b",
+      "observationId": "234ea408-bade-4a00-b1d5-be61cd5723a1",
+      "psychologistId": "psychologist-demo-001",
+      "content": "Se recomienda continuar utilizando apoyos visuales durante las actividades de lectura y registrar los avances en la atención del niño.",
+      "createdAt": "2026-10-08T14:43:11.197Z"
     }
   ],
   "observationEvidences": [
@@ -41,6 +56,13 @@
       "fileName": "Enlace de prueba (sin archivo adjunto)",
       "fileUrl": "https://example.com/",
       "uploadedAt": "2026-10-08T14:12:59.402Z"
+    },
+    {
+      "id": "52163e99-b1eb-4464-9ebc-305bd9feee74",
+      "observationId": "234ea408-bade-4a00-b1d5-be61cd5723a1",
+      "fileName": "Registro de actividad de lectura",
+      "fileUrl": "https://example.com/",
+      "uploadedAt": "2026-10-08T14:46:24.415Z"
     }
   ]
 }
