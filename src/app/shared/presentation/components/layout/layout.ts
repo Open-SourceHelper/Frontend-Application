@@ -26,11 +26,7 @@ export class Layout {
   readonly options = [
     { link: '/home', label: 'Home', icon: 'home' },
     { link: '/about', label: 'About', icon: 'info' },
-    {
-      link: '/routine-activity',
-      label: 'Routine & Activity Management',
-      icon: 'event_note',
-    },
+    { link: '/routine-activity/routines', label: 'Rutinas', icon: 'event_note' },
   ];
   toggleMenu(): void {
     this.collapsed.update((value) => !value);
