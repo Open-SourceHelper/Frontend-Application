@@ -54,7 +54,6 @@ export class CareNetworkList implements OnInit {
 
     this.invitationError = null;
 
-    // Comprobar si ya pertenece a la red de cuidado
     const alreadyMember = this.memberStore.activeMembers()
       .some(member =>
         member.email.trim().toLowerCase() === normalizedEmail
@@ -66,7 +65,6 @@ export class CareNetworkList implements OnInit {
       return;
     }
 
-    // Comprobar invitaciones pendientes no expiradas
     const pendingInvitation = this.invitationStore.invitations()
       .some(invitation =>
         invitation.inviteeEmail.trim().toLowerCase() === normalizedEmail &&
@@ -80,7 +78,6 @@ export class CareNetworkList implements OnInit {
       return;
     }
 
-    // Registrar una nueva invitación
     this.invitationStore.createInvitation(
       this.careNetworkId(),
       normalizedEmail

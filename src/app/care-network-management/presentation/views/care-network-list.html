@@ -1,7 +1,5 @@
-
 <div class="care-network-container">
 
-  <!-- Encabezado principal -->
   <header class="page-header">
     <div class="header-icon">
       <mat-icon>diversity_3</mat-icon>
@@ -16,7 +14,6 @@
     </div>
   </header>
 
-  <!-- Tarjetas de resumen -->
   <section class="summary-grid">
 
     <div class="summary-card">
@@ -61,7 +58,6 @@
 
   </section>
 
-  <!-- Formulario -->
   <section class="invitation-section">
     <app-care-network-invitation-form
       [loading]="invitationStore.loading()"
@@ -97,7 +93,6 @@
     }
   </section>
 
-  <!-- Mensajes de error -->
   @if (invitationStore.error()) {
     <div class="error-message" role="alert">
       <mat-icon>error_outline</mat-icon>
@@ -105,7 +100,6 @@
     </div>
   }
 
-  <!-- Invitaciones -->
   <section class="content-section">
 
     @if (invitationStore.loading()) {
@@ -125,7 +119,6 @@
 
   </section>
 
-  <!-- Integrantes -->
   <section class="content-section">
 
     @if (memberStore.loading()) {
@@ -151,7 +144,6 @@
       />
 
     }
-
   </section>
 
 </div>
