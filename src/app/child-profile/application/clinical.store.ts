@@ -1,28 +1,28 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { finalize } from 'rxjs';
 
-import { Child } from '../domain/model/child.entity';
-import { ChildService } from '../infrastructure/services/child.service';
+import { ClinicalProfile } from '../domain/model/clinical-profile.entity';
+import { ClinicalService } from '../infrastructure/services/clinical.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ChildStore {
-  private readonly service = inject(ChildService);
+export class ClinicalStore {
+  private readonly service = inject(ClinicalService);
 
-  private readonly childrenState = signal<Child[]>([]);
+  private readonly profilesState = signal<ClinicalProfile[]>([]);
   private readonly loadingState = signal(false);
   private readonly errorState = signal<string | null>(null);
 
-  readonly children = this.childrenState.asReadonly();
+  readonly profiles = this.profilesState.asReadonly();
   readonly loading = this.loadingState.asReadonly();
   readonly error = this.errorState.asReadonly();
 
-  readonly totalChildren = computed(
-    () => this.childrenState().length
+  readonly totalProfiles = computed(
+    () => this.profilesState().length
   );
 
-  loadChildren(): void {
+  loadProfiles(): void {
     if (this.loadingState()) {
       return;
     }
@@ -33,8 +33,8 @@ export class ChildStore {
     this.service.getAll()
       .pipe(finalize(() => this.loadingState.set(false)))
       .subscribe({
-        next: children => {
-          this.childrenState.set(children);
+        next: profiles => {
+          this.profilesState.set(profiles);
         },
         error: () => {
           this.errorState.set(
@@ -44,7 +44,7 @@ export class ChildStore {
       });
   }
 
-  createChild(child: Child): void {
+  createProfile(profile: ClinicalProfile): void {
     if (this.loadingState()) {
       return;
     }
@@ -52,24 +52,24 @@ export class ChildStore {
     this.loadingState.set(true);
     this.errorState.set(null);
 
-    this.service.create(child)
+    this.service.create(profile)
       .pipe(finalize(() => this.loadingState.set(false)))
       .subscribe({
         next: created => {
-          this.childrenState.update(items => [
+          this.profilesState.update(items => [
             ...items,
             created
           ]);
         },
         error: () => {
           this.errorState.set(
-            'No se pudo registrar al niño.'
+            'No se pudo registrar el perfil clinico.'
           );
         }
       });
   }
 
-  updateChild(child: Child): void {
+  updateProfile(profile: ClinicalProfile): void {
     if (this.loadingState()) {
       return;
     }
@@ -77,11 +77,11 @@ export class ChildStore {
     this.loadingState.set(true);
     this.errorState.set(null);
 
-    this.service.update(child)
+    this.service.update(profile)
       .pipe(finalize(() => this.loadingState.set(false)))
       .subscribe({
         next: updated => {
-          this.childrenState.update(items =>
+          this.profilesState.update(items =>
             items.map(item =>
               item.id === updated.id ? updated : item
             )
@@ -89,7 +89,7 @@ export class ChildStore {
         },
         error: () => {
           this.errorState.set(
-            'No se pudo actualizar los datos del niño.'
+            'No se pudo actualizar el perfil clinico.'
           );
         }
       });
