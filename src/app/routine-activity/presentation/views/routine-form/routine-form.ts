@@ -34,7 +34,7 @@ type ActivityFormGroup = FormGroup<{
   selector: 'app-routine-form',
   imports: [ReactiveFormsModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatInput, MatIcon, MatCardModule],
   templateUrl: './routine-form.html',
-  styleUrl: './routine-form.css'
+  styleUrls: ['../../routine-theme.css', './routine-form.css']
 })
 export class RoutineForm {
   private fb = inject(FormBuilder);
