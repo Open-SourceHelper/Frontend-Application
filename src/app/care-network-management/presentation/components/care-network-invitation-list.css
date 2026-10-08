@@ -1,0 +1,149 @@
+
+.invitations-section {
+  padding: 16px 0;
+}
+
+.section-header {
+  margin-bottom: 24px;
+}
+
+.section-header h2 {
+  font-size: 23px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  color: #1f2937;
+}
+
+.section-header p {
+  color: #6b7280;
+  font-size: 14px;
+  margin: 0;
+}
+
+.invitations-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, 300px), 1fr)
+  );
+  gap: 20px;
+}
+
+.invitation-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: #ffffff;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.invitation-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.invitation-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #f3f4f6;
+  color: #4b5563;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.invitation-info {
+  min-width: 0;
+}
+
+.invitation-info h3 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.invitation-info span {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.invitation-details {
+  margin-top: 20px;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.status-badge.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-badge.accepted {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.status-badge.rejected {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.status-badge.expired {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.invitation-details p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0 0;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.invitation-details mat-icon {
+  font-size: 17px;
+  width: 17px;
+  height: 17px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  background: #f9fafb;
+  border-radius: 16px;
+}
+
+.empty-state > mat-icon {
+  font-size: 44px;
+  width: 44px;
+  height: 44px;
+  color: #9ca3af;
+}
+
+.empty-state h3 {
+  margin: 12px 0 8px;
+}
+
+.empty-state p {
+  color: #6b7280;
+}
+
+@media (max-width: 600px) {
+  .invitations-grid {
+    grid-template-columns: 1fr;
+  }
+}
