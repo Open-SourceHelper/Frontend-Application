@@ -4,7 +4,7 @@ export const environment = {
 
   platformProviderChildEndpointPath: '/child',
   platformProviderClinicalProfileEndpointPath: '/clinical-profile',
-  platformProviderCaregiverEndpointPath: '/caregiver',
+  platformProviderCaregiverAuthorizationEndpointPath: '/caregiver-authorization',
 
   platformProviderSignInEndpointPath: '/authentication/sign-in',
   platformProviderSignUpEndpointPath: '/authentication/sign-up',
