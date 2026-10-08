@@ -1,0 +1,157 @@
+
+<div class="care-network-container">
+
+  <!-- Encabezado principal -->
+  <header class="page-header">
+    <div class="header-icon">
+      <mat-icon>diversity_3</mat-icon>
+    </div>
+
+    <div class="header-content">
+      <h1>Mi red de cuidado</h1>
+      <p>
+        Gestiona las personas autorizadas para
+        participar en el cuidado del niño.
+      </p>
+    </div>
+  </header>
+
+  <!-- Tarjetas de resumen -->
+  <section class="summary-grid">
+
+    <div class="summary-card">
+      <div class="summary-info">
+        <span class="summary-label">
+          Integrantes activos
+        </span>
+
+        <span class="summary-number">
+          {{ memberStore.totalActiveMembers() }}
+        </span>
+
+        <span class="summary-description">
+          Personas autorizadas
+        </span>
+      </div>
+
+      <div class="summary-icon members-icon">
+        <mat-icon>groups</mat-icon>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-info">
+        <span class="summary-label">
+          Invitaciones pendientes
+        </span>
+
+        <span class="summary-number">
+          {{ invitationStore.pendingInvitations().length }}
+        </span>
+
+        <span class="summary-description">
+          Esperando respuesta
+        </span>
+      </div>
+
+      <div class="summary-icon invitations-icon">
+        <mat-icon>mark_email_unread</mat-icon>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Formulario -->
+  <section class="invitation-section">
+    <app-care-network-invitation-form
+      [loading]="invitationStore.loading()"
+      [success]="invitationStore.invitationCreated()"
+      (invitationSubmitted)="onInviteCaregiver($event)"
+    />
+
+    @if (invitationError) {
+      <div class="error-message" role="alert">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ invitationError }}</span>
+      </div>
+    }
+
+    @if (invitationStore.invitationCreated()) {
+
+      <div class="success-message" role="status">
+
+        <mat-icon>check_circle</mat-icon>
+
+        <div>
+          <strong>
+            ¡Invitación registrada correctamente!
+          </strong>
+
+          <p>
+            El cuidador ya aparece en la lista de invitaciones.
+          </p>
+        </div>
+
+      </div>
+
+    }
+  </section>
+
+  <!-- Mensajes de error -->
+  @if (invitationStore.error()) {
+    <div class="error-message" role="alert">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ invitationStore.error() }}</span>
+    </div>
+  }
+
+  <!-- Invitaciones -->
+  <section class="content-section">
+
+    @if (invitationStore.loading()) {
+
+      <div class="loading-container">
+        <mat-spinner diameter="36" />
+        <p>Cargando invitaciones...</p>
+      </div>
+
+    } @else {
+
+      <app-care-network-invitation-list
+        [invitations]="invitationStore.invitations()"
+      />
+
+    }
+
+  </section>
+
+  <!-- Integrantes -->
+  <section class="content-section">
+
+    @if (memberStore.loading()) {
+
+      <div class="loading-container">
+        <mat-spinner diameter="36" />
+        <p>Cargando integrantes...</p>
+      </div>
+
+    } @else if (memberStore.error()) {
+
+      <div class="error-message" role="alert">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ memberStore.error() }}</span>
+      </div>
+
+    } @else {
+
+      <app-care-network-member-list
+        [members]="memberStore.activeMembers()"
+        [loading]="memberStore.loading()"
+        (memberRevoked)="onRevokeMember($event)"
+      />
+
+    }
+
+  </section>
+
+</div>
