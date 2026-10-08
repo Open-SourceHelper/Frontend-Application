@@ -26,6 +26,7 @@ export class Layout {
   readonly options = [
     { link: '/home', label: 'Home', icon: 'home' },
     { link: '/about', label: 'About', icon: 'info' },
+    { link: '/child-profile', label: 'Child Profile', icon: 'child_care' },
   ];
 
   toggleMenu(): void {
