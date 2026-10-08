@@ -1,0 +1,95 @@
+
+<section class="members-section">
+
+  <div class="section-header">
+    <div>
+      <h2>Integrantes de la red de cuidado</h2>
+      <p>Personas que tienen acceso a la información del niño.</p>
+    </div>
+
+    <span class="member-count">
+      {{ members().length }} integrantes
+    </span>
+  </div>
+
+  @if (members().length === 0) {
+
+    <div class="empty-state">
+      <mat-icon>group_off</mat-icon>
+      <h3>No hay integrantes activos</h3>
+      <p>Invita a un cuidador para comenzar tu red de cuidado.</p>
+    </div>
+
+  } @else {
+
+    <div class="members-grid">
+
+      @for (member of members(); track member.id) {
+
+        <mat-card class="member-card">
+
+          <mat-card-content>
+
+            <div class="member-header">
+
+              <div class="member-avatar">
+                <mat-icon>person</mat-icon>
+              </div>
+
+              <div class="member-info">
+                <h3>{{ member.email }}</h3>
+
+                <span class="member-role">
+                  {{ member.role === 'CAREGIVER'
+                  ? 'Cuidador'
+                  : 'Profesional' }}
+                </span>
+              </div>
+
+            </div>
+
+            <div class="member-details">
+
+              <span class="status-badge active">
+                <mat-icon>check_circle</mat-icon>
+                Activo
+              </span>
+
+              <p class="member-date">
+                <mat-icon>calendar_today</mat-icon>
+                Incorporado:
+                {{ member.joinedAt | date:'dd/MM/yyyy' }}
+              </p>
+
+            </div>
+
+          </mat-card-content>
+
+          <mat-card-actions align="end">
+
+            @if (member.status === MemberStatus.ACTIVE) {
+
+              <button
+                mat-stroked-button
+                type="button"
+                class="revoke-button"
+                [disabled]="loading()"
+                (click)="revokeMember(member)"
+              >
+                <mat-icon>person_remove</mat-icon>
+                Revocar acceso
+              </button>
+
+            }
+
+          </mat-card-actions>
+
+        </mat-card>
+
+      }
+
+    </div>
+
+  }
+
+</section>
