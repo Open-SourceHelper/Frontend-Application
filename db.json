@@ -1,3 +1,56 @@
 {
-
+  "users": [
+    {
+      "id": "user-001",
+      "email": "padre@kinemo.com",
+      "password": "123456",
+      "role": "PARENT",
+      "isValidated": true,
+      "createdAt": "2026-10-08T10:00:00.000Z"
+    },
+    {
+      "id": "user-002",
+      "email": "psicologo@kinemo.com",
+      "password": "123456",
+      "role": "PSYCHOLOGIST",
+      "isValidated": true,
+      "createdAt": "2026-10-08T10:30:00.000Z"
+    },
+    {
+      "id": "user-003",
+      "email": "cuidador@kinemo.com",
+      "password": "123456",
+      "role": "CAREGIVER",
+      "isValidated": true,
+      "createdAt": "2026-10-08T11:00:00.000Z"
+    }
+  ],
+  "userProfiles": [
+    {
+      "id": "profile-001",
+      "userId": "user-001",
+      "firstName": "Carlos",
+      "lastName": "Ramírez",
+      "phone": "999888777",
+      "updatedAt": "2026-10-08T10:00:00.000Z"
+    },
+    {
+      "id": "profile-002",
+      "userId": "user-002",
+      "firstName": "Ana",
+      "lastName": "Torres",
+      "phone": "988777666",
+      "updatedAt": "2026-10-08T10:30:00.000Z"
+    },
+    {
+      "id": "profile-003",
+      "userId": "user-003",
+      "firstName": "María",
+      "lastName": "López",
+      "phone": "977666555",
+      "updatedAt": "2026-10-08T11:00:00.000Z"
+    }
+  ],
+  "passwordRecoveries": [],
+  "userSessions": []
 }
