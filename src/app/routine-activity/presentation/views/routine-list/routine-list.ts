@@ -27,7 +27,7 @@ import {RoutineStatus} from '../../../domain/model/routine-status';
     MatProgressSpinner, MatIcon, MatSort, MatSortHeader, MatPaginator, MatTooltip
   ],
   templateUrl: './routine-list.html',
-  styleUrl: './routine-list.css'
+  styleUrls: ['../../routine-theme.css', './routine-list.css']
 })
 export class RoutineList {
   readonly store = inject(RoutineActivityStore);
@@ -35,6 +35,15 @@ export class RoutineList {
   private route = inject(ActivatedRoute);
 
   protected readonly RoutineStatus = RoutineStatus;
+
+  /**
+   * Text shown for each routine status.
+   */
+  protected readonly statusLabel: Record<string, string> = {
+    [RoutineStatus.ACTIVE]: 'Activa',
+    [RoutineStatus.DRAFT]: 'Borrador',
+    [RoutineStatus.INACTIVE]: 'Inactiva'
+  };
 
   /**
    * Child selected from Child Profile Management (?childId=...), or null to show every routine.
