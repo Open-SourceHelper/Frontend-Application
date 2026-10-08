@@ -1,0 +1,39 @@
+.guidelines-page {
+  padding: 24px;
+}
+
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  margin: 0 0 8px;
+}
+
+.page-header p {
+  color: #666;
+}
+
+.guidelines-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.guideline-card {
+  padding: 12px;
+}
+
+.guideline-card mat-card-content {
+  padding-top: 16px;
+}
+
+.date {
+  margin-top: 16px;
+  font-size: 13px;
+  color: #666;
+}
+
+.error-message {
+  color: #b00020;
+}

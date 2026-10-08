@@ -1,0 +1,45 @@
+<section class="guidelines-page">
+  <header class="page-header">
+    <div>
+      <h1>Orientaciones Clínicas</h1>
+      <p>Consulta las pautas clínicas y recomendaciones para el cuidado infantil.</p>
+    </div>
+  </header>
+
+  @if (store.loading()) {
+    <p>Cargando pautas clínicas...</p>
+  } @else if (store.error()) {
+    <p class="error-message">{{ store.error() }}</p>
+  } @else if (store.guidelines().length === 0) {
+    <mat-card>
+      <mat-card-content>
+        <p>No hay pautas clínicas registradas.</p>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    <div class="guidelines-grid">
+      @for (guideline of store.guidelines(); track guideline.id) {
+        <mat-card class="guideline-card">
+          <mat-card-header>
+            <mat-card-title>Pauta clínica</mat-card-title>
+            <mat-card-subtitle>
+              Niño: {{ guideline.childId }}
+            </mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <p>{{ guideline.instructions }}</p>
+
+            <mat-chip-set>
+              <mat-chip>{{ guideline.status }}</mat-chip>
+            </mat-chip-set>
+
+            <p class="date">
+              Actualizado: {{ guideline.updatedAt | date:'dd/MM/yyyy' }}
+            </p>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  }
+</section>
