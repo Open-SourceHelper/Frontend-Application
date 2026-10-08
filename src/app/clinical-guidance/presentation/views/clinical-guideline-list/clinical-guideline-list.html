@@ -4,142 +4,198 @@
   <header class="page-header">
     <div>
       <h1>Orientaciones Clínicas</h1>
-      <p>Consulta las pautas clínicas y recomendaciones para el cuidado infantil.</p>
+      <p>
+        Consulta las pautas clínicas y recomendaciones
+        para el cuidado infantil.
+      </p>
     </div>
   </header>
 
-  <!-- Formulario para registrar pautas -->
-  <app-clinical-guideline-form
-    (guidelineCreated)="onGuidelineCreated($event)">
-  </app-clinical-guideline-form>
+  <mat-tab-group animationDuration="200ms">
 
-  <!-- Listado de pautas clínicas -->
-  @if (store.loading()) {
-    <p>Cargando pautas clínicas...</p>
-  } @else if (store.error()) {
-    <p class="error-message">{{ store.error() }}</p>
-  } @else if (store.guidelines().length === 0) {
-    <mat-card>
-      <mat-card-content>
-        <p>No hay pautas clínicas registradas.</p>
-      </mat-card-content>
-    </mat-card>
-  } @else {
+    <!-- PESTAÑA 1: PAUTAS CLÍNICAS -->
+    <mat-tab label="Pautas Clínicas">
 
-    <div class="guidelines-grid">
+      <div class="tab-content">
 
-      @for (guideline of store.guidelines(); track guideline.id) {
+        <!-- Formulario para registrar pautas -->
+        <app-clinical-guideline-form
+          (guidelineCreated)="onGuidelineCreated($event)">
+        </app-clinical-guideline-form>
 
-        <mat-card class="guideline-card">
+        <!-- Listado de pautas clínicas -->
+        @if (store.loading()) {
 
-          <mat-card-header>
-            <mat-card-title>Pauta clínica</mat-card-title>
-            <mat-card-subtitle>
-              Niño: {{ guideline.childId }}
-            </mat-card-subtitle>
-          </mat-card-header>
+          <p>Cargando pautas clínicas...</p>
 
-          <mat-card-content>
+        } @else if (store.error()) {
 
-            <!-- Instrucciones -->
-            <p>{{ guideline.instructions }}</p>
+          <p class="error-message">
+            {{ store.error() }}
+          </p>
 
-            <!-- Estado -->
-            <mat-chip-set>
-              <mat-chip>{{ guideline.status }}</mat-chip>
-            </mat-chip-set>
+        } @else if (store.guidelines().length === 0) {
 
-            <!-- Fecha -->
-            <p class="date">
-              Actualizado: {{ guideline.updatedAt | date:'dd/MM/yyyy' }}
-            </p>
+          <mat-card>
+            <mat-card-content>
+              <p>No hay pautas clínicas registradas.</p>
+            </mat-card-content>
+          </mat-card>
 
-            <!-- Botones según el estado -->
-            <div class="guideline-actions">
+        } @else {
 
-              @if (guideline.status === 'DRAFT') {
+          <div class="guidelines-grid">
 
-                <button
-                  mat-stroked-button
-                  type="button"
-                  [disabled]="store.loading()"
-                  (click)="startEditing(guideline)">
-                  <mat-icon>edit</mat-icon>
-                  Editar pauta
-                </button>
+            @for (guideline of store.guidelines(); track guideline.id) {
 
-                <button
-                  mat-flat-button
-                  type="button"
-                  [disabled]="store.loading()"
-                  (click)="activateGuideline(guideline)">
-                  <mat-icon>check_circle</mat-icon>
-                  Activar pauta
-                </button>
+              <mat-card class="guideline-card">
 
-              }
+                <mat-card-header>
 
-              @if (guideline.status === 'ACTIVE') {
+                  <mat-card-title>
+                    Pauta clínica
+                  </mat-card-title>
 
-                <button
-                  mat-stroked-button
-                  type="button"
-                  [disabled]="store.loading()"
-                  (click)="deactivateGuideline(guideline)">
-                  <mat-icon>block</mat-icon>
-                  Desactivar pauta
-                </button>
+                  <mat-card-subtitle>
+                    Niño: {{ guideline.childId }}
+                  </mat-card-subtitle>
 
-              }
+                </mat-card-header>
 
-            </div>
+                <mat-card-content>
 
-            <!-- Formulario para editar instrucciones -->
-            @if (editingGuideline()?.id === guideline.id) {
+                  <!-- Instrucciones -->
+                  <p>
+                    {{ guideline.instructions }}
+                  </p>
 
-              <div class="edit-section">
+                  <!-- Estado -->
+                  <mat-chip-set>
+                    <mat-chip>
+                      {{ guideline.status }}
+                    </mat-chip>
+                  </mat-chip-set>
 
-                <h3>Editar instrucciones</h3>
+                  <!-- Fecha -->
+                  <p class="date">
+                    Actualizado:
+                    {{ guideline.updatedAt | date:'dd/MM/yyyy' }}
+                  </p>
 
-                <textarea
-                  #editedInstructions
-                  class="edit-textarea"
-                  [value]="guideline.instructions"
-                  rows="5">
-                </textarea>
+                  <!-- Botones según el estado -->
+                  <div class="guideline-actions">
 
-                <div class="edit-actions">
+                    @if (guideline.status === 'DRAFT') {
 
-                  <button
-                    mat-flat-button
-                    type="button"
-                    [disabled]="store.loading()"
-                    (click)="saveChanges(editedInstructions.value)">
-                    <mat-icon>save</mat-icon>
-                    Guardar cambios
-                  </button>
+                      <button
+                        mat-stroked-button
+                        type="button"
+                        [disabled]="store.loading()"
+                        (click)="startEditing(guideline)">
 
-                  <button
-                    mat-stroked-button
-                    type="button"
-                    (click)="cancelEditing()">
-                    Cancelar
-                  </button>
+                        <mat-icon>edit</mat-icon>
+                        Editar pauta
 
-                </div>
+                      </button>
 
-              </div>
+                      <button
+                        mat-flat-button
+                        type="button"
+                        [disabled]="store.loading()"
+                        (click)="activateGuideline(guideline)">
+
+                        <mat-icon>check_circle</mat-icon>
+                        Activar pauta
+
+                      </button>
+
+                    }
+
+                    @if (guideline.status === 'ACTIVE') {
+
+                      <button
+                        mat-stroked-button
+                        type="button"
+                        [disabled]="store.loading()"
+                        (click)="deactivateGuideline(guideline)">
+
+                        <mat-icon>block</mat-icon>
+                        Desactivar pauta
+
+                      </button>
+
+                    }
+
+                  </div>
+
+                  <!-- Formulario para editar instrucciones -->
+                  @if (editingGuideline()?.id === guideline.id) {
+
+                    <div class="edit-section">
+
+                      <h3>Editar instrucciones</h3>
+
+                      <textarea
+                        #editedInstructions
+                        class="edit-textarea"
+                        [value]="guideline.instructions"
+                        rows="5">
+                      </textarea>
+
+                      <div class="edit-actions">
+
+                        <button
+                          mat-flat-button
+                          type="button"
+                          [disabled]="store.loading()"
+                          (click)="saveChanges(editedInstructions.value)">
+
+                          <mat-icon>save</mat-icon>
+                          Guardar cambios
+
+                        </button>
+
+                        <button
+                          mat-stroked-button
+                          type="button"
+                          (click)="cancelEditing()">
+
+                          Cancelar
+
+                        </button>
+
+                      </div>
+
+                    </div>
+
+                  }
+
+                </mat-card-content>
+
+              </mat-card>
 
             }
 
-          </mat-card-content>
+          </div>
 
-        </mat-card>
+        }
 
-      }
+      </div>
 
-    </div>
+    </mat-tab>
 
-  }
+
+    <mat-tab label="Guías Prácticas">
+
+      <div class="tab-content">
+
+        <app-practical-guide-list>
+        </app-practical-guide-list>
+
+      </div>
+
+    </mat-tab>
+
+  </mat-tab-group>
 
 </section>

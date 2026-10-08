@@ -8,6 +8,7 @@ import { ClinicalGuidelineService } from '../infrastructure/services/clinical-gu
   providedIn: 'root'
 })
 export class ClinicalGuidelineStore {
+
   private readonly service = inject(ClinicalGuidelineService);
 
   private readonly guidelinesState = signal<ClinicalGuideline[]>([]);
@@ -18,21 +19,37 @@ export class ClinicalGuidelineStore {
   readonly loading = this.loadingState.asReadonly();
   readonly error = this.errorState.asReadonly();
 
-  readonly totalGuidelines = computed(() => this.guidelines().length);
+  readonly totalGuidelines = computed(
+    () => this.guidelinesState().length
+  );
 
   loadGuidelines(): void {
+    if (this.loadingState()) {
+      return;
+    }
+
     this.loadingState.set(true);
     this.errorState.set(null);
 
     this.service.getAll()
       .pipe(finalize(() => this.loadingState.set(false)))
       .subscribe({
-        next: guidelines => this.guidelinesState.set(guidelines),
-        error: () => this.errorState.set('No se pudieron cargar las pautas clínicas.')
+        next: guidelines => {
+          this.guidelinesState.set(guidelines);
+        },
+        error: () => {
+          this.errorState.set(
+            'No se pudieron cargar las pautas clínicas.'
+          );
+        }
       });
   }
 
   createGuideline(guideline: ClinicalGuideline): void {
+    if (this.loadingState()) {
+      return;
+    }
+
     this.loadingState.set(true);
     this.errorState.set(null);
 
@@ -40,13 +57,24 @@ export class ClinicalGuidelineStore {
       .pipe(finalize(() => this.loadingState.set(false)))
       .subscribe({
         next: created => {
-          this.guidelinesState.update(items => [...items, created]);
+          this.guidelinesState.update(items => [
+            ...items,
+            created
+          ]);
         },
-        error: () => this.errorState.set('No se pudo registrar la pauta clínica.')
+        error: () => {
+          this.errorState.set(
+            'No se pudo registrar la pauta clínica.'
+          );
+        }
       });
   }
 
   updateGuideline(guideline: ClinicalGuideline): void {
+    if (this.loadingState()) {
+      return;
+    }
+
     this.loadingState.set(true);
     this.errorState.set(null);
 
@@ -55,10 +83,16 @@ export class ClinicalGuidelineStore {
       .subscribe({
         next: updated => {
           this.guidelinesState.update(items =>
-            items.map(item => item.id === updated.id ? updated : item)
+            items.map(item =>
+              item.id === updated.id ? updated : item
+            )
           );
         },
-        error: () => this.errorState.set('No se pudo actualizar la pauta clínica.')
+        error: () => {
+          this.errorState.set(
+            'No se pudo actualizar la pauta clínica.'
+          );
+        }
       });
   }
 }

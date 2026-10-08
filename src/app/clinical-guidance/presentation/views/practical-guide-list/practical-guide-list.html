@@ -1,0 +1,103 @@
+<section class="guides-page">
+
+  <header class="page-header">
+    <h1>Guías Prácticas</h1>
+    <p>
+      Encuentra orientaciones y estrategias para acompañar
+      a los niños en diferentes situaciones.
+    </p>
+  </header>
+
+  <div class="filters">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Buscar por situación</mat-label>
+      <input
+        matInput
+        type="text"
+        placeholder="Ej. cambios de rutina"
+        [ngModel]="store.search()"
+        (ngModelChange)="store.setSearch($event)"
+      />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Categoría</mat-label>
+
+      <mat-select
+        [ngModel]="store.selectedCategory()"
+        (ngModelChange)="store.setCategory($event)">
+
+        <mat-option [value]="null">
+          Todas las categorías
+        </mat-option>
+
+        @for (category of categories; track category.value) {
+          <mat-option [value]="category.value">
+            {{ category.label }}
+          </mat-option>
+        }
+
+      </mat-select>
+    </mat-form-field>
+
+    <button
+      mat-stroked-button
+      type="button"
+      (click)="store.clearFilters()">
+      <mat-icon>filter_alt_off</mat-icon>
+      Limpiar filtros
+    </button>
+
+  </div>
+
+  @if (store.loading()) {
+    <p>Cargando guías prácticas...</p>
+  } @else if (store.error()) {
+    <p class="error-message">{{ store.error() }}</p>
+  } @else if (store.filteredGuides().length === 0) {
+
+    <mat-card>
+      <mat-card-content>
+        <p>No se encontraron guías prácticas.</p>
+      </mat-card-content>
+    </mat-card>
+
+  } @else {
+
+    <div class="guides-grid">
+
+      @for (guide of store.filteredGuides(); track guide.id) {
+
+        <mat-card class="guide-card">
+
+          <mat-card-header>
+            <mat-card-title>
+              {{ guide.title }}
+            </mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content>
+
+            <mat-chip-set>
+              <mat-chip>
+                {{ getCategoryLabel(guide.category) }}
+              </mat-chip>
+            </mat-chip-set>
+
+            <p class="guide-content">
+              {{ guide.consultarInstrucciones() }}
+            </p>
+
+          </mat-card-content>
+
+        </mat-card>
+
+      }
+
+    </div>
+
+  }
+
+</section>
