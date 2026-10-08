@@ -1,8 +1,12 @@
 export const environment = {
   production: false,
-  platformProviderApiBaseUrl: '',
+  // Fake backend (json-server) until the Spring Boot RESTful API is implemented
+  platformProviderApiBaseUrl: 'http://localhost:3000',
 
-  //Aquí se ponen los demas providers
+  // BC04 - Routine & Activity Management
+  platformProviderRoutinesEndpointPath: '/routines',
+  platformProviderRoutineActivitiesEndpointPath: '/routine-activities',
+  platformProviderVisualSupportsEndpointPath: '/visual-supports',
 
   platformProviderSignInEndpointPath: '/authentication/sign-in',
   platformProviderSignUpEndpointPath: '/authentication/sign-up',
