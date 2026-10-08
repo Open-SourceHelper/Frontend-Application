@@ -1,4 +1,3 @@
-import {DateTime} from '../../../shared/domain/model/date-time';
 import {BaseResponse} from '../../../shared/infrastructure/base-response';
 
 export interface CaregiverResource {
@@ -6,8 +5,8 @@ export interface CaregiverResource {
   childId: string;
   caregiverId: string;
   status: string;
-  authorizedAt: DateTime;
-  revokedAt: DateTime;
+  authorizedAt: string;
+  revokedAt: string;
 }
 
 export interface CaregiverResponse extends BaseResponse {

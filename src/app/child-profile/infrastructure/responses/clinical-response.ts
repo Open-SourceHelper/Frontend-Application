@@ -1,4 +1,3 @@
-import {DateTime} from '../../../shared/domain/model/date-time';
 import {BaseResponse} from '../../../shared/infrastructure/base-response';
 
 export interface ClinicalProfileResource {

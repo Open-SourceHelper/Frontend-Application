@@ -1,8 +1,6 @@
 import {ClinicalProfileResource} from '../responses/clinical-response';
 import {ClinicalProfile} from '../../domain/model/clinical-profile.entity';
 import {DateTime} from '../../../shared/domain/model/date-time';
-import {ChildResource} from '../responses/child-response';
-import {Child} from '../../domain/model/child.entity';
 
 export class ClinicalAssembler {
   static toEntityFromResource(
