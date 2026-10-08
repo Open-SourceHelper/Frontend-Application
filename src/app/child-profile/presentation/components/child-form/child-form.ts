@@ -6,8 +6,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
-import { Child } from '../../../../domain/model/child.entity';
-import {DateTime} from '../../../../../shared/domain/model/date-time';
+import { Child } from '../../../domain/model/child.entity';
+import {DateTime} from '../../../../shared/domain/model/date-time';
 
 @Component({
   imports: [

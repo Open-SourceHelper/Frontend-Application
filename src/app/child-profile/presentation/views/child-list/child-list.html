@@ -1,0 +1,104 @@
+<section class="children-page">
+  <header class="page-header">
+    <h1>Niños registrados</h1>
+    <p>Registra y administra la información de los niños.</p>
+  </header>
+
+  <app-child-form
+    (childCreated)="onChildCreated($event)">
+  </app-child-form>
+
+  @if (store.loading()) {
+    <p>Cargando información...</p>
+  } @else if (store.error()) {
+    <p class="error-message">{{ store.error() }}</p>
+  } @else if (store.children().length === 0) {
+    <mat-card>
+      <mat-card-content>
+        <p>Aún no hay niños registrados.</p>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    <div class="children-grid">
+      @for (child of store.children(); track child.id) {
+        <mat-card class="child-card">
+          <mat-card-header>
+            <mat-card-title>{{ child.firstName }} {{ child.lastName }}</mat-card-title>
+            <mat-card-subtitle>ID del padre: {{ child.parentId }}</mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            @if (editingChild()?.id === child.id) {
+              <div class="edit-section">
+                <h3>Editar información</h3>
+
+                <label>
+                  Nombre
+                  <input
+                    #editedFirstName
+                    type="text"
+                    [value]="child.firstName">
+                </label>
+
+                <label>
+                  Apellido
+                  <input
+                    #editedLastName
+                    type="text"
+                    [value]="child.lastName">
+                </label>
+
+                <label>
+                  Fecha de nacimiento
+                  <input
+                    #editedBirthDate
+                    type="date"
+                    [value]="child.birthDate | date:'yyyy-MM-dd'">
+                </label>
+
+                <div class="edit-actions">
+                  <button
+                    mat-flat-button
+                    type="button"
+                    [disabled]="store.loading()"
+                    (click)="saveChanges(
+                      editedFirstName.value,
+                      editedLastName.value,
+                      editedBirthDate.value
+                    )">
+                    <mat-icon>save</mat-icon>
+                    Guardar cambios
+                  </button>
+
+                  <button
+                    mat-stroked-button
+                    type="button"
+                    [disabled]="store.loading()"
+                    (click)="cancelEditing()">
+                    Cancelar
+                  </button>
+                </div>
+              </div>
+            } @else {
+              <p>
+                Fecha de nacimiento:
+                {{ child.birthDate | date:'dd/MM/yyyy' }}
+              </p>
+
+              <div class="child-actions">
+                <button
+                  mat-stroked-button
+                  type="button"
+                  [disabled]="store.loading()"
+                  (click)="startEditing(child)">
+                  <mat-icon>edit</mat-icon>
+                  Editar
+                </button>
+              </div>
+            }
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  }
+</section>
