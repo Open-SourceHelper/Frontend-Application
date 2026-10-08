@@ -1,3 +1,22 @@
 {
-
+  "observations": [
+    {
+      "id": "obs-001",
+      "childId": "child-demo-001",
+      "caregiverId": "caregiver-demo-001",
+      "description": "Completó su rutina de la mañana con apoyo visual.",
+      "occurredAt": "2026-10-08T08:00:00-05:00",
+      "crisisSeverity": null
+    },
+    {
+      "id": "obs-002",
+      "childId": "child-demo-001",
+      "caregiverId": "caregiver-demo-001",
+      "description": "Se registró una situación de desregulación durante un cambio de actividad.",
+      "occurredAt": "2026-10-08T08:15:00-05:00",
+      "crisisSeverity": "moderate"
+    }
+  ],
+  "psychologistComments": [],
+  "observationEvidences": []
 }
