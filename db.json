@@ -1,3 +1,88 @@
 {
-
+  "children": [
+    {
+      "id": "child-001",
+      "parentId": "parent-001",
+      "firstName": "Mateo",
+      "lastName": "García",
+      "birthDate": "2019-04-15",
+      "createdAt": "2026-09-15T10:30:00-05:00"
+    },
+    {
+      "id": "child-002",
+      "parentId": "parent-002",
+      "firstName": "Sofía",
+      "lastName": "Ramírez",
+      "birthDate": "2018-11-22",
+      "createdAt": "2026-09-18T09:15:00-05:00"
+    },
+    {
+      "id": "child-003",
+      "parentId": "parent-003",
+      "firstName": "Diego",
+      "lastName": "Torres",
+      "birthDate": "2020-02-08",
+      "createdAt": "2026-09-20T14:00:00-05:00"
+    }
+  ],
+  "caregiverAuthorizations": [
+    {
+      "id": "auth-001",
+      "childId": "child-001",
+      "caregiverId": "caregiver-001",
+      "status": "active",
+      "authorizedAt": "2026-09-16T08:30:00-05:00",
+      "revokedAt": "2026-10-15T16:30:00-05:00"
+    },
+    {
+      "id": "auth-002",
+      "childId": "child-002",
+      "caregiverId": "caregiver-002",
+      "status": "active",
+      "authorizedAt": "2026-09-19T10:00:00-05:00",
+      "revokedAt": "2026-10-18T17:00:00-05:00"
+    },
+    {
+      "id": "auth-003",
+      "childId": "child-003",
+      "caregiverId": "caregiver-003",
+      "status": "active",
+      "authorizedAt": "2026-09-21T11:45:00-05:00",
+      "revokedAt": "2026-10-20T15:45:00-05:00"
+    },
+    {
+      "id": "auth-004",
+      "childId": "child-001",
+      "caregiverId": "caregiver-004",
+      "status": "revoked",
+      "authorizedAt": "2026-09-20T09:00:00-05:00",
+      "revokedAt": "2026-10-01T16:30:00-05:00"
+    }
+  ],
+  "clinicalProfiles": [
+    {
+      "id": "profile-001",
+      "childId": "child-001",
+      "specialNeeds": "Apoyo en comunicación y seguimiento de rutinas.",
+      "triggers": "Cambios inesperados de actividad y ambientes con mucho ruido.",
+      "regulators": "Apoyos visuales, anticipación de actividades y espacios tranquilos.",
+      "updatedAt": "2026-10-02T10:15:00-05:00"
+    },
+    {
+      "id": "profile-002",
+      "childId": "child-002",
+      "specialNeeds": "Apoyo para mantener la atención durante actividades estructuradas.",
+      "triggers": "Actividades prolongadas y múltiples instrucciones simultáneas.",
+      "regulators": "Instrucciones breves, pausas programadas y refuerzo positivo.",
+      "updatedAt": "2026-10-03T13:20:00-05:00"
+    },
+    {
+      "id": "profile-003",
+      "childId": "child-003",
+      "specialNeeds": "Apoyo en adaptación a nuevas actividades y seguimiento de rutinas.",
+      "triggers": "Transiciones rápidas y modificación de rutinas habituales.",
+      "regulators": "Rutinas visuales, avisos previos y acompañamiento del cuidador.",
+      "updatedAt": "2026-10-04T09:40:00-05:00"
+    }
+  ]
 }
