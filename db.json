@@ -1,3 +1,82 @@
 {
-  "clinicalGuidelines": []
+  "clinicalGuidelines": [
+    {
+      "id": "7b6a0f2d-f64d-453f-b334-6060c5fc0c25",
+      "psychologistId": "PSI001",
+      "childId": "NINO001",
+      "instructions": "Establecer una rutina diaria con horarios visuales para facilitar la organización de las actividades del niño. Anticipar los cambios con instrucciones claras y sencillas.",
+      "status": "INACTIVE",
+      "createdAt": "2026-10-08T03:39:30.422Z",
+      "updatedAt": "2026-10-08T04:37:17.935Z"
+    },
+    {
+      "id": "8460b505-05bb-4fae-8b6b-6216283df6bf",
+      "psychologistId": "PSI002",
+      "childId": "NINO002",
+      "instructions": "Implementar actividades de reconocimiento emocional utilizando tarjetas con expresiones faciales y situaciones cotidianas. Reforzar positivamente la comunicación de emociones.",
+      "status": "DRAFT",
+      "createdAt": "2026-10-08T04:37:30.493Z",
+      "updatedAt": "2026-10-08T04:37:30.493Z"
+    },
+    {
+      "id": "aec801cc-473a-4ae7-a23d-3949f8b51354",
+      "psychologistId": "PSI002",
+      "childId": "NINO002",
+      "instructions": "Identificar los estímulos sensoriales que generan incomodidad y establecer estrategias de adaptación del entorno. Registrar las respuestas del niño para evaluar su progreso.",
+      "status": "DRAFT",
+      "createdAt": "2026-10-08T06:17:41.607Z",
+      "updatedAt": "2026-10-08T06:17:41.607Z"
+    },
+    {
+      "id": "2235511e-3aeb-4395-b509-1b8e19a2ada4",
+      "psychologistId": "PSI001",
+      "childId": "NINO001",
+      "instructions": "Establecer horarios visuales para las actividades diarias y anticipar los cambios de rutina. Utilizar instrucciones breves y reforzar positivamente la participación del niño.",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-08T06:18:10.273Z",
+      "updatedAt": "2026-10-08T06:18:51.968Z"
+    }
+  ],
+  "practicalGuides": [
+    {
+      "id": "guide-001",
+      "title": "Organización de rutinas",
+      "category": "ROUTINE",
+      "content": "Utilizar un calendario visual con actividades diarias y anticipar los cambios de rutina. Establecer horarios consistentes para las comidas, actividades educativas, descanso y recreación."
+    },
+    {
+      "id": "guide-002",
+      "title": "Apoyo durante momentos de crisis",
+      "category": "CRISIS",
+      "content": "Mantener un ambiente tranquilo, reducir los estímulos externos y seguir las indicaciones individualizadas del profesional. Evitar confrontaciones y proporcionar un espacio seguro para el niño."
+    },
+    {
+      "id": "guide-003",
+      "title": "Apoyo sensorial",
+      "category": "SENSORY_SUPPORT",
+      "content": "Identificar estímulos que generan incomodidad y ofrecer alternativas adaptadas a las preferencias del niño. Considerar ajustes de iluminación, sonidos y materiales según sus necesidades."
+    },
+    {
+      "id": "guide-004",
+      "title": "Reconocimiento de emociones",
+      "category": "EMOTIONAL_SUPPORT",
+      "content": "Utilizar imágenes y palabras sencillas para ayudar al niño a identificar y comunicar sus emociones. Realizar actividades de reconocimiento emocional mediante tarjetas, dibujos y situaciones cotidianas."
+    }
+  ],
+  "patientAssignments": [
+    {
+      "id": "assignment-001",
+      "psychologistId": "PSI001",
+      "childId": "NINO001",
+      "status": "ACTIVE",
+      "assignedAt": "2026-10-08T10:00:00.000Z"
+    },
+    {
+      "id": "assignment-002",
+      "psychologistId": "PSI002",
+      "childId": "NINO002",
+      "status": "ACTIVE",
+      "assignedAt": "2026-10-08T10:30:00.000Z"
+    }
+  ]
 }
