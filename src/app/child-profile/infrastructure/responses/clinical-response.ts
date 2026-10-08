@@ -7,7 +7,7 @@ export interface ClinicalProfileResource {
   specialNeeds: string;
   triggers: string;
   regulators: string;
-  updatedAt: DateTime;
+  updatedAt: string;
 }
 
 export interface ClinicalProfileResponse extends BaseResponse {
