@@ -13,20 +13,41 @@ const observationList = () =>
   import('./observation-crisis/presentation/pages/observation-list.component')
     .then((m) => m.ObservationListComponent);
 
+const observationForm = () =>
+  import('./observation-crisis/presentation/pages/observation-form.component')
+    .then((m) => m.ObservationFormComponent);
+
 const baseTitle = 'Kinemo';
 
 export const routes: Routes = [
-  { path: 'home', component: Home, title: `${baseTitle} - Home` },
-  { path: 'about', loadComponent: about, title: `${baseTitle} - About` },
+  {
+    path: 'home',
+    component: Home,
+    title: `${baseTitle} - Home`
+  },
+  {
+    path: 'about',
+    loadComponent: about,
+    title: `${baseTitle} - About`
+  },
+  {
+    path: 'observations/new',
+    loadComponent: observationForm,
+    title: `${baseTitle} - Registrar observación`
+  },
   {
     path: 'observations',
     loadComponent: observationList,
     title: `${baseTitle} - Observaciones y crisis`
   },
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  {
+    path: '',
+    redirectTo: '/home',
+    pathMatch: 'full'
+  },
   {
     path: '**',
     loadComponent: pageNotFound,
     title: `${baseTitle} - Page Not Found`
-  },
+  }
 ];
