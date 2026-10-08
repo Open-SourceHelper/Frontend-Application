@@ -1,6 +1,8 @@
+/**
+ * Execution states of a routine activity (US14, US30).
+ */
 export enum ActivityStatus {
   PENDING = 'PENDING',
-  IN_PROGRESS = 'IN_PROGRESS',
   COMPLETED = 'COMPLETED',
-  SKIPPED = 'SKIPPED',
+  SKIPPED = 'SKIPPED'
 }
