@@ -1,0 +1,33 @@
+<section class="routine-list">
+  <header class="routine-list__header">
+    <h1>Rutinas</h1>
+    <button type="button" (click)="loadRoutines()">
+      Actualizar
+    </button>
+  </header>
+
+  <div *ngIf="routines.length === 0" class="routine-list__empty">
+    No hay rutinas registradas.
+  </div>
+
+  <div *ngIf="routines.length > 0" class="routine-list__items">
+    <article
+      *ngFor="let routine of routines"
+      class="routine-list__item"
+    >
+      <h2>{{ routine.name }}</h2>
+
+      <p>
+        Niño: {{ routine.childId }}
+      </p>
+
+      <p>
+        Estado: {{ routine.status }}
+      </p>
+
+      <p>
+        Actividades: {{ routine.activities.length }}
+      </p>
+    </article>
+  </div>
+</section>

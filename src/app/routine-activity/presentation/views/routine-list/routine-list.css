@@ -1,0 +1,39 @@
+.routine-list {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.routine-list__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.routine-list__header button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.routine-list__items {
+  display: grid;
+  gap: 16px;
+}
+
+.routine-list__item {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.routine-list__item h2 {
+  margin-top: 0;
+}
+
+.routine-list__empty {
+  padding: 24px;
+  text-align: center;
+}

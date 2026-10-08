@@ -1,0 +1,48 @@
+<section class="routine-activity-form">
+  <h2>Agregar actividad</h2>
+
+  <form (ngSubmit)="submit()">
+    <label for="title">Título de la actividad</label>
+    <input
+      id="title"
+      type="text"
+      name="title"
+      [(ngModel)]="title"
+      placeholder="Ej. Lavarse los dientes"
+      required
+    />
+
+    <label for="order">Orden</label>
+    <input
+      id="order"
+      type="number"
+      name="order"
+      [(ngModel)]="order"
+      min="1"
+      required
+    />
+
+    <label for="durationMinutes">Duración (minutos)</label>
+    <input
+      id="durationMinutes"
+      type="number"
+      name="durationMinutes"
+      [(ngModel)]="durationMinutes"
+      min="0"
+      required
+    />
+
+    <label>
+      <input
+        type="checkbox"
+        name="timerEnabled"
+        [(ngModel)]="timerEnabled"
+      />
+      Activar temporizador
+    </label>
+
+    <button type="submit">
+      Agregar actividad
+    </button>
+  </form>
+</section>

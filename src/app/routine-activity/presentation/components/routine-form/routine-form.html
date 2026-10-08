@@ -1,0 +1,28 @@
+<section class="routine-form">
+  <h2>Crear rutina</h2>
+
+  <form (ngSubmit)="submit()">
+    <label for="name">Nombre de la rutina</label>
+    <input
+      id="name"
+      type="text"
+      name="name"
+      [(ngModel)]="name"
+      placeholder="Ej. Rutina de la mañana"
+      required
+    />
+
+    <label for="childId">ID del niño</label>
+    <input
+      id="childId"
+      type="number"
+      name="childId"
+      [(ngModel)]="childId"
+      required
+    />
+
+    <button type="submit">
+      Crear rutina
+    </button>
+  </form>
+</section>
