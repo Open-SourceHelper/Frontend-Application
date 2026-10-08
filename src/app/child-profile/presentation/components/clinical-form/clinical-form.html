@@ -19,7 +19,7 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Necesidades especiales</mat-label>
+        <mat-label>Necesidades Especiales</mat-label>
         <input matInput formControlName="specialNeeds" />
 
         @if (form.controls.specialNeeds.hasError('required')) {
@@ -28,11 +28,11 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Desencadenantes</mat-label>
+        <mat-label>Detonantes</mat-label>
         <input matInput formControlName="triggers" />
 
         @if (form.controls.triggers.hasError('required')) {
-          <mat-error>Ingrese los desencadenantes.</mat-error>
+          <mat-error>Ingrese los detonantes.</mat-error>
         }
       </mat-form-field>
 
