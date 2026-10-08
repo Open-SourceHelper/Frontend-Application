@@ -23,9 +23,15 @@ import { FooterContent } from '../footer-content/footer-content';
 })
 export class Layout {
   readonly collapsed = signal(false);
+
   readonly options = [
     { link: '/home', label: 'Home', icon: 'home' },
     { link: '/about', label: 'About', icon: 'info' },
+    {
+      link: '/observations',
+      label: 'Observaciones y crisis',
+      icon: 'assignment',
+    },
   ];
 
   toggleMenu(): void {
