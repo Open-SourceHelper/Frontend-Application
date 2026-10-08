@@ -1,5 +1,5 @@
-import {BaseResponse} from '../../shared/infrastructure/base-response';
-import {DateTime} from '../../shared/domain/model/date-time';
+import {BaseResponse} from '../../../shared/infrastructure/base-response';
+import {DateTime} from '../../../shared/domain/model/date-time';
 
 export interface ChildResource {
   id: string;
