@@ -23,6 +23,14 @@
       "lastName": "Torres",
       "birthDate": "2020-02-08",
       "createdAt": "2026-09-20T14:00:00-05:00"
+    },
+    {
+      "id": "ae2ed88b-5e56-457b-a1d4-48ee3742c0a3",
+      "parentId": "1234",
+      "firstName": "Gabriel",
+      "lastName": "Vilchez",
+      "birthDate": "2006-09-19T05:00:00.000Z",
+      "createdAt": "2026-10-08T20:08:43.585Z"
     }
   ],
   "caregiverAuthorizations": [

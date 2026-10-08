@@ -1,8 +1,8 @@
 export const environment = {
   production: false,
-  platformProviderApiBaseUrl: '',
+  platformProviderApiBaseUrl: 'http://localhost:3000',
 
-  platformProviderChildEndpointPath: '/child',
+  platformProviderChildEndpointPath: '/children',
   platformProviderClinicalProfileEndpointPath: '/clinical-profile',
   platformProviderCaregiverAuthorizationEndpointPath: '/caregiver-authorization',
 
