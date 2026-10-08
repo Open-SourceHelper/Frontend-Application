@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 import { RoutineResource } from '../resources/routine-resource';
 import { RoutineResponse } from '../assemblers/routine-assembler';
@@ -15,7 +15,13 @@ export class RoutineApiService {
   constructor(private readonly http: HttpClient) {}
 
   getAll(): Observable<RoutineResponse> {
-    return this.http.get<RoutineResponse>(this.baseUrl);
+    return this.http
+      .get<RoutineResource[]>(this.baseUrl)
+      .pipe(
+        map(routines => ({
+          content: routines
+        }))
+      );
   }
 
   getById(id: number): Observable<RoutineResource> {

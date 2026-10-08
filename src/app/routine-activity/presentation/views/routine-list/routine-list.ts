@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { Routine } from '../../../domain/model/routine.entity';
@@ -20,7 +20,8 @@ export class RoutineListComponent implements OnInit {
   constructor(
     private readonly routineStore: RoutineStore,
     private readonly routineApiService: RoutineApiService,
-    private readonly routineAssembler: RoutineAssembler
+    private readonly routineAssembler: RoutineAssembler,
+    private readonly changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -34,6 +35,8 @@ export class RoutineListComponent implements OnInit {
 
         this.routineStore.setRoutines(routines);
         this.routines = routines;
+
+        this.changeDetectorRef.detectChanges();
       },
       error: error => {
         console.error('Error loading routines:', error);

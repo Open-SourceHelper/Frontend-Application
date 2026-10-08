@@ -1,3 +1,50 @@
 {
-
+  "routines": [
+    {
+      "id": 1,
+      "childId": 1001,
+      "name": "Rutina de la mañana",
+      "status": "ACTIVE",
+      "activityIds": [1, 2]
+    },
+    {
+      "id": 2,
+      "childId": 1001,
+      "name": "Rutina de la noche",
+      "status": "DRAFT",
+      "activityIds": [3]
+    }
+  ],
+  "routineActivities": [
+    {
+      "id": 1,
+      "routineId": 1,
+      "title": "Lavarse los dientes",
+      "order": 1,
+      "durationMinutes": 5,
+      "status": "PENDING",
+      "timerEnabled": true,
+      "alertType": "VISUAL"
+    },
+    {
+      "id": 2,
+      "routineId": 1,
+      "title": "Vestirse",
+      "order": 2,
+      "durationMinutes": 10,
+      "status": "PENDING",
+      "timerEnabled": true,
+      "alertType": "SOUND"
+    },
+    {
+      "id": 3,
+      "routineId": 2,
+      "title": "Preparar la mochila",
+      "order": 1,
+      "durationMinutes": 10,
+      "status": "PENDING",
+      "timerEnabled": false,
+      "alertType": "VISUAL"
+    }
+  ]
 }

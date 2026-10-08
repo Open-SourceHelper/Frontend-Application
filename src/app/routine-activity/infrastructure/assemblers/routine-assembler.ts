@@ -2,11 +2,14 @@ import { Routine } from '../../domain/model/routine.entity';
 import { RoutineResource } from '../resources/routine-resource';
 import { BaseAssembler } from '../../../shared/infrastructure/base-assembler';
 import { BaseResponse } from '../../../shared/infrastructure/base-response';
+import { Injectable } from '@angular/core';
 
 export interface RoutineResponse extends BaseResponse {
   content: RoutineResource[];
 }
-
+@Injectable({
+  providedIn: 'root'
+})
 export class RoutineAssembler
   implements BaseAssembler<Routine, RoutineResource, RoutineResponse> {
 
