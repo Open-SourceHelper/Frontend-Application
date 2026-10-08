@@ -6,6 +6,10 @@
     </div>
   </header>
 
+  <app-clinical-guideline-form
+    (guidelineCreated)="onGuidelineCreated($event)">
+  </app-clinical-guideline-form>
+
   @if (store.loading()) {
     <p>Cargando pautas clínicas...</p>
   } @else if (store.error()) {
@@ -37,6 +41,47 @@
             <p class="date">
               Actualizado: {{ guideline.updatedAt | date:'dd/MM/yyyy' }}
             </p>
+
+            @if (guideline.status === 'DRAFT') {
+              <button
+                mat-stroked-button
+                type="button"
+                (click)="startEditing(guideline)">
+                <mat-icon>edit</mat-icon>
+                Editar pauta
+              </button>
+            }
+
+            @if (editingGuideline()?.id === guideline.id) {
+              <div class="edit-section">
+                <h3>Editar instrucciones</h3>
+
+                <textarea
+                  #editedInstructions
+                  class="edit-textarea"
+                  [value]="guideline.instructions"
+                  rows="5">
+                </textarea>
+
+                <div class="edit-actions">
+                  <button
+                    mat-flat-button
+                    type="button"
+                    [disabled]="store.loading()"
+                    (click)="saveChanges(editedInstructions.value)">
+                    <mat-icon>save</mat-icon>
+                    Guardar cambios
+                  </button>
+
+                  <button
+                    mat-stroked-button
+                    type="button"
+                    (click)="cancelEditing()">
+                    Cancelar
+                  </button>
+                </div>
+              </div>
+            }
           </mat-card-content>
         </mat-card>
       }
