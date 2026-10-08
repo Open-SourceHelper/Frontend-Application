@@ -61,4 +61,28 @@ export class ClinicalGuidelineList implements OnInit {
       this.editingGuideline.set(null);
     }
   }
+
+
+  activateGuideline(guideline: ClinicalGuideline): void {
+    if (guideline.status !== GuidelineStatus.DRAFT) {
+      return;
+    }
+
+    if (!guideline.validarPauta()) {
+      return;
+    }
+
+    guideline.habilitarParaCuidadores();
+    this.store.updateGuideline(guideline);
+  }
+
+  deactivateGuideline(guideline: ClinicalGuideline): void {
+    if (guideline.status !== GuidelineStatus.ACTIVE) {
+      return;
+    }
+
+    guideline.desactivarPauta();
+    this.store.updateGuideline(guideline);
+  }
+
 }

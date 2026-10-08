@@ -92,6 +92,13 @@ export class ClinicalGuideline {
     }
   }
 
+  desactivarPauta(): void {
+    if (this.#status === GuidelineStatus.ACTIVE) {
+      this.#status = GuidelineStatus.INACTIVE;
+      this.#updatedAt = new Date();
+    }
+  }
+
   consultarPauta(): ClinicalGuideline {
     return this;
   }
