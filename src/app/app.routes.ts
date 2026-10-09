@@ -14,5 +14,6 @@ export const routes: Routes = [
   {path: 'login', loadComponent: () => import('./identity-access/presentation/views/login').then(m => m.Login)},
   {path: 'register', loadComponent: () => import('./identity-access/presentation/views/register').then(m => m.Register)},
   {path: 'profile', loadComponent: () => import('./identity-access/presentation/views/profile').then(m => m.Profile)},
+  {path: 'forgot-password', loadComponent: () => import('./identity-access/presentation/views/forgot-password').then(m => m.ForgotPassword)},
   { path: '**', loadComponent: pageNotFound, title: `${baseTitle} - Page Not Found` },
 ];

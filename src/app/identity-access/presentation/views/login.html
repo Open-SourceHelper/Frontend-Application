@@ -33,6 +33,7 @@
             [(ngModel)]="password"
             required
           />
+
           <button
             mat-icon-button
             matSuffix
@@ -45,6 +46,10 @@
             </mat-icon>
           </button>
         </mat-form-field>
+
+        <p>
+          <a routerLink="/forgot-password">¿Olvidaste tu contraseña?</a>
+        </p>
 
         <p *ngIf="errorMessage()" class="error-message">
           {{ errorMessage() }}
