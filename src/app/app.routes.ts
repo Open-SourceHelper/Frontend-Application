@@ -12,5 +12,6 @@ export const routes: Routes = [
   { path: 'about', loadComponent: about, title: `${baseTitle} - About` },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   {path: 'login', loadComponent: () => import('./identity-access/presentation/views/login').then(m => m.Login)},
+  {path: 'register', loadComponent: () => import('./identity-access/presentation/views/register').then(m => m.Register)},
   { path: '**', loadComponent: pageNotFound, title: `${baseTitle} - Page Not Found` },
 ];
