@@ -1,0 +1,74 @@
+@if (plan(); as plan) {
+  <h2 mat-dialog-title>Suscribirme al plan {{ plan.name }}</h2>
+  <mat-dialog-content>
+    <section class="summary">
+      <p class="price"><strong>{{ plan.price.toString() }}</strong><span class="muted"> / mes</span></p>
+      <p class="muted">Cobro mensual automático. Puedes cancelar cuando quieras y conservas el servicio hasta el final del ciclo.</p>
+    </section>
+
+    @switch (store.checkoutStatus()) {
+      @case ('CONFIRMED') {
+        <section class="result ok">
+          <mat-icon>check_circle</mat-icon>
+          <h3>¡Pago confirmado!</h3>
+          <p>Tu plan {{ plan.name }} ya está activo.</p>
+        </section>
+      }
+      @case ('REJECTED') {
+        <section class="result rejected">
+          <mat-icon>error</mat-icon>
+          <h3>Pago rechazado</h3>
+          <p>La pasarela no aprobó la transacción. No se realizó ningún cobro.</p>
+        </section>
+      }
+      @default {
+        <form [formGroup]="form" id="checkout-form" (ngSubmit)="submit()">
+          <mat-form-field>
+            <mat-label>Método de pago</mat-label>
+            <mat-select formControlName="paymentMethod">
+              <mat-option [value]="PaymentMethod.CULQI">Tarjeta de crédito / débito (Culqi)</mat-option>
+              <mat-option [value]="PaymentMethod.PAYPAL">PayPal (pagos internacionales)</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Nombre del titular</mat-label><input matInput formControlName="cardholderName" autocomplete="cc-name">
+            @if (form.controls.cardholderName.hasError('required')) { <mat-error>El nombre del titular es obligatorio</mat-error> }
+          </mat-form-field>
+          <p class="secure muted"><mat-icon>lock</mat-icon><span>Los datos de la tarjeta se ingresan en la pasarela segura de {{ form.controls.paymentMethod.value === PaymentMethod.CULQI ? 'Culqi' : 'PayPal' }}; Kinemo no los almacena.</span></p>
+          <mat-form-field>
+            <mat-label>Respuesta de la pasarela (simulación)</mat-label>
+            <mat-select formControlName="simulatedResult">
+              <mat-option value="APPROVE">Aprobar pago</mat-option>
+              <mat-option value="REJECT">Rechazar pago</mat-option>
+            </mat-select>
+            <mat-hint>Solo para la demo con json-server</mat-hint>
+          </mat-form-field>
+          @if (store.error()) { <mat-error>{{ store.error() }}</mat-error> }
+        </form>
+      }
+    }
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    @switch (store.checkoutStatus()) {
+      @case ('CONFIRMED') {
+        <button mat-button (click)="close()">Cerrar</button>
+        <button mat-flat-button (click)="viewPlan()"><mat-icon>workspace_premium</mat-icon> Ver mi plan</button>
+      }
+      @case ('REJECTED') {
+        <button mat-button (click)="close()">Cancelar</button>
+        <button mat-flat-button (click)="retry()">Intentar de nuevo</button>
+      }
+      @case ('PROCESSING') {
+        <span class="muted processing"><mat-spinner diameter="22"/> Procesando pago…</span>
+      }
+      @default {
+        <button mat-button (click)="close()">Cancelar</button>
+        <button mat-flat-button class="btn-accent" type="submit" form="checkout-form" [disabled]="form.invalid">Pagar {{ plan.price.toString() }}</button>
+      }
+    }
+  </mat-dialog-actions>
+} @else {
+  <mat-dialog-content><p class="muted">El plan seleccionado no existe.</p></mat-dialog-content>
+  <mat-dialog-actions align="end"><button mat-button (click)="close()">Cerrar</button></mat-dialog-actions>
+}

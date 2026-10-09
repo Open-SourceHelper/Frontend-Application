@@ -29,6 +29,7 @@ export class Layout {
     { link: '/child-profile', label: 'Child Profile', icon: 'child_care' },
     { link: '/clinical-profile', label: 'Clinical Profile', icon: 'health_and_safety' },
     { link: '/routine-activity/routines', label: 'Rutinas', icon: 'event_note' },
+    { link: '/subscription-payment/plans', label: 'Planes', icon: 'sell' },
   ];
   toggleMenu(): void {
     this.collapsed.update((value) => !value);

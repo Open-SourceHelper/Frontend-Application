@@ -1,0 +1,26 @@
+:host { margin: 16px 24px; }
+.error { margin: 0 0 12px; display: block; }
+.content { display: grid; grid-template-columns: minmax(0, 820px); gap: 16px; align-items: start; }
+.content.with-aside { grid-template-columns: minmax(0, 820px) 240px; }
+.plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 16px; }
+.plan { display: flex; flex-direction: column; gap: 8px; }
+.plan.featured { border: 2px solid var(--brand); }
+.plan.current { background: var(--brand-softer); }
+.type { font-size: 12px; font-weight: 600; color: var(--brand); text-transform: uppercase; letter-spacing: .04em; }
+.plan h2 { margin: 0; font-size: 20px; }
+.price { margin: 0; font-size: 28px; }
+.price .muted { font-size: 14px; }
+ul { list-style: none; padding: 0; margin: 8px 0 16px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+li { display: flex; align-items: flex-start; gap: 8px; font-size: 14px; }
+li mat-icon { color: var(--ok); font-size: 20px; width: 20px; height: 20px; flex-shrink: 0; }
+.my-plan { position: sticky; top: 16px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.my-plan-header { display: flex; align-items: center; gap: 8px; color: var(--brand); }
+.my-plan-header h3 { margin: 0; }
+.plan-name { margin: 0; font-size: 18px; font-weight: 700; }
+.my-plan .muted { margin: 0; }
+.my-plan button { align-self: stretch; margin-top: 4px; }
+.empty { color: var(--text-muted); }
+@media (max-width: 900px) {
+  .content.with-aside { grid-template-columns: minmax(0, 1fr); }
+  .my-plan { position: static; order: -1; }
+}

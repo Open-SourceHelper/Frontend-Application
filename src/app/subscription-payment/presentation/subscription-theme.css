@@ -1,0 +1,38 @@
+/*
+ * Visual identity of the Kinemo prototype (purple brand) scoped to the BC08 views.
+ * Redefines Angular Material system tokens only inside these components,
+ * so the global team theme is not affected.
+ */
+:host {
+  --brand: #5b2c8f;
+  --brand-soft: #efe8f8;
+  --brand-softer: #f7f3fc;
+  --accent: #f6a623;
+  --ok: #2e7d32;
+  --danger: #c62828;
+  --line: #e4dfeb;
+  --text-muted: #6f6a78;
+
+  --mat-sys-primary: var(--brand);
+  --mat-sys-on-primary: #ffffff;
+  --mat-sys-primary-container: var(--brand-soft);
+  --mat-sys-on-primary-container: #2b1145;
+  --mat-sys-secondary-container: var(--brand-soft);
+  --mat-sys-on-secondary-container: #2b1145;
+
+  display: block;
+  color: #1f1b24;
+}
+
+.page-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.page-header h1 { margin: 0; font-size: 24px; font-weight: 700; }
+.panel { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; }
+.panel h2, .panel h3 { margin: 0 0 4px; font-size: 16px; font-weight: 700; }
+.muted { color: var(--text-muted); font-size: 13px; }
+.btn-accent { --mat-button-filled-container-color: var(--accent); --mat-button-filled-label-text-color: #2a1a00; }
+.btn-danger { --mat-button-filled-container-color: var(--danger); --mat-button-filled-label-text-color: #fff; }
+.status { padding: 3px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.status.ACTIVE, .status.CONFIRMED { background: #e3f4e8; color: #1e6b35; }
+.status.PENDING_PAYMENT, .status.PENDING, .status.CANCELLATION_SCHEDULED { background: #fff1d6; color: #7a5200; }
+.status.REJECTED { background: #fde8e8; color: #9b1c1c; }
+.status.CANCELLED, .status.EXPIRED { background: #eeeaf3; color: #6f6a78; }

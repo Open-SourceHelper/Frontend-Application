@@ -10,6 +10,8 @@ const clinical = () =>
   import('./child-profile/presentation/views/clinical-list/clinical-list').then((m) => m.ClinicalList);
 const routineActivityRoutes = () =>
   import('./routine-activity/routine-activity.routes').then((m) => m.routineActivityRoutes);
+const subscriptionPaymentRoutes = () =>
+  import('./subscription-payment/subscription-payment.routes').then((m) => m.subscriptionPaymentRoutes);
 const baseTitle = 'Kinemo';
 
 /**
@@ -22,5 +24,6 @@ export const routes: Routes = [
   { path: 'child-profile', loadComponent: child, title: `${baseTitle} - Child Profile` },
   { path: 'clinical-profile', loadComponent: clinical, title: `${baseTitle} - Clinical Profile` },
   { path: 'routine-activity', loadChildren: routineActivityRoutes, title: `${baseTitle} - Rutinas` },
+  { path: 'subscription-payment', loadChildren: subscriptionPaymentRoutes, title: `${baseTitle} - Suscripción` },
   { path: '**', loadComponent: pageNotFound, title: `${baseTitle} - Page Not Found` },
 ];

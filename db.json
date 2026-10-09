@@ -220,5 +220,64 @@
       "completedAt": null
     }
   ],
-  "visual-supports": []
+  "visual-supports": [],
+  "subscription-plans": [
+    {
+      "id": 1,
+      "name": "Familiar",
+      "planType": "FAMILY",
+      "price": 19.9,
+      "currency": "PEN",
+      "billingCycleMonths": 1,
+      "features": [
+        "Perfil del niño con detonantes y reguladores",
+        "Rutinas visuales con temporizadores",
+        "Guías prácticas para momentos de crisis",
+        "Red de cuidado con invitaciones y permisos",
+        "Registro de observaciones con evidencia"
+      ],
+      "status": "AVAILABLE"
+    },
+    {
+      "id": 2,
+      "name": "Profesional",
+      "planType": "PROFESSIONAL",
+      "price": 49.9,
+      "currency": "PEN",
+      "billingCycleMonths": 1,
+      "features": [
+        "Listado de pacientes vinculados",
+        "Redacción de pautas clínicas personalizadas",
+        "Comentarios sobre las observaciones de la familia",
+        "Filtro del historial por tipo de evento",
+        "Exportación de reportes en PDF"
+      ],
+      "status": "AVAILABLE"
+    }
+  ],
+  "subscriptions": [
+    {
+      "id": 2,
+      "userId": "user-002",
+      "planId": 2,
+      "status": "ACTIVE",
+      "startDate": "2026-10-01T14:00:00.000Z",
+      "endDate": "2026-11-01T14:00:00.000Z",
+      "createdAt": "2026-10-01T13:55:00.000Z"
+    }
+  ],
+  "payments": [
+    {
+      "id": 3,
+      "subscriptionId": 2,
+      "amount": 49.9,
+      "currency": "PEN",
+      "paymentMethod": "CULQI",
+      "status": "CONFIRMED",
+      "externalTransactionId": "culqi_mg7a9c3d",
+      "createdAt": "2026-10-01T14:00:00.000Z",
+      "processedAt": "2026-10-01T14:00:01.000Z"
+    }
+  ],
+  "cancellation-requests": []
 }
