@@ -1,0 +1,39 @@
+<header class="page-header">
+  <div>
+    <h1>Rutinas</h1>
+    <span class="muted">Secuencias diarias con apoyos visuales para el niño</span>
+  </div>
+  <button mat-flat-button class="btn-accent" (click)="navigateToNew()"><mat-icon>add</mat-icon> Crear rutina</button>
+</header>
+@if (childId()) {
+  <p class="filter">Rutinas del niño <strong>{{ childId() }}</strong>
+    <button mat-button (click)="clearChildFilter()">Ver todas</button></p>
+}
+@if (store.loading()) { <mat-spinner diameter="40"/> }
+@if (store.error()) { <mat-error class="error">{{ store.error() }}</mat-error> }
+<section class="panel table-panel">
+<table mat-table [dataSource]="dataSource()" matSort>
+  <ng-container matColumnDef="name"><th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th><td mat-cell *matCellDef="let routine"><strong>{{ routine.name }}</strong>@if (routine.originalRoutineId) { <div class="hint">Copia de la rutina #{{ routine.originalRoutineId }}</div> }</td></ng-container>
+  <ng-container matColumnDef="childId"><th mat-header-cell *matHeaderCellDef mat-sort-header>Niño</th><td mat-cell *matCellDef="let routine">{{ routine.childId }}</td></ng-container>
+  <ng-container matColumnDef="status"><th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th><td mat-cell *matCellDef="let routine"><span class="status" [class]="routine.status">{{ statusLabel[routine.status] }}</span></td></ng-container>
+  <ng-container matColumnDef="activities"><th mat-header-cell *matHeaderCellDef mat-sort-header>Actividades</th><td mat-cell *matCellDef="let routine">{{ routine.activities.length }}</td></ng-container>
+  <ng-container matColumnDef="totalMinutes"><th mat-header-cell *matHeaderCellDef mat-sort-header>Duración</th><td mat-cell *matCellDef="let routine">{{ routine.totalMinutes }} min</td></ng-container>
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef>Acciones</th>
+    <td mat-cell *matCellDef="let routine">
+      <button mat-icon-button matTooltip="Ejecutar rutina" aria-label="Ejecutar rutina" [disabled]="routine.status !== RoutineStatus.ACTIVE" (click)="executeRoutine(routine.id)"><mat-icon>play_circle</mat-icon></button>
+      <button mat-icon-button matTooltip="Editar" aria-label="Editar rutina" (click)="editRoutine(routine.id)"><mat-icon>edit</mat-icon></button>
+      <button mat-icon-button matTooltip="Duplicar como borrador" aria-label="Duplicar rutina" (click)="duplicateRoutine(routine.id)"><mat-icon>content_copy</mat-icon></button>
+      @if (routine.status === RoutineStatus.ACTIVE) {
+        <button mat-icon-button matTooltip="Desactivar" aria-label="Desactivar rutina" (click)="deactivateRoutine(routine.id)"><mat-icon>toggle_on</mat-icon></button>
+      } @else {
+        <button mat-icon-button matTooltip="Activar" aria-label="Activar rutina" (click)="activateRoutine(routine.id)"><mat-icon>toggle_off</mat-icon></button>
+      }
+      <button mat-icon-button [matTooltip]="routine.canBeDeleted ? 'Eliminar' : 'Solo se eliminan rutinas inactivas'" aria-label="Eliminar rutina" [disabled]="!routine.canBeDeleted" (click)="deleteRoutine(routine.id)"><mat-icon>delete</mat-icon></button>
+    </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr><tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+@if (!store.loading() && routines().length === 0) { <p class="empty">No hay rutinas registradas.</p> }
+<mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"/>
+</section>
