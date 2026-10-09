@@ -92,5 +92,133 @@
       "regulators": "Rutinas visuales, avisos previos y acompañamiento del cuidador.",
       "updatedAt": "2026-10-04T09:40:00-05:00"
     }
-  ]
+  ],
+  "routines": [
+    {
+      "id": 1,
+      "childId": "child-001",
+      "originalRoutineId": null,
+      "name": "Rutina de la mañana",
+      "description": "Secuencia para salir al colegio sin prisas.",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T07:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "childId": "child-001",
+      "originalRoutineId": null,
+      "name": "Rutina de la noche",
+      "description": "Transición tranquila hacia la hora de dormir.",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-01T19:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "childId": "child-001",
+      "originalRoutineId": 1,
+      "name": "Rutina de la mañana (copia)",
+      "description": "Variación para los sábados.",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-03T07:00:00.000Z"
+    }
+  ],
+  "routine-activities": [
+    {
+      "id": 1,
+      "routineId": 1,
+      "name": "Despertar y estirarse",
+      "description": "Abrir las cortinas y estirarse en la cama.",
+      "activityOrder": 1,
+      "durationMinutes": 5,
+      "status": "SKIPPED",
+      "transitionDurationMinutes": 1,
+      "alertType": "VISUAL",
+      "completedAt": null
+    },
+    {
+      "id": 2,
+      "routineId": 1,
+      "name": "Lavarse los dientes",
+      "description": "Usar el cepillo azul y la pasta infantil.",
+      "activityOrder": 2,
+      "durationMinutes": 3,
+      "status": "PENDING",
+      "transitionDurationMinutes": 1,
+      "alertType": "VISUAL",
+      "completedAt": null
+    },
+    {
+      "id": 3,
+      "routineId": 1,
+      "name": "Vestirse",
+      "description": "La ropa está preparada sobre la silla.",
+      "activityOrder": 3,
+      "durationMinutes": 10,
+      "status": "PENDING",
+      "transitionDurationMinutes": 2,
+      "alertType": "SOFT_SOUND",
+      "completedAt": null
+    },
+    {
+      "id": 4,
+      "routineId": 1,
+      "name": "Desayunar",
+      "description": "",
+      "activityOrder": 4,
+      "durationMinutes": 15,
+      "status": "PENDING",
+      "transitionDurationMinutes": 2,
+      "alertType": "VISUAL",
+      "completedAt": null
+    },
+    {
+      "id": 5,
+      "routineId": 2,
+      "name": "Baño",
+      "description": "Agua tibia, luz baja.",
+      "activityOrder": 1,
+      "durationMinutes": 15,
+      "status": "PENDING",
+      "transitionDurationMinutes": 2,
+      "alertType": "VISUAL",
+      "completedAt": null
+    },
+    {
+      "id": 6,
+      "routineId": 2,
+      "name": "Ponerse el pijama",
+      "description": "",
+      "activityOrder": 2,
+      "durationMinutes": 5,
+      "status": "PENDING",
+      "transitionDurationMinutes": 1,
+      "alertType": "VISUAL",
+      "completedAt": null
+    },
+    {
+      "id": 7,
+      "routineId": 2,
+      "name": "Leer un cuento",
+      "description": "Elegir entre dos cuentos.",
+      "activityOrder": 3,
+      "durationMinutes": 10,
+      "status": "PENDING",
+      "transitionDurationMinutes": 2,
+      "alertType": "SOFT_SOUND",
+      "completedAt": null
+    },
+    {
+      "id": 8,
+      "routineId": 3,
+      "name": "Despertar y estirarse",
+      "description": "Abrir las cortinas y estirarse en la cama.",
+      "activityOrder": 1,
+      "durationMinutes": 5,
+      "status": "PENDING",
+      "transitionDurationMinutes": 1,
+      "alertType": "VISUAL",
+      "completedAt": null
+    }
+  ],
+  "visual-supports": []
 }
