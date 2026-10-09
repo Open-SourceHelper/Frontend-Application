@@ -1,0 +1,78 @@
+<div class="backdrop" [class.visible]="opened()" (click)="close()"></div>
+<aside class="drawer" [class.open]="opened()" role="dialog" aria-label="Detalle de mi plan" [attr.aria-hidden]="!opened()">
+  <header class="drawer-header">
+    <h2>Mi plan</h2>
+    <button mat-icon-button aria-label="Cerrar" (click)="close()"><mat-icon>close</mat-icon></button>
+  </header>
+
+  @if (subscription(); as subscription) {
+    <div class="drawer-body">
+      <section class="overview">
+        <div class="overview-header">
+          <div>
+            <h3>Plan {{ plan()?.name }}</h3>
+            <span class="muted">{{ plan()?.price?.toString() }} / mes</span>
+          </div>
+          <span class="status" [class]="subscription.status">{{ statusLabel[subscription.status] }}</span>
+        </div>
+        <dl>
+          <div><dt>Inicio del ciclo</dt><dd>{{ subscription.startDate ? (subscription.startDate | date:'dd/MM/yyyy') : '—' }}</dd></div>
+          <div>
+            <dt>{{ subscription.status === SubscriptionStatus.ACTIVE ? 'Próximo cobro' : 'Acceso hasta' }}</dt>
+            <dd>{{ subscription.endDate ? (subscription.endDate | date:'dd/MM/yyyy') : '—' }}</dd>
+          </div>
+        </dl>
+
+        @if (subscription.isPendingPayment) {
+          <p class="notice"><mat-icon>schedule</mat-icon><span>El pago aún no fue confirmado.</span></p>
+          <button mat-flat-button class="btn-accent" (click)="retryPayment.emit(subscription.planId)">Reintentar pago</button>
+        }
+
+        @if (subscription.cancellationRequest; as request) {
+          @if (subscription.status === SubscriptionStatus.CANCELLATION_SCHEDULED) {
+            <p class="notice"><mat-icon>event_busy</mat-icon>
+              <span>Solicitaste la cancelación el {{ request.requestedAt | date:'dd/MM/yyyy' }}. Seguirás teniendo acceso premium hasta el
+              <strong>{{ request.effectiveDate | date:'dd/MM/yyyy' }}</strong> y no se harán más cobros.</span></p>
+          }
+        }
+      </section>
+
+      <section>
+        <h4>Historial de pagos</h4>
+        <ul class="payments">
+          @for (payment of subscription.consultarPagos(); track payment.id) {
+            <li>
+              <div>
+                <strong>{{ payment.amount.toString() }}</strong>
+                <span class="muted"> · {{ paymentMethodLabel[payment.paymentMethod] }}</span>
+                <div class="hint">{{ payment.createdAt | date:'dd/MM/yyyy HH:mm' }}@if (payment.externalTransactionId) { · {{ payment.externalTransactionId }} }</div>
+              </div>
+              <span class="status" [class]="payment.status">{{ paymentStatusLabel[payment.status] }}</span>
+            </li>
+          } @empty {
+            <li class="muted">Todavía no hay pagos registrados.</li>
+          }
+        </ul>
+      </section>
+
+      @if (store.error()) { <mat-error>{{ store.error() }}</mat-error> }
+
+      @if (subscription.canBeCancelled) {
+        <section class="cancel">
+          @if (confirmingCancellation()) {
+            <p><strong>¿Cancelar tu suscripción?</strong> Conservarás el servicio hasta el {{ subscription.endDate | date:'dd/MM/yyyy' }} y no se realizarán cobros automáticos futuros.</p>
+            <mat-form-field><mat-label>Motivo (opcional)</mat-label><textarea matInput [formControl]="reason" rows="2"></textarea></mat-form-field>
+            <div class="actions">
+              <button mat-button (click)="keepSubscription()">Mantener</button>
+              <button mat-flat-button class="btn-danger" (click)="confirmCancellation(subscription.id)">Confirmar cancelación</button>
+            </div>
+          } @else {
+            <button mat-stroked-button (click)="askCancellation()">Cancelar suscripción</button>
+          }
+        </section>
+      }
+    </div>
+  } @else {
+    <p class="muted drawer-body">Aún no tienes una suscripción.</p>
+  }
+</aside>
