@@ -4,6 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map, switchMap, throwError } from 'rxjs';
 import { UserRole } from '../../domain/model/user-role.enum';
 import { tap, catchError, of } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 export interface AuthUser {
   id: string;
@@ -30,9 +31,9 @@ export interface SignUpRequest {
 })
 export class AuthService {
   private readonly http = inject(HttpClient);
-  private readonly sessionsUrl = 'http://localhost:3001/userSessions';
+  private readonly sessionsUrl = `${environment.platformProviderApiBaseUrl}/userSessions`;
 
-  private readonly apiUrl = 'http://localhost:3001/users';
+  private readonly apiUrl = `${environment.platformProviderApiBaseUrl}/users`;
 
   signIn(credentials: SignInRequest): Observable<AuthUser> {
     const params = new HttpParams()

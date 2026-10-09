@@ -7,11 +7,12 @@ import { DailySummaryAssembler } from '../assemblers/daily-summary.assembler';
 import { ObservationSnapshot } from '../../domain/model/observation-snapshot';
 import { ObservationResource } from '../resources/observation.resource';
 import { ReportPeriod } from '../../domain/model/report-period';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = 'http://localhost:3000';
+  private readonly baseUrl = environment.platformProviderApiBaseUrl;
 
   getDailySummary(childId: string, date: string): Observable<DailySummary | null> {
     const params = new HttpParams()

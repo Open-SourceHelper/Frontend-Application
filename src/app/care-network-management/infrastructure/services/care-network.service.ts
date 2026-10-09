@@ -6,6 +6,7 @@ import { Observable, map } from 'rxjs';
 import { CareNetwork } from '../../domain/model/care-network.entity';
 import { CareNetworkResource } from '../resources/care-network.resource';
 import { CareNetworkAssembler } from '../assemblers/care-network.assembler';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class CareNetworkService {
   private readonly http = inject(HttpClient);
 
   private readonly endpointUrl =
-    'http://localhost:3000/careNetworks';
+    `${environment.platformProviderApiBaseUrl}/careNetworks`;
 
   getAll(): Observable<CareNetwork[]> {
     return this.http

@@ -5,6 +5,7 @@ import { map, Observable } from 'rxjs';
 import { Observation } from '../../domain/model/observation.entity';
 import { ObservationAssembler } from '../assemblers/observation.assembler';
 import type { ObservationResource } from '../resources/observation.resource';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class ObservationService {
   private readonly http = inject(HttpClient);
 
   private readonly endpoint =
-    'http://localhost:3000/observations';
+    `${environment.platformProviderApiBaseUrl}/observations`;
 
   getByChildId(childId: string): Observable<Observation[]> {
     return this.http

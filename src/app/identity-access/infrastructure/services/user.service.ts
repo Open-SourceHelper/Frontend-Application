@@ -3,6 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../../domain/model/user.entity';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { User } from '../../domain/model/user.entity';
 export class UserService {
   private readonly http = inject(HttpClient);
 
-  private readonly apiUrl = 'http://localhost:3000/users';
+  private readonly apiUrl = `${environment.platformProviderApiBaseUrl}/users`;
 
   getAll(): Observable<User[]> {
     return this.http.get<User[]>(this.apiUrl);

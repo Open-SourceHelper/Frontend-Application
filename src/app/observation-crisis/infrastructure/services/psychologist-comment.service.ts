@@ -5,6 +5,7 @@ import { map, Observable } from 'rxjs';
 import { PsychologistComment } from '../../domain/model/psychologist-comment.entity';
 import { PsychologistCommentAssembler } from '../assemblers/observation.assembler';
 import type { PsychologistCommentResource } from '../resources/observation.resource';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class PsychologistCommentService {
   private readonly http = inject(HttpClient);
 
   private readonly endpoint =
-    'http://localhost:3000/psychologistComments';
+    `${environment.platformProviderApiBaseUrl}/psychologistComments`;
 
   getByObservationId(
     observationId: string

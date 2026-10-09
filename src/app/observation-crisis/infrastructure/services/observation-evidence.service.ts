@@ -5,6 +5,7 @@ import { map, Observable } from 'rxjs';
 import { ObservationEvidence } from '../../domain/model/observation-evidence.entity';
 import { ObservationEvidenceAssembler } from '../assemblers/observation.assembler';
 import type { ObservationEvidenceResource } from '../resources/observation.resource';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class ObservationEvidenceService {
   private readonly http = inject(HttpClient);
 
   private readonly endpoint =
-    'http://localhost:3000/observationEvidences';
+    `${environment.platformProviderApiBaseUrl}/observationEvidences`;
 
   getByObservationId(
     observationId: string
