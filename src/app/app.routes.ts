@@ -33,6 +33,11 @@ const routineActivityRoutes = () =>
   import('./routine-activity/routine-activity.routes')
     .then((m) => m.routineActivityRoutes);
 
+// BC05 - Clinical Guidance Management
+const clinicalGuidance = () =>
+  import('./clinical-guidance/presentation/views/clinical-guideline-list/clinical-guideline-list')
+    .then((m) => m.ClinicalGuidelineList);
+
 // BC06 - Observation & Crisis Management
 const observationList = () =>
   import('./observation-crisis/presentation/pages/observation-list.component')
@@ -66,6 +71,32 @@ export const routes: Routes = [
     title: `${baseTitle} - About`
   },
 
+  // BC01 - Identity & Access Management
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./identity-access/presentation/views/login')
+        .then((m) => m.Login)
+  },
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./identity-access/presentation/views/register')
+        .then((m) => m.Register)
+  },
+  {
+    path: 'profile',
+    loadComponent: () =>
+      import('./identity-access/presentation/views/profile')
+        .then((m) => m.Profile)
+  },
+  {
+    path: 'forgot-password',
+    loadComponent: () =>
+      import('./identity-access/presentation/views/forgot-password')
+        .then((m) => m.ForgotPassword)
+  },
+
   // BC02 - Child Profile Management
   {
     path: 'child-profile',
@@ -95,6 +126,13 @@ export const routes: Routes = [
     path: 'routine-activity',
     loadChildren: routineActivityRoutes,
     title: `${baseTitle} - Rutinas`
+  },
+
+  // BC05 - Clinical Guidance Management
+  {
+    path: 'clinical-guidance',
+    loadComponent: clinicalGuidance,
+    title: `${baseTitle} - Orientaciones Clínicas`
   },
 
   // BC06 - Observation & Crisis Management

@@ -1,0 +1,56 @@
+.guides-page {
+  padding: 24px;
+}
+
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  margin: 0 0 8px;
+}
+
+.page-header p {
+  color: #666;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.filters mat-form-field {
+  flex: 1;
+  min-width: 220px;
+}
+
+.filters button {
+  margin-bottom: 20px;
+}
+
+.guides-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.guide-card {
+  padding: 12px;
+}
+
+.guide-card mat-card-content {
+  padding-top: 16px;
+}
+
+.guide-content {
+  margin-top: 16px;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+.error-message {
+  color: #b00020;
+}
