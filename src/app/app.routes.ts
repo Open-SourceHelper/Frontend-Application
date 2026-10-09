@@ -1,3 +1,4 @@
+
 import { Routes } from '@angular/router';
 import { Home } from './shared/presentation/views/home/home';
 
@@ -46,6 +47,11 @@ const observationList = () =>
 const observationForm = () =>
   import('./observation-crisis/presentation/pages/observation-form.component')
     .then((m) => m.ObservationFormComponent);
+
+// BC07 - Dashboard & Reporting
+const dashboardReporting = () =>
+  import('./dashboard-reporting/dashboard-reporting.routes')
+    .then((m) => m.DASHBOARD_REPORTING_ROUTES);
 
 // BC08 - Subscription & Payment Management
 const subscriptionPaymentRoutes = () =>
@@ -145,6 +151,13 @@ export const routes: Routes = [
     path: 'observations',
     loadComponent: observationList,
     title: `${baseTitle} - Observaciones y crisis`
+  },
+
+  // BC07 - Dashboard & Reporting
+  {
+    path: 'children/:childId',
+    loadChildren: dashboardReporting,
+    title: `${baseTitle} - Dashboard y Reportes`
   },
 
   // BC08 - Subscription & Payment Management

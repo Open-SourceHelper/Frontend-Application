@@ -1,0 +1,70 @@
+<section class="report-card">
+  <div class="section-heading">
+    <div class="section-icon">
+      <mat-icon>description</mat-icon>
+    </div>
+
+    <div>
+      <h2>Reportes de observaciones</h2>
+      <p>Consulta los registros del niño y descarga un reporte PDF.</p>
+    </div>
+  </div>
+
+  <form class="filter-grid" (ngSubmit)="find()">
+    <label>
+      Desde
+      <input name="startDate" type="date" [(ngModel)]="startDate" required>
+    </label>
+
+    <label>
+      Hasta
+      <input name="endDate" type="date" [(ngModel)]="endDate" required>
+    </label>
+
+    <button class="primary" type="submit" [disabled]="loading()">
+      <mat-icon>search</mat-icon>
+      Consultar
+    </button>
+
+    <button class="secondary" type="button" (click)="download()" [disabled]="!loaded() || loading()">
+      <mat-icon>picture_as_pdf</mat-icon>
+      Descargar PDF
+    </button>
+  </form>
+
+  @if (error()) {
+    <p class="error" role="alert">{{ error() }}</p>
+  }
+
+  @if (loading()) {
+    <p class="muted">Cargando observaciones...</p>
+  }
+  @else if (loaded()) {
+    <div class="results-title">
+      <h3>Observaciones encontradas</h3>
+      <span>{{ observations().length }} registros</span>
+    </div>
+
+    @if (observations().length === 0) {
+      <p class="empty">No hay observaciones en el periodo seleccionado.</p>
+    }
+    @else {
+      <div class="observations">
+        @for (item of observations(); track item.id) {
+          <article class="observation">
+            <div class="observation-top">
+              <strong>{{ item.category || 'Observación' }}</strong>
+              <time>{{ item.createdAt | date:'dd/MM/yyyy' }}</time>
+            </div>
+
+            <p>{{ item.description || 'Sin descripción' }}</p>
+            <small>Registrado por: {{ item.author }}</small>
+          </article>
+        }
+      </div>
+    }
+  }
+  @else {
+    <p class="empty">Selecciona las fechas y pulsa Consultar para ver las observaciones.</p>
+  }
+</section>

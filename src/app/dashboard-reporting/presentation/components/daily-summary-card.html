@@ -1,0 +1,14 @@
+<article class="summary-card">
+  <div class="summary-info">
+    <span class="summary-label">{{ title() }}</span>
+    <strong class="summary-number">{{ value() }}</strong>
+    <span class="summary-description">{{ detail() }}</span>
+  </div>
+
+  <div
+    class="summary-icon"
+    [class.green]="accent() === 'green'"
+    [class.orange]="accent() === 'orange'">
+    <mat-icon>{{ icon() }}</mat-icon>
+  </div>
+</article>

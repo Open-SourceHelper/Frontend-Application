@@ -1,0 +1,63 @@
+.summary-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  box-shadow: 0 2px 8px #00000008;
+  min-height: 138px;
+  box-sizing: border-box;
+}
+
+.summary-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.summary-label {
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.summary-number {
+  color: #1f2937;
+  font-size: 32px;
+  line-height: 1.1;
+}
+
+.summary-description {
+  color: #9ca3af;
+  font-size: 13px;
+}
+
+.summary-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: #e8edff;
+  color: #3659ba;
+  flex-shrink: 0;
+}
+
+.summary-icon.green {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.summary-icon.orange {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.summary-icon mat-icon {
+  font-size: 27px;
+  width: 27px;
+  height: 27px;
+}

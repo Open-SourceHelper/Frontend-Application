@@ -45,6 +45,9 @@ export class Layout {
     // BC06 - Observation & Crisis Management
     { link: '/observations', label: 'Observaciones y crisis', icon: 'assignment' },
 
+    // BC07 - Dashboard & Reporting
+    { link: '/children/1/dashboard', label: 'Dashboard', icon: 'dashboard' },
+
     // BC08 - Subscription & Payment Management
     { link: '/subscription-payment/plans', label: 'Planes', icon: 'sell' },
   ];
