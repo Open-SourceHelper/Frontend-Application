@@ -279,5 +279,71 @@
       "processedAt": "2026-10-01T14:00:01.000Z"
     }
   ],
-  "cancellation-requests": []
+  "cancellation-requests": [],
+  "observations": [
+    {
+      "id": "obs-001",
+      "childId": "child-demo-001",
+      "caregiverId": "caregiver-demo-001",
+      "description": "Completó su rutina de la mañana con apoyo visual.",
+      "occurredAt": "2026-10-08T08:00:00-05:00",
+      "crisisSeverity": null
+    },
+    {
+      "id": "obs-002",
+      "childId": "child-demo-001",
+      "caregiverId": "caregiver-demo-001",
+      "description": "Se registró una situación de desregulación durante un cambio de actividad.",
+      "occurredAt": "2026-10-08T08:15:00-05:00",
+      "crisisSeverity": "moderate"
+    },
+    {
+      "id": "44bd0078-118f-4efa-901c-79dcdb297b92",
+      "childId": "child-demo-001",
+      "caregiverId": "caregiver-demo-001",
+      "description": "Durante una actividad grupal presentó llanto intenso y dificultad para continuar.",
+      "occurredAt": "2026-10-08T14:00:00.000Z",
+      "crisisSeverity": "severe"
+    },
+    {
+      "id": "234ea408-bade-4a00-b1d5-be61cd5723a1",
+      "childId": "child-demo-001",
+      "caregiverId": "caregiver-demo-001",
+      "description": "Durante una actividad de lectura, el niño presentó dificultades para mantener la atención y necesitó apoyo del cuidador.",
+      "occurredAt": "2026-10-08T14:37:00.000Z",
+      "crisisSeverity": "mild"
+    }
+  ],
+  "psychologistComments": [
+    {
+      "id": "cbeaf9ba-b8b2-4e7d-8586-c06431994654",
+      "observationId": "44bd0078-118f-4efa-901c-79dcdb297b92",
+      "psychologistId": "psychologist-demo-001",
+      "content": "Observación revisada. Se solicita registrar la duración del episodio y el contexto de la actividad para el seguimiento.",
+      "createdAt": "2026-10-08T14:06:41.223Z"
+    },
+    {
+      "id": "4105e8ac-0ccc-46a5-ad6f-ec049a02e56b",
+      "observationId": "234ea408-bade-4a00-b1d5-be61cd5723a1",
+      "psychologistId": "psychologist-demo-001",
+      "content": "Se recomienda continuar utilizando apoyos visuales durante las actividades de lectura y registrar los avances en la atención del niño.",
+      "createdAt": "2026-10-08T14:43:11.197Z"
+    }
+  ],
+  "observationEvidences": [
+    {
+      "id": "764ad956-cdae-4ac1-b8fc-df03064beeaa",
+      "observationId": "44bd0078-118f-4efa-901c-79dcdb297b92",
+      "fileName": "Enlace de prueba (sin archivo adjunto)",
+      "fileUrl": "https://example.com/",
+      "uploadedAt": "2026-10-08T14:12:59.402Z"
+    },
+    {
+      "id": "52163e99-b1eb-4464-9ebc-305bd9feee74",
+      "observationId": "234ea408-bade-4a00-b1d5-be61cd5723a1",
+      "fileName": "Registro de actividad de lectura",
+      "fileUrl": "https://example.com/",
+      "uploadedAt": "2026-10-08T14:46:24.415Z"
+    }
+  ]
 }
