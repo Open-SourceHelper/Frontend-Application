@@ -12,9 +12,9 @@ const clinical = () =>
 const baseTitle = 'Kinemo';
 
 export const routes: Routes = [
-  { path: 'home', component: Home, title: `${baseTitle} - Home` },
-  { path: 'about', loadComponent: about, title: `${baseTitle} - About` },
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  //{ path: 'home', component: Home, title: `${baseTitle} - Home` },
+  //{ path: 'about', loadComponent: about, title: `${baseTitle} - About` },
+  { path: '', redirectTo: '/child-profile', pathMatch: 'full' },
   { path: 'child-profile', loadComponent: child, title: `${baseTitle} - Child Profile` },
   { path: 'clinical-profile', loadComponent: clinical, title: `${baseTitle} - Clinical Profile` },
   { path: '**', loadComponent: pageNotFound, title: `${baseTitle} - Page Not Found` },
