@@ -1,0 +1,52 @@
+<header class="page-header">
+  <div>
+    <h1>Planes de suscripción</h1>
+    <span class="muted">Elige el plan que mejor se adapta a tu rol en la red de cuidado</span>
+  </div>
+</header>
+@if (store.loading()) { <mat-spinner diameter="40"/> }
+@if (store.error()) { <mat-error class="error">{{ store.error() }}</mat-error> }
+
+<div class="content" [class.with-aside]="!!subscription()">
+  <section class="plans">
+    @for (plan of store.availablePlans(); track plan.id) {
+      <article class="panel plan" [class.featured]="plan.planType === PlanType.PROFESSIONAL"
+               [class.current]="store.activeSubscription()?.planId === plan.id">
+        <span class="type">{{ planTypeLabel[plan.planType] }}</span>
+        <h2>Plan {{ plan.name }}</h2>
+        <p class="price"><strong>{{ plan.price.toString() }}</strong><span class="muted"> / {{ plan.billingCycleMonths === 1 ? 'mes' : plan.billingCycleMonths + ' meses' }}</span></p>
+        <ul>
+          @for (feature of plan.features; track feature) {
+            <li><mat-icon>check_circle</mat-icon> {{ feature }}</li>
+          }
+        </ul>
+        @if (store.activeSubscription()?.planId === plan.id) {
+          <button mat-stroked-button (click)="openDrawer()"><mat-icon>workspace_premium</mat-icon> Tu plan actual</button>
+        } @else {
+          <button mat-flat-button class="btn-accent"
+                  [disabled]="!!store.activeSubscription()"
+                  [matTooltip]="store.activeSubscription() ? 'Ya tienes una suscripción activa' : ''"
+                  (click)="selectPlan(plan.id)">Elegir plan</button>
+        }
+      </article>
+    }
+    @if (!store.loading() && store.availablePlans().length === 0) { <p class="empty">No hay planes disponibles.</p> }
+  </section>
+
+  @if (subscription(); as subscription) {
+    <aside class="panel my-plan">
+      <div class="my-plan-header">
+        <mat-icon>workspace_premium</mat-icon>
+        <h3>Mi plan</h3>
+      </div>
+      <p class="plan-name">Plan {{ subscriptionPlan()?.name }}</p>
+      <span class="status" [class]="subscription.status">{{ statusLabel[subscription.status] }}</span>
+      @if (subscription.endDate) {
+        <p class="muted">{{ subscription.isPremium ? 'Acceso hasta el' : 'Venció el' }} {{ subscription.endDate | date:'dd/MM/yyyy' }}</p>
+      }
+      <button mat-flat-button (click)="openDrawer()">Ver plan <mat-icon iconPositionEnd>chevron_right</mat-icon></button>
+    </aside>
+  }
+</div>
+
+<app-subscription-detail-drawer [opened]="drawerOpen()" (closed)="closeDrawer()" (retryPayment)="retryPayment($event)"/>

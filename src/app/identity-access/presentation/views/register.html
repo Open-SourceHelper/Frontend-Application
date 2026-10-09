@@ -1,0 +1,94 @@
+
+<div class="register-container">
+  <mat-card class="register-card">
+
+    <mat-card-header>
+      <mat-card-title>Crear cuenta en Kinemo</mat-card-title>
+      <mat-card-subtitle>
+        Regístrate para comenzar
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form (ngSubmit)="register()">
+
+        <div class="name-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Nombres</mat-label>
+            <input matInput name="firstName"
+                   [(ngModel)]="firstName" required />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Apellidos</mat-label>
+            <input matInput name="lastName"
+                   [(ngModel)]="lastName" required />
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Teléfono (opcional)</mat-label>
+          <input matInput name="phone" type="tel"
+                 [(ngModel)]="phone" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Correo electrónico</mat-label>
+          <input matInput type="email" name="email"
+                 [(ngModel)]="email" required />
+          <mat-icon matPrefix>email</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Tipo de usuario</mat-label>
+          <mat-select name="role" [(ngModel)]="role">
+            <mat-option *ngFor="let item of roles" [value]="item.value">
+              {{ item.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Contraseña</mat-label>
+          <input matInput name="password"
+                 [type]="hidePassword() ? 'password' : 'text'"
+                 [(ngModel)]="password" required />
+          <button mat-icon-button matSuffix type="button"
+                  (click)="hidePassword.set(!hidePassword())">
+            <mat-icon>
+              {{ hidePassword() ? 'visibility_off' : 'visibility' }}
+            </mat-icon>
+          </button>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Confirmar contraseña</mat-label>
+          <input matInput type="password" name="confirmPassword"
+                 [(ngModel)]="confirmPassword" required />
+        </mat-form-field>
+
+        <p *ngIf="errorMessage()" class="error-message">
+          {{ errorMessage() }}
+        </p>
+
+        <p *ngIf="successMessage()" class="success-message">
+          {{ successMessage() }}
+        </p>
+
+        <button mat-flat-button type="submit"
+                class="register-button" [disabled]="loading()">
+          {{ loading() ? 'Registrando...' : 'Crear cuenta' }}
+        </button>
+
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <p>
+        ¿Ya tienes una cuenta?
+        <a routerLink="/login">Inicia sesión</a>
+      </p>
+    </mat-card-actions>
+
+  </mat-card>
+</div>

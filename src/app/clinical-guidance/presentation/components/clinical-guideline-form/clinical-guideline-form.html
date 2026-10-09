@@ -1,0 +1,51 @@
+<mat-card class="form-card">
+  <mat-card-header>
+    <mat-card-title>Registrar pauta clínica</mat-card-title>
+    <mat-card-subtitle>
+      Complete la información para registrar una nueva orientación.
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+      <mat-form-field appearance="outline">
+        <mat-label>ID del psicólogo</mat-label>
+        <input matInput formControlName="psychologistId" />
+
+        @if (form.controls.psychologistId.hasError('required')) {
+          <mat-error>Ingrese el identificador del psicólogo.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>ID del niño</mat-label>
+        <input matInput formControlName="childId" />
+
+        @if (form.controls.childId.hasError('required')) {
+          <mat-error>Ingrese el identificador del niño.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Instrucciones clínicas</mat-label>
+        <textarea
+          matInput
+          formControlName="instructions"
+          rows="5"
+          placeholder="Escriba las recomendaciones para los cuidadores">
+        </textarea>
+
+        @if (form.controls.instructions.hasError('required')) {
+          <mat-error>Ingrese las instrucciones clínicas.</mat-error>
+        }
+      </mat-form-field>
+
+      <button mat-flat-button type="submit">
+        <mat-icon>save</mat-icon>
+        Registrar pauta
+      </button>
+
+    </form>
+  </mat-card-content>
+</mat-card>

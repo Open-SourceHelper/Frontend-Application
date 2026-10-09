@@ -37,8 +37,8 @@ export class PageNotFound implements OnInit {
   /**
    * Navigates to the home page.
    */
-  protected navigateToHome() {
-    this.router.navigate(['home']).then();
+  protected navigateToChildProfile(): void {
+    this.router.navigate(['/child-profile']).then();
   }
 
 }

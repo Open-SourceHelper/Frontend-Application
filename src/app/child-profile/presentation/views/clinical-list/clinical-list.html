@@ -1,0 +1,116 @@
+<section class="profiles-page">
+  <header class="page-header">
+    <h1>Perfiles clínicos</h1>
+    <p>Registra y consulta la información clínica de los niños.</p>
+  </header>
+
+  <app-clinical-form
+    (clinicalCreated)="onClinicalCreated($event)">
+  </app-clinical-form>
+
+  @if (store.loading()) {
+    <p>Cargando perfiles clínicos...</p>
+  } @else if (store.error()) {
+    <p class="error-message">{{ store.error() }}</p>
+  } @else if (store.profiles().length === 0) {
+    <mat-card>
+      <mat-card-content>
+        <p>Aún no hay perfiles clínicos registrados.</p>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    <div class="profiles-grid">
+      @for (profile of store.profiles(); track profile.id) {
+        <mat-card class="profile-card">
+          <mat-card-header>
+            <mat-card-title>Perfil clínico</mat-card-title>
+            <mat-card-subtitle>
+              ID del niño: {{ profile.childId }}
+            </mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            @if (editingProfile()?.id === profile.id) {
+              <div class="edit-section">
+                <h3>Editar perfil</h3>
+
+                <label>
+                  Necesidades especiales
+                  <textarea
+                    #editedSpecialNeeds
+                    class="edit-textarea"
+                    rows="3"
+                    [value]="profile.specialNeeds">
+                  </textarea>
+                </label>
+
+                <label>
+                  Detonantes
+                  <textarea
+                    #editedTriggers
+                    class="edit-textarea"
+                    rows="3"
+                    [value]="profile.triggers">
+                  </textarea>
+                </label>
+
+                <label>
+                  Reguladores
+                  <textarea
+                    #editedRegulators
+                    class="edit-textarea"
+                    rows="3"
+                    [value]="profile.regulators">
+                  </textarea>
+                </label>
+
+                <div class="edit-actions">
+                  <button
+                    mat-flat-button
+                    type="button"
+                    [disabled]="store.loading()"
+                    (click)="saveChanges(
+                      editedSpecialNeeds.value,
+                      editedTriggers.value,
+                      editedRegulators.value
+                    )">
+                    <mat-icon>save</mat-icon>
+                    Guardar cambios
+                  </button>
+
+                  <button
+                    mat-stroked-button
+                    type="button"
+                    [disabled]="store.loading()"
+                    (click)="cancelEditing()">
+                    Cancelar
+                  </button>
+                </div>
+              </div>
+            } @else {
+              <p><strong>Necesidades especiales:</strong> {{ profile.specialNeeds }}</p>
+              <p><strong>Detonantes:</strong> {{ profile.triggers }}</p>
+              <p><strong>Reguladores:</strong> {{ profile.regulators }}</p>
+
+              <p class="date">
+                Actualizado:
+                {{ profile.updatedAt.toString() | date:'dd/MM/yyyy' }}
+              </p>
+
+              <div class="child-actions">
+                <button
+                  mat-stroked-button
+                  type="button"
+                  [disabled]="store.loading()"
+                  (click)="startEditing(profile)">
+                  <mat-icon>edit</mat-icon>
+                  Actualizar perfil
+                </button>
+              </div>
+            }
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  }
+</section>

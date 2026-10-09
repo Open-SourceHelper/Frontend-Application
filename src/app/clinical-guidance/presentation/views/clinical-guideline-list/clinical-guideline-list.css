@@ -1,0 +1,77 @@
+.guidelines-page {
+  padding: 24px;
+}
+
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  margin: 0 0 8px;
+}
+
+.page-header p {
+  color: #666;
+}
+
+.guidelines-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.guideline-card {
+  padding: 12px;
+}
+
+.guideline-card mat-card-content {
+  padding-top: 16px;
+}
+
+.date {
+  margin-top: 16px;
+  font-size: 13px;
+  color: #666;
+}
+
+.error-message {
+  color: #b00020;
+}
+
+.edit-section {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #ddd;
+}
+
+.edit-section h3 {
+  margin-bottom: 12px;
+}
+
+.edit-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid #999;
+  border-radius: 6px;
+  font: inherit;
+  resize: vertical;
+}
+
+.edit-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.guideline-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.tab-content {
+  padding-top: 24px;
+}
