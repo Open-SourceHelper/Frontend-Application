@@ -1,0 +1,110 @@
+<div class="dashboard-container">
+  <header class="page-header">
+    <div class="header-icon">
+      <mat-icon>dashboard</mat-icon>
+    </div>
+
+    <div class="header-content">
+      <h1>Dashboard del niño</h1>
+      <p>Consulta el seguimiento diario, las actividades y los reportes de observaciones.</p>
+    </div>
+  </header>
+
+  <section class="date-bar">
+    <label for="dashboard-date">Resumen del día</label>
+
+    <div class="date-actions">
+      <input
+        id="dashboard-date"
+        type="date"
+        [(ngModel)]="selectedDate"
+        (ngModelChange)="refresh()">
+
+      <button type="button" (click)="refresh()">
+        <mat-icon>refresh</mat-icon>
+        Actualizar
+      </button>
+    </div>
+  </section>
+
+  @if (dashboard.loading()) {
+    <p class="message">Cargando resumen diario...</p>
+  }
+  @else if (dashboard.error()) {
+    <p class="error" role="alert">{{ dashboard.error() }}</p>
+  }
+  @else if (dashboard.summary(); as summary) {
+    <section class="summary-grid" aria-label="Indicadores diarios">
+      <app-daily-summary-card
+        title="Actividades del día"
+        [value]="summary.totalActivities"
+        detail="Actividades programadas"
+        icon="event_note" />
+
+      <app-daily-summary-card
+        title="Completadas"
+        [value]="summary.completedActivities"
+        detail="Actividades finalizadas"
+        icon="task_alt"
+        accent="green" />
+
+      <app-daily-summary-card
+        title="Progreso diario"
+        [value]="dashboard.completion() + '%'"
+        detail="Cumplimiento de la rutina"
+        icon="trending_up" />
+
+      <app-daily-summary-card
+        title="Observaciones"
+        [value]="summary.recentObservations"
+        detail="Registros recientes"
+        icon="description"
+        accent="orange" />
+    </section>
+
+    <section class="activities-card">
+      <div class="section-heading">
+        <mat-icon>checklist</mat-icon>
+
+        <div>
+          <h2>Actividades del día</h2>
+          <p>Estado actual de la rutina del niño.</p>
+        </div>
+      </div>
+
+      @if (summary.activities.length === 0) {
+        <p class="message">No hay actividades registradas para esta fecha.</p>
+      }
+      @else {
+        <div class="activity-list">
+          @for (activity of summary.activities; track activity.id) {
+            <div class="activity-row">
+              <div>
+                <strong>{{ activity.title }}</strong>
+                <span>{{ activity.scheduledTime || 'Sin horario' }}</span>
+              </div>
+
+              <span
+                class="activity-status"
+                [class.completed]="activity.status === 'COMPLETED'"
+                [class.skipped]="activity.status === 'SKIPPED'">
+                {{ activity.status === 'COMPLETED' ? 'Completada' : activity.status === 'SKIPPED' ? 'Omitida' : 'Pendiente' }}
+              </span>
+            </div>
+          }
+        </div>
+      }
+    </section>
+  }
+  @else {
+    <p class="message">No existe un resumen para el día seleccionado.</p>
+  }
+
+  <app-report-panel
+    [observations]="reports.observations()"
+    [loading]="reports.loading()"
+    [loaded]="reports.loaded()"
+    [error]="reports.error()"
+    (search)="searchReports($event)"
+    (exportPdf)="exportReports($event)" />
+</div>
