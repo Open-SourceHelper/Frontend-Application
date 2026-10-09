@@ -30,7 +30,7 @@ export interface SignUpRequest {
 export class AuthService {
   private readonly http = inject(HttpClient);
 
-  private readonly apiUrl = 'http://localhost:3000/users';
+  private readonly apiUrl = 'http://localhost:3001/users';
 
   signIn(credentials: SignInRequest): Observable<AuthUser> {
     const params = new HttpParams()
