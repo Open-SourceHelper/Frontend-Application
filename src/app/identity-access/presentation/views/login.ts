@@ -54,6 +54,7 @@ export class Login {
     }).subscribe({
       next: user => {
         this.authService.saveSession(user);
+        this.authService.startSession(user);
         this.loading.set(false);
         this.router.navigate(['/home']);
       },

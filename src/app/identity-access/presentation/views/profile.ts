@@ -103,4 +103,9 @@ export class Profile implements OnInit {
       }
     });
   }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 }

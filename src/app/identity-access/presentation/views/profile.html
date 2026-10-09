@@ -47,6 +47,14 @@
                 class="save-button" [disabled]="loading()">
           {{ loading() ? 'Guardando...' : 'Guardar cambios' }}
         </button>
+        <button
+          mat-stroked-button
+          type="button"
+          class="logout-button"
+          (click)="logout()"
+        >
+          Cerrar sesión
+        </button>
 
       </form>
 

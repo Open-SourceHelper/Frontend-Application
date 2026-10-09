@@ -46,3 +46,9 @@ mat-card-title {
   color: #d32f2f;
   text-align: center;
 }
+
+.logout-button {
+  width: 100%;
+  height: 48px;
+  margin-top: 12px;
+}

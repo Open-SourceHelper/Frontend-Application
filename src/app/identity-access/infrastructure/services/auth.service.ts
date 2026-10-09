@@ -3,6 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map, switchMap, throwError } from 'rxjs';
 import { UserRole } from '../../domain/model/user-role.enum';
+import { tap, catchError, of } from 'rxjs';
 
 export interface AuthUser {
   id: string;
@@ -29,6 +30,7 @@ export interface SignUpRequest {
 })
 export class AuthService {
   private readonly http = inject(HttpClient);
+  private readonly sessionsUrl = 'http://localhost:3001/userSessions';
 
   private readonly apiUrl = 'http://localhost:3001/users';
 
@@ -97,5 +99,49 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     return this.getCurrentUser() !== null;
+  }
+
+  startSession(user: AuthUser): void {
+    const session = {
+      id: crypto.randomUUID(),
+      userId: user.id,
+      sessionToken: crypto.randomUUID(),
+      status: 'ACTIVE',
+      createdAt: new Date().toISOString(),
+      closedAt: null
+    };
+
+    this.http.post(this.sessionsUrl, session).subscribe({
+      next: () => console.log('Sesión simulada iniciada'),
+      error: error => console.error('Error al registrar sesión', error)
+    });
+  }
+
+  logout(): void {
+    const user = this.getCurrentUser();
+
+    if (!user) {
+      this.signOut();
+      return;
+    }
+
+    this.http.get<any[]>(this.sessionsUrl, {
+      params: { userId: user.id, status: 'ACTIVE' }
+    }).pipe(
+      tap(sessions => {
+        sessions.forEach(session => {
+          this.http.patch(
+            `${this.sessionsUrl}/${session.id}`,
+            {
+              status: 'CLOSED',
+              closedAt: new Date().toISOString()
+            }
+          ).subscribe();
+        });
+      }),
+      catchError(() => of([]))
+    ).subscribe();
+
+    this.signOut();
   }
 }
