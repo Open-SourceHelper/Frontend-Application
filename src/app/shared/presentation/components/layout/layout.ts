@@ -16,19 +16,34 @@ import { FooterContent } from '../footer-content/footer-content';
     MatButtonModule,
     MatIconModule,
     MatListModule,
-    FooterContent,
+    FooterContent
   ],
   templateUrl: './layout.html',
-  styleUrl: './layout.css',
+  styleUrl: './layout.css'
 })
 export class Layout {
+
   readonly collapsed = signal(false);
+
   readonly options = [
-    { link: '/home', label: 'Home', icon: 'home' },
-    { link: '/about', label: 'About', icon: 'info' },
+    {
+      link: '/home',
+      label: 'Home',
+      icon: 'home'
+    },
+    {
+      link: '/about',
+      label: 'About',
+      icon: 'info'
+    },
+    {
+      link: '/children/1/dashboard',
+      label: 'Dashboard',
+      icon: 'dashboard'
+    }
   ];
 
   toggleMenu(): void {
-    this.collapsed.update((value) => !value);
+    this.collapsed.update(value => !value);
   }
 }
