@@ -1,0 +1,5 @@
+export enum UserRole {
+  PARENT = 'PARENT',
+  CAREGIVER = 'CAREGIVER',
+  PSYCHOLOGIST = 'PSYCHOLOGIST'
+}

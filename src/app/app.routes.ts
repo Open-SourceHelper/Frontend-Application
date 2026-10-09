@@ -10,7 +10,7 @@ const pageNotFound = () =>
   import('./shared/presentation/views/page-not-found/page-not-found')
     .then((m) => m.PageNotFound);
 
-// Child Profile Management
+// BC02 - Child Profile Management
 const child = () =>
   import('./child-profile/presentation/views/child-list/child-list')
     .then((m) => m.ChildList);
@@ -46,6 +46,34 @@ export const routes: Routes = [
     loadComponent: about,
     title: `${baseTitle} - About`
   },
+
+  // BC01 - Identity & Access Management
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./identity-access/presentation/views/login')
+        .then((m) => m.Login)
+  },
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./identity-access/presentation/views/register')
+        .then((m) => m.Register)
+  },
+  {
+    path: 'profile',
+    loadComponent: () =>
+      import('./identity-access/presentation/views/profile')
+        .then((m) => m.Profile)
+  },
+  {
+    path: 'forgot-password',
+    loadComponent: () =>
+      import('./identity-access/presentation/views/forgot-password')
+        .then((m) => m.ForgotPassword)
+  },
+
+  // BC02 - Child Profile Management
   {
     path: 'child-profile',
     loadComponent: child,
@@ -56,6 +84,8 @@ export const routes: Routes = [
     loadComponent: clinical,
     title: `${baseTitle} - Clinical Profile`
   },
+
+  // BC06 - Observation & Crisis Management
   {
     path: 'observations/new',
     loadComponent: observationForm,
@@ -66,6 +96,7 @@ export const routes: Routes = [
     loadComponent: observationList,
     title: `${baseTitle} - Observaciones y crisis`
   },
+
   {
     path: '**',
     loadComponent: pageNotFound,
