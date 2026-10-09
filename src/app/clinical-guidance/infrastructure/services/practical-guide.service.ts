@@ -5,6 +5,7 @@ import { Observable, map } from 'rxjs';
 import { PracticalGuide } from '../../domain/model/practical-guide.entity';
 import { PracticalGuideResource } from '../resources/practical-guide.resource';
 import { PracticalGuideAssembler } from '../assemblers/practical-guide.assembler';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class PracticalGuideService {
   private readonly http = inject(HttpClient);
 
   private readonly endpointUrl =
-    'http://localhost:3000/practicalGuides';
+    `${environment.platformProviderApiBaseUrl}/practicalGuides`;
 
   getAll(): Observable<PracticalGuide[]> {
     return this.http

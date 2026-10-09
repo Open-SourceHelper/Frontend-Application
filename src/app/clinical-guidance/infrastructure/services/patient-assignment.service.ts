@@ -5,6 +5,7 @@ import { map, Observable } from 'rxjs';
 import { PatientAssignment } from '../../domain/model/patient-assignment.entity';
 import { PatientAssignmentResource } from '../resources/patient-assignment.resource';
 import { PatientAssignmentAssembler } from '../assemblers/patient-assignment.assembler';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class PatientAssignmentService {
   private readonly http = inject(HttpClient);
 
   private readonly endpointUrl =
-    'http://localhost:3000/patientAssignments';
+    `${environment.platformProviderApiBaseUrl}/patientAssignments`;
 
   getAll(): Observable<PatientAssignment[]> {
     return this.http

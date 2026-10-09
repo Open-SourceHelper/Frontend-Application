@@ -5,13 +5,14 @@ import { Observable, map } from 'rxjs';
 import { ClinicalGuideline } from '../../domain/model/clinical-guideline.entity';
 import { ClinicalGuidelineResource } from '../resources/clinical-guideline.resource';
 import { ClinicalGuidelineAssembler } from '../assemblers/clinical-guideline.assembler';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClinicalGuidelineService {
   private readonly http = inject(HttpClient);
-  private readonly endpointUrl = 'http://localhost:3000/clinicalGuidelines';
+  private readonly endpointUrl = `${environment.platformProviderApiBaseUrl}/clinicalGuidelines`;
 
   getAll(): Observable<ClinicalGuideline[]> {
     return this.http.get<ClinicalGuidelineResource[]>(this.endpointUrl).pipe(

@@ -7,6 +7,7 @@ import { CareNetworkMember } from '../../domain/model/care-network-member.entity
 import { MemberStatus } from '../../domain/model/member-status';
 import { CareNetworkMemberResource } from '../resources/care-network-member.resource';
 import { CareNetworkMemberAssembler } from '../assemblers/care-network-member.assembler';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class CareNetworkMemberService {
   private readonly http = inject(HttpClient);
 
   private readonly endpointUrl =
-    'http://localhost:3000/careNetworkMembers';
+    `${environment.platformProviderApiBaseUrl}/careNetworkMembers`;
 
   getByCareNetworkId(
     careNetworkId: string

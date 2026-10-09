@@ -11,6 +11,7 @@ import { switchMap } from 'rxjs';
 import { InvitationStatus } from '../../domain/model/invitation-status';
 import { MemberStatus } from '../../domain/model/member-status';
 import { CareRole } from '../../domain/model/care-role';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class CareNetworkInvitationService {
   private readonly http = inject(HttpClient);
 
   private readonly endpointUrl =
-    'http://localhost:3000/careNetworkInvitations';
+    `${environment.platformProviderApiBaseUrl}/careNetworkInvitations`;
 
   getByCareNetworkId(
     careNetworkId: string
@@ -112,7 +113,7 @@ export class CareNetworkInvitationService {
 
           return this.http
             .post(
-              'http://localhost:3000/careNetworkMembers',
+              `${environment.platformProviderApiBaseUrl}/careNetworkMembers`,
               newMember
             )
             .pipe(

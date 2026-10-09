@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  // Fake backend (json-server) until the Spring Boot RESTful API is implemented
-  platformProviderApiBaseUrl: 'http://localhost:3000',
+  // Fake backend (json-server deployed on Render) until the Spring Boot RESTful API is implemented
+  platformProviderApiBaseUrl: 'https://frontend-application-1oa7.onrender.com',
 
   // BC02 - Child Profile Management
   platformProviderChildEndpointPath: '/children',
