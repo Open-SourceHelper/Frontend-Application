@@ -19,6 +19,11 @@ const clinical = () =>
   import('./child-profile/presentation/views/clinical-list/clinical-list')
     .then((m) => m.ClinicalList);
 
+// BC05 - Clinical Guidance Management
+const clinicalGuidance = () =>
+  import('./clinical-guidance/presentation/views/clinical-guideline-list/clinical-guideline-list')
+    .then((m) => m.ClinicalGuidelineList);
+
 // BC06 - Observation & Crisis Management
 const observationList = () =>
   import('./observation-crisis/presentation/pages/observation-list.component')
@@ -83,6 +88,13 @@ export const routes: Routes = [
     path: 'clinical-profile',
     loadComponent: clinical,
     title: `${baseTitle} - Clinical Profile`
+  },
+
+  // BC05 - Clinical Guidance Management
+  {
+    path: 'clinical-guidance',
+    loadComponent: clinicalGuidance,
+    title: `${baseTitle} - Orientaciones Clínicas`
   },
 
   // BC06 - Observation & Crisis Management

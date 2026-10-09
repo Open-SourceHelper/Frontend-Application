@@ -28,8 +28,15 @@ export class Layout {
   readonly options = [
     { link: '/home', label: 'Home', icon: 'home' },
     { link: '/about', label: 'About', icon: 'info' },
+
+    // BC02 - Child Profile Management
     { link: '/child-profile', label: 'Child Profile', icon: 'child_care' },
     { link: '/clinical-profile', label: 'Clinical Profile', icon: 'health_and_safety' },
+
+    // BC05 - Clinical Guidance Management
+    { link: '/clinical-guidance', label: 'Orientaciones Clínicas', icon: 'medical_services' },
+
+    // BC06 - Observation & Crisis Management
     {
       link: '/observations',
       label: 'Observaciones y crisis',

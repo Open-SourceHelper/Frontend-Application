@@ -1,162 +1,243 @@
+
 {
-    "children":  [
-                     {
-                         "id":  "child-001",
-                         "parentId":  "parent-001",
-                         "firstName":  "Mateo",
-                         "lastName":  "Garc├¡a",
-                         "birthDate":  "2019-04-15",
-                         "createdAt":  "2026-09-15T10:30:00-05:00"
-                     },
-                     {
-                         "id":  "child-002",
-                         "parentId":  "parent-002",
-                         "firstName":  "Sof├¡a",
-                         "lastName":  "Ram├¡rez",
-                         "birthDate":  "2018-11-22",
-                         "createdAt":  "2026-09-18T09:15:00-05:00"
-                     },
-                     {
-                         "id":  "child-003",
-                         "parentId":  "parent-003",
-                         "firstName":  "Diego",
-                         "lastName":  "Torres",
-                         "birthDate":  "2020-02-08",
-                         "createdAt":  "2026-09-20T14:00:00-05:00"
-                     },
-                     {
-                         "id":  "ae2ed88b-5e56-457b-a1d4-48ee3742c0a3",
-                         "parentId":  "1234",
-                         "firstName":  "Gabriel",
-                         "lastName":  "Vilchez",
-                         "birthDate":  "2006-09-19T05:00:00.000Z",
-                         "createdAt":  "2026-10-08T20:08:43.585Z"
-                     }
-                 ],
-    "caregiverAuthorizations":  [
-                                    {
-                                        "id":  "auth-001",
-                                        "childId":  "child-001",
-                                        "caregiverId":  "caregiver-001",
-                                        "status":  "active",
-                                        "authorizedAt":  "2026-09-16T08:30:00-05:00",
-                                        "revokedAt":  "2026-10-15T16:30:00-05:00"
-                                    },
-                                    {
-                                        "id":  "auth-002",
-                                        "childId":  "child-002",
-                                        "caregiverId":  "caregiver-002",
-                                        "status":  "active",
-                                        "authorizedAt":  "2026-09-19T10:00:00-05:00",
-                                        "revokedAt":  "2026-10-18T17:00:00-05:00"
-                                    },
-                                    {
-                                        "id":  "auth-003",
-                                        "childId":  "child-003",
-                                        "caregiverId":  "caregiver-003",
-                                        "status":  "active",
-                                        "authorizedAt":  "2026-09-21T11:45:00-05:00",
-                                        "revokedAt":  "2026-10-20T15:45:00-05:00"
-                                    },
-                                    {
-                                        "id":  "auth-004",
-                                        "childId":  "child-001",
-                                        "caregiverId":  "caregiver-004",
-                                        "status":  "revoked",
-                                        "authorizedAt":  "2026-09-20T09:00:00-05:00",
-                                        "revokedAt":  "2026-10-01T16:30:00-05:00"
-                                    }
-                                ],
-    "clinicalProfiles":  [
-                             {
-                                 "id":  "profile-001",
-                                 "childId":  "child-001",
-                                 "specialNeeds":  "Apoyo en comunicaci├│n y seguimiento de rutinas.",
-                                 "triggers":  "Cambios inesperados de actividad y ambientes con mucho ruido.",
-                                 "regulators":  "Apoyos visuales, anticipaci├│n de actividades y espacios tranquilos.",
-                                 "updatedAt":  "2026-10-02T10:15:00-05:00"
-                             },
-                             {
-                                 "id":  "profile-002",
-                                 "childId":  "child-002",
-                                 "specialNeeds":  "Apoyo para mantener la atenci├│n durante actividades estructuradas.",
-                                 "triggers":  "Actividades prolongadas y m├║ltiples instrucciones simult├íneas.",
-                                 "regulators":  "Instrucciones breves, pausas programadas y refuerzo positivo.",
-                                 "updatedAt":  "2026-10-03T13:20:00-05:00"
-                             },
-                             {
-                                 "id":  "profile-003",
-                                 "childId":  "child-003",
-                                 "specialNeeds":  "Apoyo en adaptaci├│n a nuevas actividades y seguimiento de rutinas.",
-                                 "triggers":  "Transiciones r├ípidas y modificaci├│n de rutinas habituales.",
-                                 "regulators":  "Rutinas visuales, avisos previos y acompa├▒amiento del cuidador.",
-                                 "updatedAt":  "2026-10-04T09:40:00-05:00"
-                             }
-                         ],
-    "observations":  [
-                         {
-                             "id":  "obs-001",
-                             "childId":  "child-demo-001",
-                             "caregiverId":  "caregiver-demo-001",
-                             "description":  "Complet├│ su rutina de la ma├▒ana con apoyo visual.",
-                             "occurredAt":  "2026-10-08T08:00:00-05:00",
-                             "crisisSeverity":  null
-                         },
-                         {
-                             "id":  "obs-002",
-                             "childId":  "child-demo-001",
-                             "caregiverId":  "caregiver-demo-001",
-                             "description":  "Se registr├│ una situaci├│n de desregulaci├│n durante un cambio de actividad.",
-                             "occurredAt":  "2026-10-08T08:15:00-05:00",
-                             "crisisSeverity":  "moderate"
-                         },
-                         {
-                             "id":  "44bd0078-118f-4efa-901c-79dcdb297b92",
-                             "childId":  "child-demo-001",
-                             "caregiverId":  "caregiver-demo-001",
-                             "description":  "Durante una actividad grupal present├│ llanto intenso y dificultad para continuar.",
-                             "occurredAt":  "2026-10-08T14:00:00.000Z",
-                             "crisisSeverity":  "severe"
-                         },
-                         {
-                             "id":  "234ea408-bade-4a00-b1d5-be61cd5723a1",
-                             "childId":  "child-demo-001",
-                             "caregiverId":  "caregiver-demo-001",
-                             "description":  "Durante una actividad de lectura, el ni├▒o present├│ dificultades para mantener la atenci├│n y necesit├│ apoyo del cuidador.",
-                             "occurredAt":  "2026-10-08T14:37:00.000Z",
-                             "crisisSeverity":  "mild"
-                         }
-                     ],
-    "psychologistComments":  [
-                                 {
-                                     "id":  "cbeaf9ba-b8b2-4e7d-8586-c06431994654",
-                                     "observationId":  "44bd0078-118f-4efa-901c-79dcdb297b92",
-                                     "psychologistId":  "psychologist-demo-001",
-                                     "content":  "Observaci├│n revisada. Se solicita registrar la duraci├│n del episodio y el contexto de la actividad para el seguimiento.",
-                                     "createdAt":  "2026-10-08T14:06:41.223Z"
-                                 },
-                                 {
-                                     "id":  "4105e8ac-0ccc-46a5-ad6f-ec049a02e56b",
-                                     "observationId":  "234ea408-bade-4a00-b1d5-be61cd5723a1",
-                                     "psychologistId":  "psychologist-demo-001",
-                                     "content":  "Se recomienda continuar utilizando apoyos visuales durante las actividades de lectura y registrar los avances en la atenci├│n del ni├▒o.",
-                                     "createdAt":  "2026-10-08T14:43:11.197Z"
-                                 }
-                             ],
-    "observationEvidences":  [
-                                 {
-                                     "id":  "764ad956-cdae-4ac1-b8fc-df03064beeaa",
-                                     "observationId":  "44bd0078-118f-4efa-901c-79dcdb297b92",
-                                     "fileName":  "Enlace de prueba (sin archivo adjunto)",
-                                     "fileUrl":  "https://example.com/",
-                                     "uploadedAt":  "2026-10-08T14:12:59.402Z"
-                                 },
-                                 {
-                                     "id":  "52163e99-b1eb-4464-9ebc-305bd9feee74",
-                                     "observationId":  "234ea408-bade-4a00-b1d5-be61cd5723a1",
-                                     "fileName":  "Registro de actividad de lectura",
-                                     "fileUrl":  "https://example.com/",
-                                     "uploadedAt":  "2026-10-08T14:46:24.415Z"
-                                 }
-                             ]
+  "children": [
+    {
+      "id": "child-001",
+      "parentId": "parent-001",
+      "firstName": "Mateo",
+      "lastName": "García",
+      "birthDate": "2019-04-15",
+      "createdAt": "2026-09-15T10:30:00-05:00"
+    },
+    {
+      "id": "child-002",
+      "parentId": "parent-002",
+      "firstName": "Sofía",
+      "lastName": "Ramírez",
+      "birthDate": "2018-11-22",
+      "createdAt": "2026-09-18T09:15:00-05:00"
+    },
+    {
+      "id": "child-003",
+      "parentId": "parent-003",
+      "firstName": "Diego",
+      "lastName": "Torres",
+      "birthDate": "2020-02-08",
+      "createdAt": "2026-09-20T14:00:00-05:00"
+    },
+    {
+      "id": "ae2ed88b-5e56-457b-a1d4-48ee3742c0a3",
+      "parentId": "1234",
+      "firstName": "Gabriel",
+      "lastName": "Vilchez",
+      "birthDate": "2006-09-19T05:00:00.000Z",
+      "createdAt": "2026-10-08T20:08:43.585Z"
+    }
+  ],
+  "caregiverAuthorizations": [
+    {
+      "id": "auth-001",
+      "childId": "child-001",
+      "caregiverId": "caregiver-001",
+      "status": "active",
+      "authorizedAt": "2026-09-16T08:30:00-05:00",
+      "revokedAt": "2026-10-15T16:30:00-05:00"
+    },
+    {
+      "id": "auth-002",
+      "childId": "child-002",
+      "caregiverId": "caregiver-002",
+      "status": "active",
+      "authorizedAt": "2026-09-19T10:00:00-05:00",
+      "revokedAt": "2026-10-18T17:00:00-05:00"
+    },
+    {
+      "id": "auth-003",
+      "childId": "child-003",
+      "caregiverId": "caregiver-003",
+      "status": "active",
+      "authorizedAt": "2026-09-21T11:45:00-05:00",
+      "revokedAt": "2026-10-20T15:45:00-05:00"
+    },
+    {
+      "id": "auth-004",
+      "childId": "child-001",
+      "caregiverId": "caregiver-004",
+      "status": "revoked",
+      "authorizedAt": "2026-09-20T09:00:00-05:00",
+      "revokedAt": "2026-10-01T16:30:00-05:00"
+    }
+  ],
+  "clinicalProfiles": [
+    {
+      "id": "profile-001",
+      "childId": "child-001",
+      "specialNeeds": "Apoyo en comunicación y seguimiento de rutinas.",
+      "triggers": "Cambios inesperados de actividad y ambientes con mucho ruido.",
+      "regulators": "Apoyos visuales, anticipación de actividades y espacios tranquilos.",
+      "updatedAt": "2026-10-02T10:15:00-05:00"
+    },
+    {
+      "id": "profile-002",
+      "childId": "child-002",
+      "specialNeeds": "Apoyo para mantener la atención durante actividades estructuradas.",
+      "triggers": "Actividades prolongadas y múltiples instrucciones simultáneas.",
+      "regulators": "Instrucciones breves, pausas programadas y refuerzo positivo.",
+      "updatedAt": "2026-10-03T13:20:00-05:00"
+    },
+    {
+      "id": "profile-003",
+      "childId": "child-003",
+      "specialNeeds": "Apoyo en adaptación a nuevas actividades y seguimiento de rutinas.",
+      "triggers": "Transiciones rápidas y modificación de rutinas habituales.",
+      "regulators": "Rutinas visuales, avisos previos y acompañamiento del cuidador.",
+      "updatedAt": "2026-10-04T09:40:00-05:00"
+    }
+  ],
+  "observations": [
+    {
+      "id": "obs-001",
+      "childId": "child-demo-001",
+      "caregiverId": "caregiver-demo-001",
+      "description": "Completó su rutina de la mañana con apoyo visual.",
+      "occurredAt": "2026-10-08T08:00:00-05:00",
+      "crisisSeverity": null
+    },
+    {
+      "id": "obs-002",
+      "childId": "child-demo-001",
+      "caregiverId": "caregiver-demo-001",
+      "description": "Se registró una situación de desregulación durante un cambio de actividad.",
+      "occurredAt": "2026-10-08T08:15:00-05:00",
+      "crisisSeverity": "moderate"
+    },
+    {
+      "id": "44bd0078-118f-4efa-901c-79dcdb297b92",
+      "childId": "child-demo-001",
+      "caregiverId": "caregiver-demo-001",
+      "description": "Durante una actividad grupal presentó llanto intenso y dificultad para continuar.",
+      "occurredAt": "2026-10-08T14:00:00.000Z",
+      "crisisSeverity": "severe"
+    },
+    {
+      "id": "234ea408-bade-4a00-b1d5-be61cd5723a1",
+      "childId": "child-demo-001",
+      "caregiverId": "caregiver-demo-001",
+      "description": "Durante una actividad de lectura, el niño presentó dificultades para mantener la atención y necesitó apoyo del cuidador.",
+      "occurredAt": "2026-10-08T14:37:00.000Z",
+      "crisisSeverity": "mild"
+    }
+  ],
+  "psychologistComments": [
+    {
+      "id": "cbeaf9ba-b8b2-4e7d-8586-c06431994654",
+      "observationId": "44bd0078-118f-4efa-901c-79dcdb297b92",
+      "psychologistId": "psychologist-demo-001",
+      "content": "Observación revisada. Se solicita registrar la duración del episodio y el contexto de la actividad para el seguimiento.",
+      "createdAt": "2026-10-08T14:06:41.223Z"
+    },
+    {
+      "id": "4105e8ac-0ccc-46a5-ad6f-ec049a02e56b",
+      "observationId": "234ea408-bade-4a00-b1d5-be61cd5723a1",
+      "psychologistId": "psychologist-demo-001",
+      "content": "Se recomienda continuar utilizando apoyos visuales durante las actividades de lectura y registrar los avances en la atención del niño.",
+      "createdAt": "2026-10-08T14:43:11.197Z"
+    }
+  ],
+  "observationEvidences": [
+    {
+      "id": "764ad956-cdae-4ac1-b8fc-df03064beeaa",
+      "observationId": "44bd0078-118f-4efa-901c-79dcdb297b92",
+      "fileName": "Enlace de prueba (sin archivo adjunto)",
+      "fileUrl": "https://example.com/",
+      "uploadedAt": "2026-10-08T14:12:59.402Z"
+    },
+    {
+      "id": "52163e99-b1eb-4464-9ebc-305bd9feee74",
+      "observationId": "234ea408-bade-4a00-b1d5-be61cd5723a1",
+      "fileName": "Registro de actividad de lectura",
+      "fileUrl": "https://example.com/",
+      "uploadedAt": "2026-10-08T14:46:24.415Z"
+    }
+  ],
+  "clinicalGuidelines": [
+    {
+      "id": "7b6a0f2d-f64d-453f-b334-6060c5fc0c25",
+      "psychologistId": "PSI001",
+      "childId": "NINO001",
+      "instructions": "Establecer una rutina diaria con horarios visuales para facilitar la organización de las actividades del niño. Anticipar los cambios con instrucciones claras y sencillas.",
+      "status": "INACTIVE",
+      "createdAt": "2026-10-08T03:39:30.422Z",
+      "updatedAt": "2026-10-08T04:37:17.935Z"
+    },
+    {
+      "id": "8460b505-05bb-4fae-8b6b-6216283df6bf",
+      "psychologistId": "PSI002",
+      "childId": "NINO002",
+      "instructions": "Implementar actividades de reconocimiento emocional utilizando tarjetas con expresiones faciales y situaciones cotidianas. Reforzar positivamente la comunicación de emociones.",
+      "status": "DRAFT",
+      "createdAt": "2026-10-08T04:37:30.493Z",
+      "updatedAt": "2026-10-08T04:37:30.493Z"
+    },
+    {
+      "id": "aec801cc-473a-4ae7-a23d-3949f8b51354",
+      "psychologistId": "PSI002",
+      "childId": "NINO002",
+      "instructions": "Identificar los estímulos sensoriales que generan incomodidad y establecer estrategias de adaptación del entorno. Registrar las respuestas del niño para evaluar su progreso.",
+      "status": "DRAFT",
+      "createdAt": "2026-10-08T06:17:41.607Z",
+      "updatedAt": "2026-10-08T06:17:41.607Z"
+    },
+    {
+      "id": "2235511e-3aeb-4395-b509-1b8e19a2ada4",
+      "psychologistId": "PSI001",
+      "childId": "NINO001",
+      "instructions": "Establecer horarios visuales para las actividades diarias y anticipar los cambios de rutina. Utilizar instrucciones breves y reforzar positivamente la participación del niño.",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-08T06:18:10.273Z",
+      "updatedAt": "2026-10-08T06:18:51.968Z"
+    }
+  ],
+  "practicalGuides": [
+    {
+      "id": "guide-001",
+      "title": "Organización de rutinas",
+      "category": "ROUTINE",
+      "content": "Utilizar un calendario visual con actividades diarias y anticipar los cambios de rutina. Establecer horarios consistentes para las comidas, actividades educativas, descanso y recreación."
+    },
+    {
+      "id": "guide-002",
+      "title": "Apoyo durante momentos de crisis",
+      "category": "CRISIS",
+      "content": "Mantener un ambiente tranquilo, reducir los estímulos externos y seguir las indicaciones individualizadas del profesional. Evitar confrontaciones y proporcionar un espacio seguro para el niño."
+    },
+    {
+      "id": "guide-003",
+      "title": "Apoyo sensorial",
+      "category": "SENSORY_SUPPORT",
+      "content": "Identificar estímulos que generan incomodidad y ofrecer alternativas adaptadas a las preferencias del niño. Considerar ajustes de iluminación, sonidos y materiales según sus necesidades."
+    },
+    {
+      "id": "guide-004",
+      "title": "Reconocimiento de emociones",
+      "category": "EMOTIONAL_SUPPORT",
+      "content": "Utilizar imágenes y palabras sencillas para ayudar al niño a identificar y comunicar sus emociones. Realizar actividades de reconocimiento emocional mediante tarjetas, dibujos y situaciones cotidianas."
+    }
+  ],
+  "patientAssignments": [
+    {
+      "id": "assignment-001",
+      "psychologistId": "PSI001",
+      "childId": "NINO001",
+      "status": "ACTIVE",
+      "assignedAt": "2026-10-08T10:00:00.000Z"
+    },
+    {
+      "id": "assignment-002",
+      "psychologistId": "PSI002",
+      "childId": "NINO002",
+      "status": "ACTIVE",
+      "assignedAt": "2026-10-08T10:30:00.000Z"
+    }
+  ]
 }
