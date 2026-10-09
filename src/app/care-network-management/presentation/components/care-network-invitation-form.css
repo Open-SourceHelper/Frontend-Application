@@ -1,0 +1,42 @@
+
+.invitation-container {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 600px;
+}
+
+.invitation-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.invitation-header mat-icon {
+  color: #2563eb;
+}
+
+.invitation-header h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+
+.invitation-header p {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.full-width {
+  width: 100%;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

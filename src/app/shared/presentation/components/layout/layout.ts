@@ -1,4 +1,3 @@
-
 import { Component, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -30,14 +29,12 @@ export class Layout {
     { link: '/about', label: 'About', icon: 'info' },
     { link: '/child-profile', label: 'Child Profile', icon: 'child_care' },
     { link: '/clinical-profile', label: 'Clinical Profile', icon: 'health_and_safety' },
-    {
-      link: '/observations',
-      label: 'Observaciones y crisis',
-      icon: 'assignment',
-    },
+    { link: '/care-networks/1', label: 'Red de Cuidado', icon: 'groups' },
+    { link: '/observations', label: 'Observaciones y crisis', icon: 'assignment' },
     { link: '/routine-activity/routines', label: 'Rutinas', icon: 'event_note' },
     { link: '/subscription-payment/plans', label: 'Planes', icon: 'sell' },
   ];
+
   toggleMenu(): void {
     this.collapsed.update((value) => !value);
   }

@@ -1,0 +1,59 @@
+
+<section class="invitation-container">
+
+  <div class="invitation-header">
+    <mat-icon>person_add</mat-icon>
+
+    <div>
+      <h2>Invitar cuidador</h2>
+      <p>
+        Invita a una persona de confianza
+        para formar parte de la red de cuidado.
+      </p>
+    </div>
+  </div>
+
+  <form
+    #invitationForm="ngForm"
+    (ngSubmit)="sendInvitation()"
+  >
+
+
+  <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Correo electrónico</mat-label>
+
+      <input
+        matInput
+        type="email"
+        name="email"
+        placeholder="cuidador@ejemplo.com"
+        [ngModel]="email()"
+        (ngModelChange)="email.set($event)"
+        #emailControl="ngModel"
+        required
+        email
+      />
+
+      <mat-icon matSuffix>email</mat-icon>
+
+      @if (emailControl.invalid && emailControl.touched) {
+        <mat-error>
+          Ingresa un correo electrónico válido.
+        </mat-error>
+      }
+
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      type="submit"
+      [disabled]="loading() || emailControl.invalid"
+    >
+      <mat-icon>send</mat-icon>
+
+      {{ loading() ? 'Enviando...' : 'Enviar invitación' }}
+    </button>
+
+  </form>
+
+</section>

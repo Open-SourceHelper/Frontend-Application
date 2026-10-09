@@ -1,0 +1,78 @@
+
+<section class="invitations-section">
+
+  <div class="section-header">
+    <div>
+      <h2>Invitaciones de la red de cuidado</h2>
+      <p>Consulta las invitaciones enviadas y su estado.</p>
+    </div>
+  </div>
+
+  @if (invitations().length === 0) {
+
+    <div class="empty-state">
+      <mat-icon>mark_email_read</mat-icon>
+      <h3>No hay invitaciones</h3>
+      <p>Las invitaciones enviadas aparecerán aquí.</p>
+    </div>
+
+  } @else {
+
+    <div class="invitations-grid">
+
+      @for (invitation of invitations(); track invitation.id) {
+
+        <mat-card class="invitation-card">
+
+          <mat-card-content>
+
+            <div class="invitation-header">
+
+              <div class="invitation-avatar">
+                <mat-icon>mail_outline</mat-icon>
+              </div>
+
+              <div class="invitation-info">
+                <h3>{{ invitation.inviteeEmail }}</h3>
+                <span>Invitación a la red de cuidado</span>
+              </div>
+
+            </div>
+
+            <div class="invitation-details">
+
+              <span
+                class="status-badge"
+                [class.pending]="getEffectiveStatus(invitation) === InvitationStatus.PENDING"
+                [class.accepted]="getEffectiveStatus(invitation) === InvitationStatus.ACCEPTED"
+                [class.rejected]="getEffectiveStatus(invitation) === InvitationStatus.REJECTED"
+                [class.expired]="getEffectiveStatus(invitation) === InvitationStatus.EXPIRED"
+              >
+                {{ getStatusLabel(getEffectiveStatus(invitation)) }}
+              </span>
+
+              <p>
+                <mat-icon>event</mat-icon>
+                Enviada:
+                {{ invitation.createdAt | date:'dd/MM/yyyy' }}
+              </p>
+
+              <p>
+                <mat-icon>schedule</mat-icon>
+                Vencimiento:
+                {{ invitation.expiresAt | date:'dd/MM/yyyy' }}
+              </p>
+
+            </div>
+
+          </mat-card-content>
+
+        </mat-card>
+
+      }
+
+    </div>
+
+  }
+
+</section>
