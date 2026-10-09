@@ -26,9 +26,6 @@ export class Layout {
   readonly collapsed = signal(false);
 
   readonly options = [
-    { link: '/home', label: 'Home', icon: 'home' },
-    { link: '/about', label: 'About', icon: 'info' },
-
     // BC02 - Child Profile Management
     { link: '/child-profile', label: 'Child Profile', icon: 'child_care' },
     { link: '/clinical-profile', label: 'Clinical Profile', icon: 'health_and_safety' },
@@ -51,7 +48,6 @@ export class Layout {
     // BC08 - Subscription & Payment Management
     { link: '/subscription-payment/plans', label: 'Planes', icon: 'sell' },
   ];
-
   toggleMenu(): void {
     this.collapsed.update((value) => !value);
   }
