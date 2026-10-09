@@ -35,15 +35,6 @@
   ],
   "subscriptions": [
     {
-      "id": 1,
-      "userId": "user-001",
-      "planId": 1,
-      "status": "EXPIRED",
-      "startDate": "2026-08-15T10:00:00.000Z",
-      "endDate": "2026-09-15T10:00:00.000Z",
-      "createdAt": "2026-08-15T09:58:00.000Z"
-    },
-    {
       "id": 2,
       "userId": "user-002",
       "planId": 2,
@@ -51,49 +42,9 @@
       "startDate": "2026-10-01T14:00:00.000Z",
       "endDate": "2026-11-01T14:00:00.000Z",
       "createdAt": "2026-10-01T13:55:00.000Z"
-    },
-    {
-      "id": 3,
-      "userId": "user-001",
-      "planId": 1,
-      "status": "PENDING_PAYMENT",
-      "startDate": null,
-      "endDate": null,
-      "createdAt": "2026-10-08T23:54:47.884Z"
-    },
-    {
-      "id": 4,
-      "userId": "user-001",
-      "planId": 2,
-      "status": "CANCELLATION_SCHEDULED",
-      "startDate": "2026-10-09T00:25:49.010Z",
-      "endDate": "2026-11-09T00:25:49.010Z",
-      "createdAt": "2026-10-09T00:25:48.098Z"
     }
   ],
   "payments": [
-    {
-      "id": 1,
-      "subscriptionId": 1,
-      "amount": 19.9,
-      "currency": "PEN",
-      "paymentMethod": "CULQI",
-      "status": "REJECTED",
-      "externalTransactionId": null,
-      "createdAt": "2026-08-15T09:58:30.000Z",
-      "processedAt": "2026-08-15T09:58:31.000Z"
-    },
-    {
-      "id": 2,
-      "subscriptionId": 1,
-      "amount": 19.9,
-      "currency": "PEN",
-      "paymentMethod": "PAYPAL",
-      "status": "CONFIRMED",
-      "externalTransactionId": "paypal_mf8x2k1q",
-      "createdAt": "2026-08-15T10:00:00.000Z",
-      "processedAt": "2026-08-15T10:00:01.000Z"
-    },
     {
       "id": 3,
       "subscriptionId": 2,
@@ -104,38 +55,7 @@
       "externalTransactionId": "culqi_mg7a9c3d",
       "createdAt": "2026-10-01T14:00:00.000Z",
       "processedAt": "2026-10-01T14:00:01.000Z"
-    },
-    {
-      "id": 4,
-      "subscriptionId": 3,
-      "amount": 19.9,
-      "currency": "PEN",
-      "paymentMethod": "CULQI",
-      "status": "REJECTED",
-      "externalTransactionId": null,
-      "createdAt": "2026-10-08T23:54:47.934Z",
-      "processedAt": "2026-10-08T23:54:48.768Z"
-    },
-    {
-      "id": 5,
-      "subscriptionId": 4,
-      "amount": 49.9,
-      "currency": "PEN",
-      "paymentMethod": "CULQI",
-      "status": "CONFIRMED",
-      "externalTransactionId": "culqi_mv085bwq",
-      "createdAt": "2026-10-09T00:25:48.143Z",
-      "processedAt": "2026-10-09T00:25:48.977Z"
     }
   ],
-  "cancellation-requests": [
-    {
-      "id": 1,
-      "subscriptionId": 4,
-      "reason": "",
-      "requestedAt": "2026-10-09T00:25:59.978Z",
-      "effectiveDate": "2026-11-09T00:25:49.010Z",
-      "status": "SCHEDULED"
-    }
-  ]
+  "cancellation-requests": []
 }
