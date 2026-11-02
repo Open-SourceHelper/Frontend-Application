@@ -10,6 +10,7 @@ import {ClinicalProfile} from '../../../domain/model/clinical-profile.entity';
 
 import { Child } from '../../../domain/model/child.entity';
 import { ChildService } from '../../../infrastructure/services/child.service';
+import { ClinicalStore } from '../../../application/clinical.store';
 
 @Component({
   imports: [ReactiveFormsModule,
@@ -25,6 +26,7 @@ import { ChildService } from '../../../infrastructure/services/child.service';
 export class ClinicalForm implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
   private readonly childService = inject(ChildService);
+  private readonly clinicalStore = inject(ClinicalStore);
 
   readonly children = signal<Child[]>([]);
   readonly childrenError = signal<string | null>(null);
@@ -46,8 +48,16 @@ export class ClinicalForm implements OnInit {
 
     const { childId, specialNeeds, triggers, regulators } = this.form.getRawValue();
 
+    const existingNumbers = this.clinicalStore.profiles()
+      .map(clinical => /^profile-(\d+)$/.exec(clinical.id))
+      .filter((match): match is RegExpExecArray => match !== null)
+      .map(match => Number(match[1]));
+
+    const nextNumber = Math.max(0, ...existingNumbers) + 1;
+    const clinicalId = `clinical-${String(nextNumber).padStart(3, '0')}`;
+
     const clinical = new ClinicalProfile(
-      crypto.randomUUID(),
+      clinicalId,
       childId.trim(),
       specialNeeds.trim(),
       triggers.trim(),

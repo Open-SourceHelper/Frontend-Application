@@ -12,7 +12,7 @@
           <option value="" disabled>Seleccione un niño</option>
           @for (child of children(); track child.id) {
             <option [value]="child.id">
-              {{ child.id }} — {{ child.firstName }} {{ child.lastName }}
+              {{ child.firstName }} {{ child.lastName }} — {{ child.id }}
             </option>
           }
         </select>
