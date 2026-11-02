@@ -8,15 +8,23 @@
 
       <mat-form-field appearance="outline">
         <mat-label>ID del niño</mat-label>
-        <input matInput formControlName="childId" />
+        <select matNativeControl formControlName="childId">
+          <option value="" disabled>Seleccione un niño</option>
+          @for (child of children(); track child.id) {
+            <option [value]="child.id">
+              {{ child.id }} — {{ child.firstName }} {{ child.lastName }}
+            </option>
+          }
+        </select>
 
         @if (form.controls.childId.hasError('required')) {
-          <mat-error>Ingrese el identificador del niño.</mat-error>
-        }
-        @if (form.controls.childId.hasError('pattern')) {
-          <mat-error>El identificador no puede contener solo espacios.</mat-error>
+          <mat-error>Seleccione el identificador del niño.</mat-error>
         }
       </mat-form-field>
+      @if (childrenError()) {
+        <p>{{ childrenError() }}</p>
+      }
+
 
       <mat-form-field appearance="outline">
         <mat-label>Necesidades Especiales</mat-label>

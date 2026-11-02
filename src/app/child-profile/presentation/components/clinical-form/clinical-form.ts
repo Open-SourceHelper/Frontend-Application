@@ -1,4 +1,4 @@
-import {Component, EventEmitter, inject, Output} from '@angular/core';
+import {Component, EventEmitter, inject, Output, OnInit, signal} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -7,6 +7,9 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {DateTime} from '../../../../shared/domain/model/date-time';
 import {ClinicalProfile} from '../../../domain/model/clinical-profile.entity';
+
+import { Child } from '../../../domain/model/child.entity';
+import { ChildService } from '../../../infrastructure/services/child.service';
 
 @Component({
   imports: [ReactiveFormsModule,
@@ -19,8 +22,12 @@ import {ClinicalProfile} from '../../../domain/model/clinical-profile.entity';
   styleUrl: './clinical-form.css',
   templateUrl: './clinical-form.html',
 })
-export class ClinicalForm {
+export class ClinicalForm implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
+  private readonly childService = inject(ChildService);
+
+  readonly children = signal<Child[]>([]);
+  readonly childrenError = signal<string | null>(null);
 
   @Output() clinicalCreated = new EventEmitter<ClinicalProfile>();
 
@@ -50,5 +57,12 @@ export class ClinicalForm {
 
     this.clinicalCreated.emit(clinical);
     this.form.reset();
+  }
+
+  ngOnInit(): void {
+    this.childService.getAll().subscribe({
+      next: children => this.children.set(children),
+      error: () => this.childrenError.set('No se pudieron cargar los datos de los niños.'),
+    });
   }
 }
