@@ -1,4 +1,4 @@
-import { InvitationStatus } from './invitation-status';
+import {InvitationStatus} from './invitation-status';
 
 export class CareNetworkInvitation {
   constructor(
