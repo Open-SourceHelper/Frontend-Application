@@ -3,7 +3,7 @@ export const environment = {
   // Fake backend (json-server deployed on Render) until the Spring Boot RESTful API is implemented
   platformProviderApiBaseUrl: 'https://frontend-application-1oa7.onrender.com',
 
-  // BC02 - Child Profile Management
+  // BC02 - Child Profile & Care Network Management
   platformProviderChildEndpointPath: '/children',
   platformProviderClinicalProfileEndpointPath: '/clinicalProfiles',
   platformProviderCaregiverAuthorizationEndpointPath: '/caregiver-authorization',

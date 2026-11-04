@@ -3,7 +3,7 @@ export const environment = {
   // Fake backend (json-server) until the Spring Boot RESTful API is implemented
   platformProviderApiBaseUrl: 'http://localhost:3000',
 
-  // BC02 - Child Profile Management
+  // BC02 - Child Profile & Care Network Management
   platformProviderChildEndpointPath: '/children',
   platformProviderClinicalProfileEndpointPath: '/clinicalProfiles',
   platformProviderCaregiverAuthorizationEndpointPath: '/caregiver-authorization',
