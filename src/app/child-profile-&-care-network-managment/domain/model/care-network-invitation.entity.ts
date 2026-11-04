@@ -1,3 +1,4 @@
+
 import {InvitationStatus} from './invitation-status';
 
 export class CareNetworkInvitation {
