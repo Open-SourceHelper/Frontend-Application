@@ -1,3 +1,4 @@
+
 import {ClinicalProfileResource} from '../responses/clinical-response';
 import {ClinicalProfile} from '../../domain/model/clinical-profile.entity';
 import {DateTime} from '../../../shared/domain/model/date-time';

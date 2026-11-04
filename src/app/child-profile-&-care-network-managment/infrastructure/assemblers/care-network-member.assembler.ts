@@ -1,3 +1,4 @@
+
 import {CareNetworkMember} from '../../domain/model/care-network-member.entity';
 import {PermissionSet} from '../../domain/model/permission-set';
 import {CareNetworkMemberResource} from '../resources/care-network-member.resource';

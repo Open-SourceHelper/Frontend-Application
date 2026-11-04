@@ -1,3 +1,4 @@
+
 import {CareNetwork} from '../../domain/model/care-network.entity';
 import {CareNetworkResource} from '../resources/care-network.resource';
 

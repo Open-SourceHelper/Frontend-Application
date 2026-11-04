@@ -1,3 +1,4 @@
+
 import {CareNetworkInvitation} from '../../domain/model/care-network-invitation.entity';
 import {CareNetworkInvitationResource} from '../resources/care-network-invitation.resource';
 
