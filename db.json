@@ -449,6 +449,15 @@
       "expiresAt": "2026-10-15T21:27:30.831Z",
       "acceptedAt": "2026-10-08T21:27:59.570Z",
       "id": 3
+    },
+    {
+      "careNetworkId": "1",
+      "inviteeEmail": "gabrielvilchezvite@gmail.com",
+      "status": "PENDING",
+      "createdAt": "2026-11-05T18:09:29.359Z",
+      "expiresAt": "2026-11-12T18:09:29.359Z",
+      "acceptedAt": null,
+      "id": 4
     }
   ],
   "dailySummaries": [
