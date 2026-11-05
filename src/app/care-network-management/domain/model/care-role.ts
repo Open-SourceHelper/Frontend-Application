@@ -1,5 +1,0 @@
-
-export enum CareRole {
-  CAREGIVER = 'CAREGIVER',
-  PROFESSIONAL = 'PROFESSIONAL'
-}
