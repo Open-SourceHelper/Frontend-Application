@@ -26,11 +26,9 @@ export class Layout {
   readonly collapsed = signal(false);
 
   readonly options = [
-    // BC02 - Child Profile Management
+    // BC02 - Child Profile & Care Network Management
     { link: '/child-profile', label: 'Child Profile', icon: 'child_care' },
     { link: '/clinical-profile', label: 'Clinical Profile', icon: 'health_and_safety' },
-
-    // BC03 - Care Network Management
     { link: '/care-networks/1', label: 'Red de Cuidado', icon: 'groups' },
 
     // BC04 - Routine & Activity Management

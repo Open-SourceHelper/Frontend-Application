@@ -6,22 +6,21 @@ const pageNotFound = () =>
   import('./shared/presentation/views/page-not-found/page-not-found')
     .then((m) => m.PageNotFound);
 
-// BC02 - Child Profile Management
+// BC02 - Child Profile & Care Network Management
 const child = () =>
-  import('./child-profile/presentation/views/child-list/child-list')
+  import('./child-profile-&-care-network-managment/presentation/views/child-list/child-list')
     .then((m) => m.ChildList);
 
 const clinical = () =>
-  import('./child-profile/presentation/views/clinical-list/clinical-list')
+  import('./child-profile-&-care-network-managment/presentation/views/clinical-list/clinical-list')
     .then((m) => m.ClinicalList);
 
-// BC03 - Care Network Management
 const careNetwork = () =>
-  import('./care-network-management/presentation/views/care-network-list')
+  import('./child-profile-&-care-network-managment/presentation/views/care-network-list/care-network-list')
     .then((m) => m.CareNetworkList);
 
 const acceptInvitation = () =>
-  import('./care-network-management/presentation/views/care-network-invitation-accept')
+  import('./child-profile-&-care-network-managment/presentation/views/care-network-invitation-accept/care-network-invitation-accept')
     .then((m) => m.CareNetworkInvitationAccept);
 
 // BC04 - Routine & Activity Management
@@ -88,7 +87,7 @@ export const routes: Routes = [
         .then((m) => m.ForgotPassword)
   },
 
-  // BC02 - Child Profile Management
+  // BC02 - Child Profile & Care Network Management
   {
     path: 'child-profile',
     loadComponent: child,
@@ -99,8 +98,6 @@ export const routes: Routes = [
     loadComponent: clinical,
     title: `${baseTitle} - Clinical Profile`
   },
-
-  // BC03 - Care Network Management
   {
     path: 'care-networks/invitations/accept/:invitationId',
     loadComponent: acceptInvitation,
