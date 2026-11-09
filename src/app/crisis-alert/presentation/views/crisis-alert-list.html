@@ -1,0 +1,86 @@
+<section class="crisis-alert-page" aria-labelledby="alert-heading">
+  <h1 id="alert-heading">BC03 · Gestión de alertas de crisis</h1>
+  <p>Activa una alerta SOS digital para coordinar a la red de cuidado autorizada.</p>
+
+  <p class="demo-note">
+    Prototipo académico: se registran avisos internos en JSON Server, pero no se envían
+    SMS, notificaciones push ni llamadas a emergencias. No reemplaza atención profesional.
+  </p>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Activar alerta SOS</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form (ngSubmit)="activate()" class="alert-form">
+        <mat-form-field appearance="outline">
+          <mat-label>ID del niño</mat-label>
+          <input matInput name="childId" [(ngModel)]="childId" required maxlength="80">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>ID del cuidador</mat-label>
+          <input matInput name="caregiverId" [(ngModel)]="caregiverId" required maxlength="80">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Descripción (opcional)</mat-label>
+          <textarea matInput name="description" [(ngModel)]="description" maxlength="500" rows="3"></textarea>
+        </mat-form-field>
+        <button mat-flat-button class="sos-button" type="submit"
+          [disabled]="busy() || !childId.trim() || !caregiverId.trim()">
+          Activar SOS
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  @if (error()) {
+    <p role="alert" class="error">{{ error() }}</p>
+  }
+  @if (success()) {
+    <p role="status" class="success">{{ success() }}</p>
+  }
+
+  <div class="history-heading">
+    <h2>Historial de alertas</h2>
+    <button mat-stroked-button type="button" (click)="refresh()" [disabled]="loading()">Actualizar</button>
+  </div>
+  @if (loading()) {
+    <p role="status">Cargando alertas…</p>
+  } @else {
+    @for (alert of alerts(); track alert.id) {
+      <mat-card class="alert-card">
+        <mat-card-content>
+          <p><strong>Estado:</strong> {{ alert.status }}</p>
+          <p><strong>Fecha:</strong> {{ alert.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
+          <p><strong>Creada por:</strong> {{ alert.caregiverId }}</p>
+          <p><strong>Detalle:</strong> {{ alert.description || 'Sin descripción' }}</p>
+          <p><strong>Destinatarios internos:</strong> {{ alert.notifiedCaregiverIds.length }}</p>
+          @if (alert.status === 'ACTIVE') {
+            <button mat-stroked-button type="button" [disabled]="busy()" (click)="attend(alert)">
+              Marcar como atendida
+            </button>
+          }
+          @if (alert.status === 'ATTENDED') {
+            <button mat-stroked-button type="button" [disabled]="busy()" (click)="close(alert)">
+              Cerrar alerta
+            </button>
+          }
+        </mat-card-content>
+      </mat-card>
+    } @empty {
+      <p>No hay alertas registradas para este niño.</p>
+    }
+  }
+
+  <h2>Avisos internos para el cuidador seleccionado</h2>
+  @for (notification of notifications(); track notification.id) {
+    <mat-card class="notification-card">
+      <mat-card-content>
+        <p><strong>Aviso pendiente:</strong> {{ notification.alertId }}</p>
+        <p>Niño: {{ notification.childId }} · {{ notification.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
+      </mat-card-content>
+    </mat-card>
+  } @empty {
+    <p>No hay avisos internos para este cuidador.</p>
+  }
+</section>
