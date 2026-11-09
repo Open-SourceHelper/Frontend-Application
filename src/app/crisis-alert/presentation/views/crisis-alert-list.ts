@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 import { finalize, Observable } from 'rxjs';
 
 import { CrisisAlertService } from '../../application/crisis-alert.service';
@@ -18,7 +19,7 @@ import { CaregiverAuthorizationJsonServerAdapter } from '../../infrastructure/ca
 @Component({
   selector: 'app-crisis-alert-list',
   standalone: true,
-  imports: [DatePipe, FormsModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule],
+  imports: [DatePipe, FormsModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatIconModule],
   providers: [
     CrisisAlertService,
     { provide: CrisisAlertRepository, useClass: CrisisAlertJsonServerRepository },
@@ -52,7 +53,7 @@ export class CrisisAlertList implements OnInit {
     this.loading.set(true);
     this.service.list(this.childId).pipe(finalize(() => this.loading.set(false))).subscribe({
       next: items => this.alerts.set(items),
-      error: () => this.error.set('No se pudieron cargar las alertas. Ejecuta JSON Server en el puerto 3000.')
+      error: () => this.error.set('No se pudieron cargar las alertas. Inténtalo de nuevo.')
     });
     this.service.inbox(this.caregiverId).subscribe({
       next: items => this.notifications.set(items),
@@ -74,10 +75,10 @@ export class CrisisAlertList implements OnInit {
       next: result => {
         this.description = '';
         const warning = result.failedCount > 0
-          ? ` No se pudieron encolar ${result.failedCount} avisos internos.`
+          ? ` ${result.failedCount} avisos internos no pudieron registrarse.`
           : '';
         this.success.set(
-          `Alerta registrada. Avisos internos encolados: ${result.queuedCount}.${warning}`
+          `Alerta registrada correctamente. Avisos internos creados: ${result.queuedCount}.${warning}`
         );
         this.refresh();
       },
