@@ -31,7 +31,7 @@ export class Layout {
     { link: '/clinical-profile', label: 'Clinical Profile', icon: 'health_and_safety' },
 
     // New BC03 - Crisis Alert Management
-    { link: '/crisis-alerts', label: 'Alertas SOS', icon: 'sos' },
+    { link: '/crisis-alerts', label: 'Alertas SOS', icon: 'notification_important' },
 
     // Legacy Care Network Management (pending migration to BC02)
     { link: '/care-networks/1', label: 'Red de Cuidado', icon: 'groups' },
