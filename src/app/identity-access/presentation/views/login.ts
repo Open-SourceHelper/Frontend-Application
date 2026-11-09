@@ -1,4 +1,4 @@
-
+﻿
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -56,14 +56,15 @@ export class Login {
         this.authService.saveSession(user);
         this.authService.startSession(user);
         this.loading.set(false);
-        this.router.navigate(['/home']);
+        this.router.navigate(['/child-profile']);
       },
       error: error => {
         this.errorMessage.set(
-          error.message || 'Error al iniciar sesión'
+          error.message || 'Error al iniciar sesiÃ³n'
         );
         this.loading.set(false);
       }
     });
   }
 }
+

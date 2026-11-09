@@ -1,4 +1,4 @@
-
+﻿
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../infrastructure/services/auth.service';
 import { UserRole } from '../../domain/model/user-role.enum';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-register',
@@ -49,7 +50,7 @@ export class Register {
   readonly roles = [
     { value: UserRole.PARENT, label: 'Familiar' },
     { value: UserRole.CAREGIVER, label: 'Cuidador' },
-    { value: UserRole.PSYCHOLOGIST, label: 'Psicólogo' }
+    { value: UserRole.PSYCHOLOGIST, label: 'PsicÃ³logo' }
   ];
 
   hidePassword = signal(true);
@@ -73,12 +74,12 @@ export class Register {
     }
 
     if (this.password !== this.confirmPassword) {
-      this.errorMessage.set('Las contraseñas no coinciden');
+      this.errorMessage.set('Las contraseÃ±as no coinciden');
       return;
     }
 
     if (this.password.length < 6) {
-      this.errorMessage.set('La contraseña debe tener al menos 6 caracteres');
+      this.errorMessage.set('La contraseÃ±a debe tener al menos 6 caracteres');
       return;
     }
 
@@ -100,7 +101,7 @@ export class Register {
         };
 
         return this.http.post(
-          'http://localhost:3001/userProfiles',
+          `${environment.platformProviderApiBaseUrl}/userProfiles`,
           profile
         ).pipe(map(() => user));
       })
@@ -119,3 +120,4 @@ export class Register {
     });
   }
 }
+
