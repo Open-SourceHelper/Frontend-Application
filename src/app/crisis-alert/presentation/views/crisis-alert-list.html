@@ -1,86 +1,165 @@
 <section class="crisis-alert-page" aria-labelledby="alert-heading">
-  <h1 id="alert-heading">BC03 · Gestión de alertas de crisis</h1>
-  <p>Activa una alerta SOS digital para coordinar a la red de cuidado autorizada.</p>
+  <header class="page-hero">
+    <div class="hero-icon" aria-hidden="true">
+      <mat-icon>notifications_active</mat-icon>
+    </div>
+    <div>
+      <p class="eyebrow">Cuidado conectado</p>
+      <h1 id="alert-heading">Alertas de cuidado</h1>
+      <p class="hero-subtitle">
+        Registra una situación importante y mantén organizado el seguimiento con las personas que cuidan de tu familia.
+      </p>
+    </div>
+  </header>
 
-  <p class="demo-note">
-    Prototipo académico: se registran avisos internos en JSON Server, pero no se envían
-    SMS, notificaciones push ni llamadas a emergencias. No reemplaza atención profesional.
-  </p>
+  <div class="content-grid">
+    <mat-card class="create-card">
+      <mat-card-header>
+        <mat-card-title>Crear una alerta</mat-card-title>
+        <mat-card-subtitle>Comparte la información esencial sobre lo que está ocurriendo.</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <form (ngSubmit)="activate()" class="alert-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Perfil del niño</mat-label>
+            <input matInput name="childId" [(ngModel)]="childId" required maxlength="80">
+          </mat-form-field>
 
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Activar alerta SOS</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <form (ngSubmit)="activate()" class="alert-form">
-        <mat-form-field appearance="outline">
-          <mat-label>ID del niño</mat-label>
-          <input matInput name="childId" [(ngModel)]="childId" required maxlength="80">
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>ID del cuidador</mat-label>
-          <input matInput name="caregiverId" [(ngModel)]="caregiverId" required maxlength="80">
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Descripción (opcional)</mat-label>
-          <textarea matInput name="description" [(ngModel)]="description" maxlength="500" rows="3"></textarea>
-        </mat-form-field>
-        <button mat-flat-button class="sos-button" type="submit"
-          [disabled]="busy() || !childId.trim() || !caregiverId.trim()">
-          Activar SOS
-        </button>
-      </form>
-    </mat-card-content>
-  </mat-card>
+          <mat-form-field appearance="outline">
+            <mat-label>Cuidador responsable</mat-label>
+            <input matInput name="caregiverId" [(ngModel)]="caregiverId" required maxlength="80">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>¿Qué está sucediendo? (opcional)</mat-label>
+            <textarea
+              matInput
+              name="description"
+              [(ngModel)]="description"
+              maxlength="500"
+              rows="3"
+              placeholder="Describe brevemente la situación para facilitar el seguimiento."
+            ></textarea>
+          </mat-form-field>
+
+          <button
+            mat-flat-button
+            class="sos-button"
+            type="submit"
+            [disabled]="busy() || !childId.trim() || !caregiverId.trim()"
+          >
+            <mat-icon aria-hidden="true">campaign</mat-icon>
+            {{ busy() ? 'Registrando alerta…' : 'Activar alerta SOS' }}
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <aside class="info-panel" aria-label="Cómo funcionan las alertas">
+      <div class="info-heading">
+        <mat-icon aria-hidden="true">favorite_border</mat-icon>
+        <h2>Acompañamiento en cada momento</h2>
+      </div>
+      <p>Kinemo te ayuda a llevar un registro de las situaciones que requieren atención.</p>
+      <div class="info-step">
+        <mat-icon aria-hidden="true">edit_note</mat-icon>
+        <span>Guarda los detalles de la alerta en un solo lugar.</span>
+      </div>
+      <div class="info-step">
+        <mat-icon aria-hidden="true">groups</mat-icon>
+        <span>Prepara avisos internos para los cuidadores autorizados.</span>
+      </div>
+      <div class="info-step">
+        <mat-icon aria-hidden="true">task_alt</mat-icon>
+        <span>Da seguimiento hasta que la situación se haya cerrado.</span>
+      </div>
+      <p class="delivery-note">
+        Por ahora, los avisos se registran dentro de Kinemo: no se envían notificaciones automáticas ni llamadas a emergencias.
+      </p>
+    </aside>
+  </div>
 
   @if (error()) {
-    <p role="alert" class="error">{{ error() }}</p>
+    <p role="alert" class="feedback error">{{ error() }}</p>
   }
   @if (success()) {
-    <p role="status" class="success">{{ success() }}</p>
+    <p role="status" class="feedback success">{{ success() }}</p>
   }
 
   <div class="history-heading">
-    <h2>Historial de alertas</h2>
-    <button mat-stroked-button type="button" (click)="refresh()" [disabled]="loading()">Actualizar</button>
+    <div>
+      <p class="eyebrow">Seguimiento</p>
+      <h2>Historial de alertas</h2>
+    </div>
+    <button mat-stroked-button type="button" (click)="refresh()" [disabled]="loading()">
+      <mat-icon aria-hidden="true">refresh</mat-icon>
+      Actualizar
+    </button>
   </div>
+
   @if (loading()) {
     <p role="status">Cargando alertas…</p>
   } @else {
     @for (alert of alerts(); track alert.id) {
       <mat-card class="alert-card">
         <mat-card-content>
-          <p><strong>Estado:</strong> {{ alert.status }}</p>
-          <p><strong>Fecha:</strong> {{ alert.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
-          <p><strong>Creada por:</strong> {{ alert.caregiverId }}</p>
-          <p><strong>Detalle:</strong> {{ alert.description || 'Sin descripción' }}</p>
-          <p><strong>Destinatarios internos:</strong> {{ alert.notifiedCaregiverIds.length }}</p>
-          @if (alert.status === 'ACTIVE') {
-            <button mat-stroked-button type="button" [disabled]="busy()" (click)="attend(alert)">
-              Marcar como atendida
-            </button>
-          }
-          @if (alert.status === 'ATTENDED') {
-            <button mat-stroked-button type="button" [disabled]="busy()" (click)="close(alert)">
-              Cerrar alerta
-            </button>
-          }
+          <div class="alert-card-header">
+            <span
+              class="status-pill"
+              [class.active]="alert.status === 'ACTIVE'"
+              [class.attended]="alert.status === 'ATTENDED'"
+              [class.closed]="alert.status === 'CLOSED'"
+            >
+              {{ alert.status === 'ACTIVE' ? 'Activa' : (alert.status === 'ATTENDED' ? 'En seguimiento' : 'Cerrada') }}
+            </span>
+            <span class="alert-date">{{ alert.createdAt | date:'dd/MM/yyyy · HH:mm' }}</span>
+          </div>
+          <p class="alert-description">{{ alert.description || 'Alerta sin descripción adicional.' }}</p>
+          <p class="alert-meta">Registrada por {{ alert.caregiverId }} · {{ alert.notifiedCaregiverIds.length }} destinatario(s) de avisos internos</p>
+          <div class="alert-actions">
+            @if (alert.status === 'ACTIVE') {
+              <button mat-stroked-button type="button" [disabled]="busy()" (click)="attend(alert)">
+                Marcar como atendida
+              </button>
+            }
+            @if (alert.status === 'ATTENDED') {
+              <button mat-stroked-button type="button" [disabled]="busy()" (click)="close(alert)">
+                Cerrar alerta
+              </button>
+            }
+          </div>
         </mat-card-content>
       </mat-card>
     } @empty {
-      <p>No hay alertas registradas para este niño.</p>
+      <div class="empty-state">
+        <mat-icon aria-hidden="true">notifications_none</mat-icon>
+        <h3>No hay alertas registradas</h3>
+        <p>Cuando se active una alerta para este perfil, aparecerá aquí.</p>
+      </div>
     }
   }
 
-  <h2>Avisos internos para el cuidador seleccionado</h2>
+  <div class="history-heading inbox-heading">
+    <div>
+      <p class="eyebrow">Tu red de cuidado</p>
+      <h2>Avisos internos</h2>
+    </div>
+  </div>
   @for (notification of notifications(); track notification.id) {
     <mat-card class="notification-card">
       <mat-card-content>
-        <p><strong>Aviso pendiente:</strong> {{ notification.alertId }}</p>
-        <p>Niño: {{ notification.childId }} · {{ notification.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
+        <div class="notification-row">
+          <mat-icon aria-hidden="true">notifications_none</mat-icon>
+          <div>
+            <strong>Aviso de cuidado</strong>
+            <p>Perfil: {{ notification.childId }} · {{ notification.createdAt | date:'dd/MM/yyyy · HH:mm' }}</p>
+          </div>
+        </div>
       </mat-card-content>
     </mat-card>
   } @empty {
-    <p>No hay avisos internos para este cuidador.</p>
+    <div class="empty-state small">
+      <p>No tienes avisos internos registrados.</p>
+    </div>
   }
 </section>
