@@ -47,8 +47,8 @@ export class CrisisAlertService {
     return this.authorizedActors(childId, caregiverId).pipe(
       switchMap(authorizedIds => this.repository.findByChild(childId).pipe(
         switchMap(existing => {
-          if (existing.some(item => item.status === 'ACTIVE')) {
-            return throwError(() => new Error('Ya existe una alerta activa para este niño.'));
+          if (existing.some(item => item.status !== 'CLOSED')) {
+            return throwError(() => new Error('Ya existe una alerta sin cerrar para este niño.'));
           }
 
           const recipients = authorizedIds.filter(id => id !== caregiverId);
