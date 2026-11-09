@@ -1,0 +1,9 @@
+.crisis-alert-page { max-width: 900px; margin: 32px auto; padding: 24px; }
+h1, h2 { color: #5b2d91; }
+.alert-form { display: grid; gap: 12px; padding-top: 18px; }
+.demo-note { padding: 14px; border-left: 4px solid #b54708; background: #fff7ed; line-height: 1.5; }
+.sos-button { background: #b42318 !important; color: white !important; min-height: 48px; font-weight: 700; }
+.history-heading { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; margin-top: 32px; }
+.alert-card, .notification-card { margin: 12px 0; overflow-wrap: anywhere; }
+.error { color: #b42318; }
+.success { color: #146c43; }
