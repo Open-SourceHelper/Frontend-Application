@@ -15,7 +15,7 @@ const clinical = () =>
   import('./child-profile/presentation/views/clinical-list/clinical-list')
     .then((m) => m.ClinicalList);
 
-// BC03 - Care Network Management
+// Legacy Care Network Management (pending migration to new BC02)
 const careNetwork = () =>
   import('./care-network-management/presentation/views/care-network-list')
     .then((m) => m.CareNetworkList);
@@ -23,6 +23,11 @@ const careNetwork = () =>
 const acceptInvitation = () =>
   import('./care-network-management/presentation/views/care-network-invitation-accept')
     .then((m) => m.CareNetworkInvitationAccept);
+
+// New BC03 - Crisis Alert Management
+const crisisAlerts = () =>
+  import('./crisis-alert/presentation/views/crisis-alert-list')
+    .then((m) => m.CrisisAlertList);
 
 // BC04 - Routine & Activity Management
 const routineActivityRoutes = () =>
@@ -100,7 +105,7 @@ export const routes: Routes = [
     title: `${baseTitle} - Clinical Profile`
   },
 
-  // BC03 - Care Network Management
+  // Legacy Care Network Management (pending migration to new BC02)
   {
     path: 'care-networks/invitations/accept/:invitationId',
     loadComponent: acceptInvitation,
@@ -110,6 +115,13 @@ export const routes: Routes = [
     path: 'care-networks/:careNetworkId',
     loadComponent: careNetwork,
     title: `${baseTitle} - Red de Cuidado`
+  },
+
+  // New BC03 - Crisis Alert Management
+  {
+    path: 'crisis-alerts',
+    loadComponent: crisisAlerts,
+    title: `${baseTitle} - Alertas de crisis`
   },
 
   // BC04 - Routine & Activity Management
