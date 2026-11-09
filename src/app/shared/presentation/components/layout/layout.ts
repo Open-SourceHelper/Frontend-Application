@@ -30,7 +30,10 @@ export class Layout {
     { link: '/child-profile', label: 'Child Profile', icon: 'child_care' },
     { link: '/clinical-profile', label: 'Clinical Profile', icon: 'health_and_safety' },
 
-    // BC03 - Care Network Management
+    // New BC03 - Crisis Alert Management
+    { link: '/crisis-alerts', label: 'Alertas SOS', icon: 'sos' },
+
+    // Legacy Care Network Management (pending migration to BC02)
     { link: '/care-networks/1', label: 'Red de Cuidado', icon: 'groups' },
 
     // BC04 - Routine & Activity Management
