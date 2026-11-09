@@ -65,8 +65,7 @@
       "status": "revoked",
       "authorizedAt": "2026-09-20T09:00:00-05:00",
       "revokedAt": "2026-10-01T16:30:00-05:00"
-    }
-    ,
+    },
     {
       "id": "auth-alert-demo-001",
       "childId": "child-001",
