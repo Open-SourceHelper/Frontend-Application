@@ -66,6 +66,23 @@
       "authorizedAt": "2026-09-20T09:00:00-05:00",
       "revokedAt": "2026-10-01T16:30:00-05:00"
     }
+    ,
+    {
+      "id": "auth-alert-demo-001",
+      "childId": "child-001",
+      "caregiverId": "caregiver-alert-001",
+      "status": "active",
+      "authorizedAt": "2026-11-08T09:00:00-05:00",
+      "revokedAt": null
+    },
+    {
+      "id": "auth-alert-demo-002",
+      "childId": "child-001",
+      "caregiverId": "caregiver-alert-002",
+      "status": "active",
+      "authorizedAt": "2026-11-08T09:00:00-05:00",
+      "revokedAt": null
+    }
   ],
   "clinicalProfiles": [
     {
@@ -551,5 +568,7 @@
   ],
   "users": [],
   "userSessions": [],
-  "careNetworks": []
+  "careNetworks": [],
+  "crisisAlerts": [],
+  "crisisAlertNotifications": []
 }
