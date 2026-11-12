@@ -24,6 +24,23 @@ public record CrisisAlert(
         Objects.requireNonNull(description, "description");
         Objects.requireNonNull(status, "status");
         Objects.requireNonNull(createdAt, "createdAt");
+        if (childId.isBlank() || caregiverId.isBlank()) {
+            throw new DomainRuleViolation("El niño y el cuidador son obligatorios.");
+        }
+        if (description.length() > 500) {
+            throw new DomainRuleViolation("La descripción no puede superar 500 caracteres.");
+        }
+        if (status == AlertStatus.ACTIVE &&
+                (attendedAt != null || closedAt != null || attendedBy != null || closedBy != null)) {
+            throw new DomainRuleViolation("Una alerta activa no puede estar atendida ni cerrada.");
+        }
+        if (status == AlertStatus.ATTENDED && (attendedAt == null || attendedBy == null)) {
+            throw new DomainRuleViolation("Una alerta atendida requiere fecha y responsable.");
+        }
+        if (status == AlertStatus.CLOSED &&
+                (attendedAt == null || attendedBy == null || closedAt == null || closedBy == null)) {
+            throw new DomainRuleViolation("Una alerta cerrada debe haber sido atendida.");
+        }
     }
 
     public static CrisisAlert activate(String childId, String caregiverId,
