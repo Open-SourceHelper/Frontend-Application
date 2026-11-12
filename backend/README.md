@@ -69,6 +69,7 @@ The server obtains the caregiver identity from the authenticated principal, **no
 - The internal notice table stores `IN_APP/QUEUED` messages; there is **no real SMS, push delivery, or emergency dispatch**. The response's `queuedNotices` count is not proof of delivery.
 - Real BC02 integration must replace the temporary authorization adapter; real BC01 integration must replace local Basic auth. Never deploy local demo credentials.
 - H2 is an ephemeral development database and is not intended for production.
+- Spring Boot 3.5.16 is the final community-supported 3.5.x patch. Upgrade to a currently supported Spring Boot line before commercial deployment.
 - Clinical advice, automatic diagnosis, child-worn devices and real-time wearable triggers are outside this BC's scope.
 - Use proper HTTPS, production DB migrations, observability, rate limits, data-retention policy and security reviews before deployment.
 - This implementation must not be presented as production-ready until dependencies are installed and the test suite passes in IntelliJ/CI.
