@@ -1,6 +1,6 @@
 # Kinemo Alert — Backend BC03 (DDD + CQRS)
 
-Java 21 · Spring Boot 3.5.7 · Maven · Spring Data JPA · H2 (local) · Spring Security.
+Java 21 · Spring Boot 3.5.16 · Maven · Spring Data JPA · H2 (local) · Spring Security.
 
 This is the backend for **BC03 Crisis Alert Management**, isolated from the Angular frontend in the `backend/` directory. It is designed to be moved into a dedicated backend repository when the organization creates one.
 
