@@ -24,15 +24,11 @@ const acceptInvitation = () =>
   import('./care-network-management/presentation/views/care-network-invitation-accept')
     .then((m) => m.CareNetworkInvitationAccept);
 
-// BC04 - Routine & Activity Management
-const routineActivityRoutes = () =>
-  import('./routine-activity/routine-activity.routes')
-    .then((m) => m.routineActivityRoutes);
+// BC04 - Clinical Guidance & Routine Management
+const guidanceRoutineRoutes = () =>
+  import('./clinical-guidance-routine-management/clinical-guidance-routine-management.routes')
+    .then((m) => m.CLINICAL_GUIDANCE_ROUTINE_MANAGEMENT_ROUTES);
 
-// BC05 - Clinical Guidance Management
-const clinicalGuidance = () =>
-  import('./clinical-guidance/presentation/views/clinical-guideline-list/clinical-guideline-list')
-    .then((m) => m.ClinicalGuidelineList);
 
 // BC06 - Observation & Crisis Management
 const observationList = () =>
@@ -112,18 +108,11 @@ export const routes: Routes = [
     title: `${baseTitle} - Red de Cuidado`
   },
 
-  // BC04 - Routine & Activity Management
+  // BC04 - Clinical Guidance & Routine Management
   {
-    path: 'routine-activity',
-    loadChildren: routineActivityRoutes,
-    title: `${baseTitle} - Rutinas`
-  },
-
-  // BC05 - Clinical Guidance Management
-  {
-    path: 'clinical-guidance',
-    loadComponent: clinicalGuidance,
-    title: `${baseTitle} - Orientaciones Clínicas`
+    path: 'clinical-guidance-routine-management',
+    loadChildren: guidanceRoutineRoutes,
+    title: `${baseTitle} - Orientaciones Clínicas y Rutinas`
   },
 
   // BC06 - Observation & Crisis Management

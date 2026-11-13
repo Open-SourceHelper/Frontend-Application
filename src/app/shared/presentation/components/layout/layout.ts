@@ -33,11 +33,8 @@ export class Layout {
     // BC03 - Care Network Management
     { link: '/care-networks/1', label: 'Red de Cuidado', icon: 'groups' },
 
-    // BC04 - Routine & Activity Management
-    { link: '/routine-activity/routines', label: 'Rutinas', icon: 'event_note' },
-
-    // BC05 - Clinical Guidance Management
-    { link: '/clinical-guidance', label: 'Orientaciones Clínicas', icon: 'medical_services' },
+    // BC04 - Clinical Guidance & Routine Management
+    { link: '/clinical-guidance-routine-management', label: 'Orientaciones y Rutinas', icon: 'health_and_safety' },
 
     // BC06 - Observation & Crisis Management
     { link: '/observations', label: 'Observaciones y crisis', icon: 'assignment' },
