@@ -1,0 +1,42 @@
+<mat-card class="form-card">
+  <mat-card-header>
+    <mat-card-title>Registrar pauta clínica</mat-card-title>
+    <mat-card-subtitle>Solo se habilitan pacientes con asignación profesional activa.</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Asignación profesional activa</mat-label>
+        <mat-select formControlName="patientAssignmentId">
+          @for (assignment of activeAssignments(); track assignment.id) {
+            <mat-option [value]="assignment.id">{{ assignment.psychologistId }} — {{ assignment.childId }}</mat-option>
+          }
+        </mat-select>
+        @if (form.controls.patientAssignmentId.hasError('required')) {
+          <mat-error>Seleccione una asignación activa.</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Título de la pauta</mat-label>
+        <input matInput formControlName="title" maxlength="150" />
+        @if (form.controls.title.hasError('required')) { <mat-error>Ingrese el título.</mat-error> }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Instrucciones clínicas</mat-label>
+        <textarea matInput formControlName="instructions" rows="5"
+          placeholder="Escriba las recomendaciones del profesional"></textarea>
+        @if (form.controls.instructions.hasError('required')) {
+          <mat-error>Ingrese las instrucciones clínicas.</mat-error>
+        }
+      </mat-form-field>
+      @if (assignments.loading()) { <p>Cargando pacientes...</p> }
+      @if (activeAssignments().length === 0 && assignments.loaded()) {
+        <p>No hay asignaciones activas disponibles.</p>
+      }
+      @if (formError()) { <p class="error-message" role="alert">{{ formError() }}</p> }
+      <button mat-flat-button type="submit" [disabled]="assignments.loading() || !assignments.loaded() || activeAssignments().length === 0">
+        <mat-icon>save</mat-icon> Registrar pauta
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>

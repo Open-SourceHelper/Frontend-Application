@@ -1,0 +1,142 @@
+@if (routine(); as routine) {
+  @if (!timerVisible()) {
+    <!-- 07 · Rutina de hoy -->
+    <header class="page-header">
+      <div class="title">
+        <button mat-icon-button aria-label="Volver" (click)="back()"><mat-icon>arrow_back</mat-icon></button>
+        <div>
+          <h1>{{ routine.name }}</h1>
+          <span class="muted">Niño: {{ routine.childId }} · {{ routine.totalMinutes }} min en total</span>
+        </div>
+      </div>
+    </header>
+    @if (store.error()) { <mat-error class="error">{{ store.error() }}</mat-error> }
+
+    <div class="layout">
+      <section class="panel day">
+        <h2 class="capitalize">{{ today }}</h2>
+        <p class="muted">{{ activities().length }} actividades · {{ completedCount() }} completadas</p>
+        <mat-progress-bar mode="determinate" [value]="progress()" class="progress"/>
+
+        <ol class="sequence">
+          @for (activity of activities(); track activity.id) {
+            <li [class]="activity.status" [class.now]="activity === current()">
+              @switch (activity.status) {
+                @case (ActivityStatus.COMPLETED) { <span class="check done"><mat-icon>check</mat-icon></span> }
+                @case (ActivityStatus.SKIPPED) { <span class="check skipped"><mat-icon>remove</mat-icon></span> }
+                @default { <span class="check"></span> }
+              }
+              <div class="info">
+                <span class="name">{{ activity.name }}</span>
+                <span class="muted">
+                  Paso {{ activity.activityOrder }} · {{ activity.durationMinutes }} min
+                  @if (activity.status === ActivityStatus.COMPLETED && activity.completedAt) { · hecha a las {{ activity.completedAt | date:'HH:mm' }} }
+                  @if (activity.status === ActivityStatus.SKIPPED) { · omitida }
+                </span>
+              </div>
+              @if (activity === current()) {
+                <button mat-flat-button (click)="startTimer(activity)">Iniciar</button>
+              }
+            </li>
+          }
+        </ol>
+        @if (!current()) {
+          <div class="finished"><mat-icon>celebration</mat-icon> ¡Rutina terminada!</div>
+        }
+      </section>
+
+      <aside class="side">
+        <section class="panel">
+          <h3>Apoyo visual</h3>
+          @if (current(); as activity) {
+            <p class="muted">Pictograma: {{ activity.name }}</p>
+            @if (activity.mainVisualSupport; as support) {
+              <img class="pictogram" [src]="support.fileUrl" [alt]="activity.name">
+            } @else {
+              <div class="pictogram empty"><mat-icon>image</mat-icon><span>Sin pictograma</span></div>
+            }
+            @if (activity.description) { <p class="hint">{{ activity.description }}</p> }
+          } @else {
+            <p class="muted">No hay actividades pendientes.</p>
+          }
+        </section>
+
+        <section class="panel actions">
+          <h3>Acciones</h3>
+          @if (current(); as activity) {
+            <button mat-flat-button (click)="complete(activity)"><mat-icon>check</mat-icon> Marcar completada</button>
+            <button mat-stroked-button (click)="skip(activity)"><mat-icon>skip_next</mat-icon> Omitir actividad</button>
+          }
+          <button mat-stroked-button (click)="duplicate(routine.id)"><mat-icon>content_copy</mat-icon> Duplicar rutina</button>
+        </section>
+      </aside>
+    </div>
+  } @else if (current(); as activity) {
+    <!-- 08 · Temporizador -->
+    <header class="page-header">
+      <h1>Transición a: {{ next()?.name ?? 'fin de la rutina' }}</h1>
+    </header>
+
+    <div class="layout">
+      <section class="panel timer" [class.alert]="alertActive()">
+        <div class="ring">
+          <svg viewBox="0 0 200 200" aria-hidden="true">
+            <circle class="track" cx="100" cy="100" r="88"/>
+            <circle class="bar" cx="100" cy="100" r="88" [attr.stroke-dashoffset]="ringOffset()"/>
+          </svg>
+          <div class="ring-label">
+            @if (alertActive()) {
+              <strong class="done-label">¡Hora de cambiar!</strong>
+            } @else {
+              <strong>{{ remainingLabel() }}</strong>
+              <span class="muted">{{ paused() ? 'en pausa' : 'minutos restantes' }}</span>
+            }
+          </div>
+        </div>
+        <div class="timer-actions">
+          @if (alertActive()) {
+            <button mat-stroked-button (click)="stopTimer()">Volver a la rutina</button>
+          } @else {
+            <button mat-stroked-button (click)="togglePause(activity)">{{ paused() ? 'Reanudar' : 'Pausar' }}</button>
+          }
+          <button mat-flat-button (click)="complete(activity)">Finalizar</button>
+        </div>
+        <p class="muted center">Actividad actual: {{ activity.name }}</p>
+      </section>
+
+      <aside class="side">
+        <section class="panel">
+          <h3>Después sigue</h3>
+          @if (next(); as following) {
+            <p class="next-name">{{ following.name }}</p>
+            <p class="muted">{{ following.durationMinutes }} min</p>
+            @if (following.mainVisualSupport; as support) {
+              <img class="pictogram small" [src]="support.fileUrl" [alt]="following.name">
+            }
+          } @else {
+            <p class="muted">Es la última actividad de la rutina.</p>
+          }
+        </section>
+
+        <section class="panel">
+          <h3>Señal visual</h3>
+          <p class="muted">
+            @if (activity.alertType === AlertType.SOFT_SOUND) {
+              Al terminar se mostrará una alerta suave y sonará un tono bajo.
+            } @else {
+              Al terminar se mostrará una alerta suave, sin sonido.
+            }
+          </p>
+          <mat-button-toggle-group [value]="activity.alertType" (change)="changeAlert(activity, $event.value)" aria-label="Tipo de alerta" hideSingleSelectionIndicator>
+            <mat-button-toggle [value]="AlertType.VISUAL">Solo visual</mat-button-toggle>
+            <mat-button-toggle [value]="AlertType.SOFT_SOUND">Sonora leve</mat-button-toggle>
+          </mat-button-toggle-group>
+        </section>
+      </aside>
+    </div>
+  }
+} @else if (store.loading()) {
+  <p class="state">Cargando rutina…</p>
+} @else {
+  <p class="state">No se encontró la rutina. <button mat-button (click)="back()">Volver</button></p>
+}

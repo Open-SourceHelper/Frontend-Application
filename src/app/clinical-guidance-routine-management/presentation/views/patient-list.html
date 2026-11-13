@@ -1,0 +1,33 @@
+<section class="patient-page">
+  <header class="page-header">
+    <div class="header-icon"><mat-icon>supervised_user_circle</mat-icon></div>
+    <div><h1>Pacientes vinculados</h1><p>Consulta las asignaciones profesionales activas.</p></div>
+  </header>
+  <div class="toolbar">
+    <label for="patient-search">Buscar por identificador del niño</label>
+    <input id="patient-search" type="search" placeholder="ID del niño"
+      [value]="search()" (input)="onSearch($event)" />
+  </div>
+  @if (assignmentStore.loading()) {
+    <div class="loading"><mat-spinner diameter="32"/> Cargando pacientes...</div>
+  } @else if (assignmentStore.error()) {
+    <div class="error" role="alert"><mat-icon>error_outline</mat-icon> {{ assignmentStore.error() }}</div>
+  } @else if (activeAssignments().length === 0) {
+    <p class="empty">No hay pacientes vinculados que coincidan con la búsqueda.</p>
+  } @else {
+    <div class="patient-grid">
+      @for (assignment of activeAssignments(); track assignment.id) {
+        <article class="patient-card">
+          <div class="card-icon"><mat-icon>child_care</mat-icon></div>
+          <div class="info"><h2>Niño: {{ assignment.childId }}</h2>
+            <p>Profesional: {{ assignment.psychologistId }}</p>
+            <p>Asignado: {{ assignment.assignedAt | date:'dd/MM/yyyy' }}</p>
+            <a [routerLink]="['/clinical-guidance-routine-management/routines']"
+              [queryParams]="{ childId: assignment.childId }">Ver rutinas del niño</a>
+          </div>
+        </article>
+      }
+    </div>
+  }
+  <p class="disclaimer">La autorización clínica debe verificarse en el backend. Esta vista muestra datos del entorno de demostración.</p>
+</section>
