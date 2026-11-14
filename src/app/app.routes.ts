@@ -38,6 +38,12 @@ const clinicalGuidance = () =>
   import('./clinical-guidance/presentation/views/clinical-guideline-list/clinical-guideline-list')
     .then((m) => m.ClinicalGuidelineList);
 
+// BC04 - Clinical Guidance & Routine Management
+const guidanceRoutineRoutes = () =>
+  import('./clinical-guidance-routine-management/clinical-guidance-routine-management.routes')
+    .then((m) => m.CLINICAL_GUIDANCE_ROUTINE_MANAGEMENT_ROUTES);
+
+
 // BC05 - Observation & Crisis History Management
 const episodeHistory = () =>
   import('./observation-crisis-history/presentation/pages/episode-history')
@@ -129,6 +135,13 @@ export const routes: Routes = [
     path: 'clinical-guidance',
     loadComponent: clinicalGuidance,
     title: `${baseTitle} - Orientaciones Clínicas`
+  },
+
+  // BC04 - Clinical Guidance & Routine Management
+  {
+    path: 'clinical-guidance-routine-management',
+    loadChildren: guidanceRoutineRoutes,
+    title: `${baseTitle} - Orientaciones Clínicas y Rutinas`
   },
 
   // BC05 - Observation & Crisis History Management

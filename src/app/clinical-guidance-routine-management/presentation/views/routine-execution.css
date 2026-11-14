@@ -1,0 +1,47 @@
+:host { max-width: 1040px; margin: 16px 24px; }
+.title { display: flex; align-items: center; gap: 8px; }
+.capitalize::first-letter { text-transform: uppercase; }
+.error { display: block; margin-bottom: 12px; }
+.layout { display: grid; grid-template-columns: minmax(0, 2fr) minmax(240px, 1fr); gap: 16px; align-items: start; }
+@media (max-width: 760px) { .layout { grid-template-columns: 1fr; } }
+.side { display: flex; flex-direction: column; gap: 16px; }
+
+/* Rutina de hoy */
+.progress { margin: 12px 0 8px; --mat-progress-bar-active-indicator-color: var(--brand); --mat-progress-bar-track-color: var(--brand-soft); }
+.sequence { list-style: none; padding: 0; margin: 8px 0 0; display: flex; flex-direction: column; }
+.sequence li { display: flex; align-items: center; gap: 14px; padding: 12px 8px; border-radius: 10px; }
+.sequence li + li { border-top: 1px solid var(--line); }
+.sequence li.now { background: var(--brand-softer); }
+.check { flex: none; width: 26px; height: 26px; border-radius: 50%; border: 2px solid #cfc8da; display: grid; place-items: center; color: #fff; }
+.check mat-icon { font-size: 18px; width: 18px; height: 18px; }
+.check.done { background: var(--ok); border-color: var(--ok); }
+.check.skipped { background: #b0a9bb; border-color: #b0a9bb; }
+.info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.name { font-weight: 600; }
+.sequence li.SKIPPED .name { text-decoration: line-through; color: var(--text-muted); }
+.finished { display: flex; align-items: center; gap: 8px; margin-top: 12px; padding: 12px; border-radius: 10px; background: #e8f5e9; color: var(--ok); font-weight: 600; }
+
+/* Apoyo visual / acciones */
+.pictogram { display: block; width: 100%; aspect-ratio: 4 / 3; margin-top: 10px; border-radius: 12px; object-fit: contain; background: var(--brand-soft); }
+.pictogram.empty { display: grid; place-content: center; justify-items: center; gap: 4px; color: #9b8fb0; font-size: 13px; }
+.pictogram.small { width: 96px; aspect-ratio: 1; }
+.hint { margin: 10px 0 0; font-size: 14px; }
+.actions { display: flex; flex-direction: column; gap: 10px; }
+.actions button { width: 100%; }
+
+/* Temporizador */
+.timer { display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 32px 20px; transition: background-color 1.5s ease, box-shadow 1.5s ease; }
+.timer.alert { background: #fff6dd; box-shadow: inset 0 0 0 3px #f2c94c; }
+.ring { position: relative; width: min(240px, 70vw); aspect-ratio: 1; }
+.ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring circle { fill: none; stroke-width: 18; }
+.ring .track { stroke: var(--brand-soft); }
+.ring .bar { stroke: var(--brand); stroke-linecap: round; stroke-dasharray: 552.92; transition: stroke-dashoffset 1s linear; }
+.ring-label { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+.ring-label strong { font-size: 44px; line-height: 1; font-variant-numeric: tabular-nums; }
+.ring-label .done-label { font-size: 22px; text-align: center; padding: 0 30px; }
+.timer-actions { display: flex; gap: 12px; }
+.center { text-align: center; margin: 0; }
+.next-name { margin: 6px 0 0; font-weight: 600; }
+mat-button-toggle-group { margin-top: 10px; }
+.state { margin: 16px; }

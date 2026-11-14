@@ -1,0 +1,73 @@
+<div class="care-overview-container">
+  <header class="page-header">
+    <div class="header-icon"><mat-icon>health_and_safety</mat-icon></div>
+    <div class="header-content">
+      <h1>Orientaciones clínicas y rutinas</h1>
+      <p>Organiza actividades diarias y consulta pautas del profesional para el cuidado del niño.</p>
+    </div>
+  </header>
+
+  <section class="summary-grid" aria-label="Resumen del plan de cuidado">
+    <div class="summary-card">
+      <div class="summary-info"><span class="summary-label">Rutinas</span>
+        <span class="summary-number">{{ routines().length }}</span><span class="summary-description">Secuencias del niño</span></div>
+      <div class="summary-icon"><mat-icon>event_note</mat-icon></div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-info"><span class="summary-label">Pautas vigentes</span>
+        <span class="summary-number">{{ clinicalGuidelines().length }}</span><span class="summary-description">Orientaciones profesionales</span></div>
+      <div class="summary-icon"><mat-icon>medical_services</mat-icon></div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-info"><span class="summary-label">Guías prácticas</span>
+        <span class="summary-number">{{ guideCount() }}</span><span class="summary-description">Material de consulta</span></div>
+      <div class="summary-icon"><mat-icon>menu_book</mat-icon></div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-info"><span class="summary-label">Pacientes vinculados</span>
+        <span class="summary-number">{{ patientCount() }}</span><span class="summary-description">Asignaciones activas</span></div>
+      <div class="summary-icon"><mat-icon>supervised_user_circle</mat-icon></div>
+    </div>
+  </section>
+
+  <nav class="quick-links" aria-label="Opciones del bounded context">
+    <a routerLink="routines" [queryParams]="childId() ? { childId: childId() } : {}"><mat-icon>list_alt</mat-icon> Gestionar rutinas</a>
+    <a routerLink="routines/new" [queryParams]="childId() ? { childId: childId() } : {}"><mat-icon>add_circle_outline</mat-icon> Crear rutina</a>
+    <a routerLink="guidelines"><mat-icon>assignment</mat-icon> Pautas clínicas</a>
+    <a routerLink="guides"><mat-icon>search</mat-icon> Guías prácticas</a>
+    <a routerLink="patients"><mat-icon>supervised_user_circle</mat-icon> Pacientes vinculados</a>
+  </nav>
+
+  @if (routineStore.error() || guidelineStore.error() || guideStore.error() || assignmentStore.error()) {
+    <div class="error-message" role="alert">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ routineStore.error() || guidelineStore.error() || guideStore.error() || assignmentStore.error() }}</span>
+    </div>
+  }
+
+  @if (routineStore.loading() || guidelineStore.loading() || guideStore.loading() || assignmentStore.loading()) {
+    <div class="loading-container"><mat-spinner diameter="32"/><span>Cargando información...</span></div>
+  }
+
+  <section class="content-grid">
+    <article class="content-section">
+      <div class="section-heading"><h2>Rutinas disponibles</h2><a routerLink="routines">Ver todas</a></div>
+      @if (!routineStore.loading() && routines().length === 0) { <p class="empty">No hay rutinas registradas para este niño.</p> }
+      @for (routine of routinePreview(); track routine.id) {
+        <div class="list-item"><div><strong>{{ routine.name }}</strong>
+          <span>{{ routine.activities.length }} actividades · {{ routine.totalMinutes }} min · {{ routine.status }}</span></div>
+          <a [routerLink]="['routines', routine.id, 'execution']" [attr.aria-label]="'Abrir ' + routine.name"><mat-icon>play_circle</mat-icon></a>
+        </div>
+      }
+    </article>
+    <article class="content-section">
+      <div class="section-heading"><h2>Pautas clínicas activas</h2><a routerLink="guidelines">Ver pautas</a></div>
+      @if (!guidelineStore.loading() && clinicalGuidelines().length === 0) { <p class="empty">No hay pautas activas para este niño.</p> }
+      @for (guideline of guidelinesPreview(); track guideline.id) {
+        <div class="list-item"><div><strong>{{ guideline.title }} · Niño: {{ guideline.childId }}</strong>
+          <span>{{ guideline.instructions }}</span></div><mat-icon aria-hidden="true">fact_check</mat-icon></div>
+      }
+    </article>
+  </section>
+  <p class="notice">Las pautas mostradas son las registradas por un profesional; consulta su contenido completo antes de aplicarlas.</p>
+</div>

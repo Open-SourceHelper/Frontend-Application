@@ -34,11 +34,8 @@ export class Layout {
     // BC03 - Crisis Alert Management
     { link: '/crisis-alerts', label: 'Alertas SOS', icon: 'notification_important' },
 
-    // BC04 - Routine & Activity Management
-    { link: '/routine-activity/routines', label: 'Rutinas', icon: 'event_note' },
-
-    // Clinical Guidance Management (migrates to BC04)
-    { link: '/clinical-guidance', label: 'Orientaciones Clínicas', icon: 'medical_services' },
+    // BC04 - Clinical Guidance & Routine Management
+    { link: '/clinical-guidance-routine-management', label: 'Orientaciones y Rutinas', icon: 'health_and_safety' },
 
     // BC05 - Observation & Crisis History Management
     { link: '/observations', label: 'Historial de episodios', icon: 'assignment' },
