@@ -1,3 +1,4 @@
+import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -7,7 +8,7 @@ import { CrisisAlertRepository } from '../domain/repositories/crisis-alert.repos
 @Injectable()
 export class CrisisAlertJsonServerRepository extends CrisisAlertRepository {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = 'http://localhost:3000';
+  private readonly baseUrl = environment.platformProviderApiBaseUrl;
 
   findByChild(childId: string): Observable<CrisisAlert[]> {
     return this.http.get<CrisisAlert[]>(`${this.baseUrl}/crisisAlerts`, {

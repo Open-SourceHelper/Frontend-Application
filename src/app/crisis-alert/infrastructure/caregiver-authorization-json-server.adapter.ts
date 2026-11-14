@@ -1,3 +1,4 @@
+import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
@@ -15,7 +16,7 @@ export class CaregiverAuthorizationJsonServerAdapter extends CaregiverAuthorizat
 
   findActiveCaregiverIds(childId: string): Observable<string[]> {
     return this.http.get<CaregiverAuthorizationDto[]>(
-      'http://localhost:3000/caregiverAuthorizations',
+      environment.platformProviderApiBaseUrl + '/caregiverAuthorizations',
       { params: new HttpParams().set('childId', childId) }
     ).pipe(
       map(authorizations => [...new Set(
