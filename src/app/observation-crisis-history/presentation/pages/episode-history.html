@@ -25,7 +25,7 @@
         }
       </select>
     }
-    @if (false && childId && !professional() && !denied()) {
+    @if (childId && !professional() && !denied()) {
       <button type="button" (click)="begin()" [disabled]="busy()">+ Registrar lo ocurrido</button>
     }
     </div>
@@ -34,6 +34,75 @@
       <article class="locked"><span aria-hidden="true">🔒</span><h2>Este historial no está disponible para tu cuenta</h2>
         <p>Consulta con la familia responsable si necesitas acceso.</p></article>
     } @else if (childId) {
+      <dialog #registrationDialog class="history-dialog registration-dialog" aria-labelledby="registration-title"
+        (cancel)="$event.preventDefault(); dismissRegistration()">
+      @if (step() > 0) {
+        <form class="episode-form" (ngSubmit)="step() === 1 ? step.set(2) : save()">
+          <header class="dialog-header">
+            <h2 id="registration-title">{{ draft.alertId ? 'Documentar episodio' : 'Nuevo registro' }}</h2>
+            <button type="button" class="secondary close-dialog" autofocus (click)="dismissRegistration()">Cerrar</button>
+          </header>
+          @if (draft.alertId) { <p class="dialog-origin">Episodio vinculado a una alerta cerrada</p> }
+          @if (error()) { <p role="alert">{{ error() }}</p> }
+          <p role="status">Paso {{ step() }} de 2</p>
+          <progress [value]="step()" max="2" aria-label="Avance del registro"></progress>
+          <fieldset [disabled]="busy()">
+            @if (step() === 1) {
+              <label for="episode-description">¿Qué pasó?</label>
+              <textarea id="episode-description" name="description" [(ngModel)]="draft.description" rows="4" required></textarea>
+              <label for="episode-date">¿Cuándo pasó?</label>
+              <input type="datetime-local" id="episode-date" name="occurredAt" [(ngModel)]="draft.occurredAt" required>
+              @if (!draft.alertId) {
+                <label><input type="checkbox" name="crisis" [(ngModel)]="draft.crisis"> Fue un episodio de desregulación</label>
+              }
+            } @else {
+              @if (draft.crisis) {
+                <fieldset class="severity">
+                  <legend>¿Qué tan intenso fue?</legend>
+                  <div class="severity-options">
+                    @for (level of levels; track level.value) {
+                      <label class="severity-option">
+                        <input type="radio" name="severity" [value]="level.value" [(ngModel)]="draft.severity" required>
+                        <span aria-hidden="true" class="face">{{ level.face }}</span>
+                        <strong>{{ level.label }}</strong>
+                      </label>
+                    }
+                  </div>
+                </fieldset>
+                <label for="episode-duration">¿Cuánto duró en minutos? (opcional)</label>
+                <div class="actions durations">
+                  @for (minutes of [5, 10, 15, 30]; track minutes) {
+                    <button type="button" class="secondary" [attr.aria-pressed]="draft.durationMinutes === minutes"
+                      (click)="draft.durationMinutes = minutes">{{ minutes }} min</button>
+                  }
+                </div>
+                <input id="episode-duration" name="duration" type="number" min="1" step="1" [(ngModel)]="draft.durationMinutes">
+              }
+              <label for="episode-trigger">¿Qué ocurrió justo antes? (opcional)</label>
+              <input id="episode-trigger" name="trigger" [(ngModel)]="draft.trigger">
+              <label for="episode-helped">¿Qué ayudó? (opcional)</label>
+              <input id="episode-helped" name="helped" [(ngModel)]="draft.helped">
+            }
+            <div class="actions">
+              @if (step() === 2) { <button type="button" class="secondary" (click)="step.set(1)">Volver</button> }
+              <button type="submit" [disabled]="step() === 1 ? !draft.description.trim() || !draft.occurredAt : draft.crisis && !draft.severity">
+                {{ step() === 1 ? 'Continuar' : 'Guardar registro' }}
+              </button>
+              <button type="button" class="secondary" (click)="dismissRegistration()">Cancelar</button>
+            </div>
+          </fieldset>
+        </form>
+      }
+      </dialog>
+        @if (!professional()) {
+          @for (alert of pending(); track alert.id) {
+            <article class="pending">
+              <h2>Episodio pendiente de documentar</h2>
+              <p>{{ alert.createdAt | date:'dd/MM/yyyy HH:mm' }} · {{ alert.description }}</p>
+              <button type="button" (click)="begin(alert)" [disabled]="busy()">Documentar ahora</button>
+            </article>
+          }
+        }
         <div class="overview">
         <section class="summary" aria-label="Resumen de los últimos 30 días">
           <div><span>Episodios registrados</span><strong>{{ crisisCount() }}</strong><small>Últimos 30 días</small></div>

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, ElementRef, inject, OnInit, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, firstValueFrom, forkJoin, of } from 'rxjs';
@@ -19,6 +19,25 @@ export class EpisodeHistory implements OnInit {
   private readonly observations = inject(ObservationService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly registrationDialog = viewChild<ElementRef<HTMLDialogElement>>('registrationDialog');
+
+  constructor() {
+    effect(() => this.showDialog(this.registrationDialog()?.nativeElement, this.step() > 0));
+  }
+
+  dismissRegistration() {
+    this.step.set(0);
+    this.error.set('');
+  }
+
+  private showDialog(dialog: HTMLDialogElement | undefined, open: boolean) {
+    if (!dialog || dialog.open === open) return;
+    if (open) {
+      dialog.showModal();
+    } else {
+      dialog.close();
+    }
+  }
 
   readonly user = signal(this.context.currentUser());
   readonly professional = computed(() => this.user()?.role === this.context.roles.PSYCHOLOGIST);

@@ -71,6 +71,25 @@ article.crisis-entry { border-inline-start-color: #c45d0f; }
 .episode-form progress { width: 100%; accent-color: #55248a; }
 @media (min-width: 58rem) { .overview { grid-template-columns: 1fr 1.1fr; } }
 
+.history-dialog {
+  box-sizing: border-box;
+  max-height: calc(100dvh - 2rem);
+  overflow: auto;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid #d9cce9;
+  border-radius: 1rem;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+  box-shadow: 0 16px 40px #24183740;
+}
+.history-dialog::backdrop { background: #24183770; }
+.registration-dialog { width: min(39rem, calc(100vw - 2rem)); }
+.history-dialog .episode-form { margin: 0; padding: 0; border: 0; max-width: none; box-shadow: none; }
+.dialog-header { display: flex; align-items: start; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+.dialog-header h2 { margin-bottom: 0; }
+.close-dialog { flex: none; }
+.dialog-origin { padding: .65rem .85rem; border-radius: .6rem; background: #fff1d9; color: #673a0c; }
 .weekly-chart { margin-top: 1rem; padding-top: .75rem; border-top: 1px solid #e4d7ed; }
 .weekly-chart h3 { margin: 0 0 .5rem; font-size: 1rem; }
 .weekly-chart ul { padding: 0; margin: 0; list-style: none; }
