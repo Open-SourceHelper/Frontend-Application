@@ -34,6 +34,58 @@
       <article class="locked"><span aria-hidden="true">🔒</span><h2>Este historial no está disponible para tu cuenta</h2>
         <p>Consulta con la familia responsable si necesitas acceso.</p></article>
     } @else if (childId) {
+        <div class="overview">
+        <section class="summary" aria-label="Resumen de los últimos 30 días">
+          <div><span>Episodios registrados</span><strong>{{ crisisCount() }}</strong><small>Últimos 30 días</small></div>
+          <div><span>Qué ocurrió antes con más frecuencia</span><strong>{{ mostCommonTrigger()?.label ?? 'Sin datos' }}</strong>
+            @if (mostCommonTrigger(); as trigger) { <small>{{ trigger.count }} en los últimos 30 días</small> }
+          </div>
+          <div><span>Qué ayudó con más frecuencia</span><strong>{{ mostHelpful()?.label ?? 'Sin datos' }}</strong>
+            @if (mostHelpful(); as helped) { <small>{{ helped.count }} en los últimos 30 días</small> }
+          </div>
+          <div><span>Duración promedio</span><strong>{{ averageDuration() !== null ? averageDuration() + ' min' : 'Sin datos' }}</strong><small>Últimos 30 días</small></div>
+        </section>
+        <section class="episode-chart" aria-labelledby="episodes-by-month">
+          <h2 id="episodes-by-month">Episodios de desregulación por mes</h2>
+          <p>Selecciona un mes para filtrar el historial.</p>
+          <div class="legend" aria-label="Intensidad de los episodios">
+            @for (level of levels; track level.value) {
+              <span><i aria-hidden="true" [attr.data-severity]="level.value"></i>{{ level.label }}</span>
+            }
+          </div>
+          <div class="month-grid">
+            @for (item of monthlyEpisodes(); track item.key) {
+              <button type="button" class="secondary month-button" [attr.aria-pressed]="month() === item.key"
+                (click)="month.set(month() === item.key ? '' : item.key); filter.set(month() ? 'crisis' : 'all'); selected.set(null)">
+                <strong>{{ item.count }}</strong>
+                <span class="bar-track" aria-hidden="true">
+                  @for (level of item.bySeverity; track level.value) {
+                    <span class="bar" [attr.data-severity]="level.value" [style.height.%]="100 * level.count / peak()"></span>
+                  }
+                </span>
+                <span>{{ item.label }}</span>
+              </button>
+            }
+          </div>
+          @if (month()) {
+            <section class="weekly-chart" aria-labelledby="weekly-episodes-title">
+              <h3 id="weekly-episodes-title">Episodios por semana</h3>
+              <ul class="month-grid">
+                @for (week of weeklyEpisodes(); track week.start) {
+                  <li class="week-bar">
+                    <strong>{{ week.count }}</strong>
+                    <span class="bar-track" aria-hidden="true">
+                      <span class="bar" [style.height.%]="100 * week.count / weeklyPeak()"></span>
+                    </span>
+                    <span>Días {{ week.label }}</span>
+                  </li>
+                }
+              </ul>
+            </section>
+            <button type="button" class="secondary" (click)="month.set(''); filter.set('all')">Ver todos los meses</button>
+          }
+        </section>
+        </div>
         <h2 class="timeline-title">Línea de tiempo</h2>
         <div class="actions filters" aria-label="Filtrar historial">
           <button type="button" class="secondary" [attr.aria-pressed]="filter() === 'all'" (click)="filter.set('all')">Todos</button>
