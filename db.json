@@ -65,6 +65,22 @@
       "status": "revoked",
       "authorizedAt": "2026-09-20T09:00:00-05:00",
       "revokedAt": "2026-10-01T16:30:00-05:00"
+    },
+    {
+      "id": "bc05-demo-auth",
+      "childId": "child-001",
+      "caregiverId": "bc05-demo-caregiver",
+      "status": "active",
+      "authorizedAt": "2026-10-08T08:15:00-05:00",
+      "revokedAt": null
+    },
+    {
+      "id": "bc05-demo-revoked-auth",
+      "childId": "child-001",
+      "caregiverId": "bc05-demo-revoked",
+      "status": "revoked",
+      "authorizedAt": "2026-10-08T08:15:00-05:00",
+      "revokedAt": "2026-10-08T08:15:00-05:00"
     }
   ],
   "clinicalProfiles": [
@@ -312,6 +328,34 @@
       "description": "Durante una actividad de lectura, el niño presentó dificultades para mantener la atención y necesitó apoyo del cuidador.",
       "occurredAt": "2026-10-08T14:37:00.000Z",
       "crisisSeverity": "mild"
+    },
+    {
+      "id": "bc05-demo-history",
+      "childId": "child-001",
+      "caregiverId": "bc05-demo-caregiver",
+      "description": "Completó su rutina de la mañana con apoyo visual.",
+      "occurredAt": "2026-10-07T08:00:00-05:00",
+      "crisisSeverity": null
+    },
+    {
+      "alertId": "bc05-demo-alert",
+      "durationMinutes": 12,
+      "trigger": "Se lesiono solo",
+      "helped": "Calmarlo un poco",
+      "id": "episode-bc05-demo-alert",
+      "childId": "child-001",
+      "caregiverId": "parent-001",
+      "description": "Se alteró cuando cambiamos la actividad.",
+      "occurredAt": "2026-10-08T13:15:00.000Z",
+      "crisisSeverity": "mild"
+    },
+    {
+      "id": "75b028c5-22c0-4826-8ebc-6c82916999ea",
+      "childId": "child-001",
+      "caregiverId": "parent-001",
+      "description": "Sufrio un golpe severo",
+      "occurredAt": "2026-11-14T22:24:00.000Z",
+      "crisisSeverity": null
     }
   ],
   "psychologistComments": [
@@ -424,6 +468,13 @@
       "childId": "NINO002",
       "status": "ACTIVE",
       "assignedAt": "2026-10-08T10:30:00.000Z"
+    },
+    {
+      "id": "bc05-demo-assignment",
+      "childId": "child-001",
+      "psychologistId": "bc05-demo-psychologist",
+      "status": "ACTIVE",
+      "assignedAt": "2026-10-08T08:15:00-05:00"
     }
   ],
   "careNetworkMembers": [
@@ -549,7 +600,64 @@
       "category": "GENERAL"
     }
   ],
-  "users": [],
-  "userSessions": [],
-  "careNetworks": []
+  "users": [
+    {
+      "id": "parent-001",
+      "email": "familia@bc05.example",
+      "password": "KinemoDemo05!",
+      "role": "PARENT",
+      "isValidated": true,
+      "createdAt": "2026-10-08T08:15:00-05:00"
+    },
+    {
+      "id": "bc05-demo-caregiver",
+      "email": "cuidador@bc05.example",
+      "password": "KinemoDemo05!",
+      "role": "CAREGIVER",
+      "isValidated": true,
+      "createdAt": "2026-10-08T08:15:00-05:00"
+    },
+    {
+      "id": "bc05-demo-psychologist",
+      "email": "psicologa@bc05.example",
+      "password": "KinemoDemo05!",
+      "role": "PSYCHOLOGIST",
+      "isValidated": true,
+      "createdAt": "2026-10-08T08:15:00-05:00"
+    },
+    {
+      "id": "bc05-demo-revoked",
+      "email": "retirado@bc05.example",
+      "password": "KinemoDemo05!",
+      "role": "CAREGIVER",
+      "isValidated": true,
+      "createdAt": "2026-10-08T08:15:00-05:00"
+    }
+  ],
+  "userSessions": [
+    {
+      "id": "29c23209-19e7-4773-ab85-a3f9492e8cb2",
+      "userId": "bc05-demo-caregiver",
+      "sessionToken": "78bb5b4f-527d-451e-b9f0-599f99b69d1a",
+      "status": "ACTIVE",
+      "createdAt": "2026-11-14T16:24:13.815Z",
+      "closedAt": null
+    }
+  ],
+  "careNetworks": [],
+  "crisisAlerts": [
+    {
+      "id": "bc05-demo-alert",
+      "childId": "child-001",
+      "caregiverId": "bc05-demo-caregiver",
+      "status": "CLOSED",
+      "createdAt": "2026-10-08T08:15:00-05:00",
+      "closedAt": "2026-10-08T08:27:00-05:00",
+      "description": "Se alteró cuando cambiamos la actividad.",
+      "notifiedCaregiverIds": [],
+      "attendedAt": "2026-10-08T08:15:00-05:00",
+      "attendedById": "bc05-demo-caregiver",
+      "closedById": "bc05-demo-caregiver"
+    }
+  ]
 }
