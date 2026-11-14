@@ -105,7 +105,7 @@ type SeverityFilter = 'all' | 'none' | CrisisSeverity;
             ></app-observation-evidences>
 
             <app-observation-comments
-              [observationId]="observation.id"
+              [observationId]="observation.id" [childId]="observation.childId"
             ></app-observation-comments>
           </article>
         } @empty {

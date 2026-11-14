@@ -7,8 +7,9 @@ import {
 } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { finalize } from 'rxjs';
+import { finalize, firstValueFrom } from 'rxjs';
 
+import { HistoryContextService } from '../../infrastructure/services/history-context.service';
 import { PsychologistComment } from '../../domain/model/psychologist-comment.entity';
 import { PsychologistCommentService } from '../../infrastructure/services/psychologist-comment.service';
 
@@ -44,10 +45,7 @@ import { PsychologistCommentService } from '../../infrastructure/services/psycho
         }
       }
 
-      <p class="demo-note">
-        Prueba con un psicólogo de demostración.
-      </p>
-
+      @if (psychologistId) {
       <form #form="ngForm" (ngSubmit)="saveComment()">
         <label [for]="'comment-' + observationId">
           Nuevo comentario
@@ -83,6 +81,7 @@ import { PsychologistCommentService } from '../../infrastructure/services/psycho
           {{ saving() ? 'Guardando…' : 'Guardar comentario' }}
         </button>
       </form>
+      }
     </section>
   `,
   styles: `
@@ -155,6 +154,10 @@ import { PsychologistCommentService } from '../../infrastructure/services/psycho
 export class ObservationCommentsComponent implements OnChanges {
   @Input({ required: true }) observationId = '';
 
+  @Input() psychologistId = '';
+  @Input({ required: true }) childId = '';
+
+  private readonly context = inject(HistoryContextService);
   private readonly service = inject(PsychologistCommentService);
 
   readonly comments = signal<PsychologistComment[]>([]);
@@ -210,8 +213,9 @@ export class ObservationCommentsComponent implements OnChanges {
       });
   }
 
-  saveComment(): void {
+  async saveComment(): Promise<void> {
     if (
+      !this.psychologistId ||
       !this.content.trim() ||
       !this.observationId ||
       this.saving() ||
@@ -226,7 +230,7 @@ export class ObservationCommentsComponent implements OnChanges {
     const comment = new PsychologistComment({
       id: crypto.randomUUID(),
       observationId,
-      psychologistId: 'psychologist-demo-001',
+      psychologistId: this.psychologistId,
       content: this.content,
       createdAt: new Date().toISOString()
     });
@@ -234,6 +238,17 @@ export class ObservationCommentsComponent implements OnChanges {
     this.saving.set(true);
     this.saveError.set(null);
     this.success.set(null);
+    try {
+      if (!await firstValueFrom(this.context.canAccess(this.childId))) {
+        this.saveError.set('Tu cuenta ya no tiene acceso a este historial.');
+        this.saving.set(false);
+        return;
+      }
+    } catch {
+      this.saveError.set('No pudimos verificar tu acceso.');
+      this.saving.set(false);
+      return;
+    }
 
     this.service.create(comment)
       .pipe(
