@@ -25,12 +25,12 @@
       "createdAt": "2026-09-20T14:00:00-05:00"
     },
     {
-      "id": "ae2ed88b-5e56-457b-a1d4-48ee3742c0a3",
-      "parentId": "1234",
+      "id": "child-004",
+      "parentId": "parent-004",
       "firstName": "Gabriel",
       "lastName": "Vilchez",
       "birthDate": "2006-09-19T05:00:00.000Z",
-      "createdAt": "2026-10-08T20:08:43.585Z"
+      "createdAt": "2026-11-02T00:43:08.965Z"
     }
   ],
   "caregiverAuthorizations": [

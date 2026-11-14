@@ -7,7 +7,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 import { Child } from '../../../domain/model/child.entity';
-import {DateTime} from '../../../../shared/domain/model/date-time';
+import { DateTime } from '../../../../shared/domain/model/date-time';
+import { ChildStore } from '../../../application/child.store';
 
 @Component({
   imports: [
@@ -24,6 +25,7 @@ import {DateTime} from '../../../../shared/domain/model/date-time';
 })
 export class ChildForm {
   private readonly formBuilder = inject(FormBuilder);
+  private readonly childStore = inject(ChildStore);
 
   @Output() childCreated = new EventEmitter<Child>();
 
@@ -56,6 +58,14 @@ export class ChildForm {
       return;
     }
 
+    const existingNumbers = this.childStore.children()
+      .map(child => /^child-(\d+)$/.exec(child.id))
+      .filter((match): match is RegExpExecArray => match !== null)
+      .map(match => Number(match[1]));
+
+    const nextNumber = Math.max(0, ...existingNumbers) + 1;
+    const childId = `child-${String(nextNumber).padStart(3, '0')}`;
+
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
@@ -66,7 +76,7 @@ export class ChildForm {
     }
 
     const child = new Child(
-      crypto.randomUUID(),
+      childId,
       parentId.trim(),
       firstName.trim(),
       lastName.trim(),

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+﻿import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
 import { AuthService } from '../../infrastructure/services/auth.service';
+import { environment } from '../../../../environments/environment';
 
 interface UserProfileData {
   id: string;
@@ -39,7 +40,7 @@ export class Profile implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
-  private readonly apiUrl = 'http://localhost:3001/userProfiles';
+  private readonly apiUrl = `${environment.platformProviderApiBaseUrl}/userProfiles`;
 
   profile: UserProfileData | null = null;
   email = '';
@@ -67,7 +68,7 @@ export class Profile implements OnInit {
         this.profile = profiles[0] ?? null;
 
         if (!this.profile) {
-          this.errorMessage.set('No se encontró el perfil del usuario');
+          this.errorMessage.set('No se encontrÃ³ el perfil del usuario');
         }
       },
       error: () => {
@@ -109,3 +110,4 @@ export class Profile implements OnInit {
     this.router.navigate(['/login']);
   }
 }
+
