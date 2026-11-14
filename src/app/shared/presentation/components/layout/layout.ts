@@ -31,6 +31,9 @@ export class Layout {
     { link: '/clinical-profile', label: 'Clinical Profile', icon: 'health_and_safety' },
     { link: '/care-networks/1', label: 'Red de Cuidado', icon: 'groups' },
 
+    // BC03 - Crisis Alert Management
+    { link: '/crisis-alerts', label: 'Alertas SOS', icon: 'notification_important' },
+
     // BC04 - Routine & Activity Management
     { link: '/routine-activity/routines', label: 'Rutinas', icon: 'event_note' },
 

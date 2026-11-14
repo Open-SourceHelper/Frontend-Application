@@ -23,6 +23,11 @@ const acceptInvitation = () =>
   import('./child-profile-&-care-network-managment/presentation/views/care-network-invitation-accept/care-network-invitation-accept')
     .then((m) => m.CareNetworkInvitationAccept);
 
+// New BC03 - Crisis Alert Management
+const crisisAlerts = () =>
+  import('./crisis-alert/presentation/views/crisis-alert-list')
+    .then((m) => m.CrisisAlertList);
+
 // BC04 - Routine & Activity Management
 const routineActivityRoutes = () =>
   import('./routine-activity/routine-activity.routes')
@@ -103,6 +108,13 @@ export const routes: Routes = [
     path: 'care-networks/:careNetworkId',
     loadComponent: careNetwork,
     title: `${baseTitle} - Red de Cuidado`
+  },
+
+  // New BC03 - Crisis Alert Management
+  {
+    path: 'crisis-alerts',
+    loadComponent: crisisAlerts,
+    title: `${baseTitle} - Alertas de crisis`
   },
 
   // BC04 - Routine & Activity Management
