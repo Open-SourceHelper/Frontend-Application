@@ -117,6 +117,10 @@
           <p class="alert-description">{{ alert.description || 'Alerta sin descripción adicional.' }}</p>
           <p class="alert-meta">Registrada por {{ alert.caregiverId }} · {{ alert.notifiedCaregiverIds.length }} destinatario(s) de avisos internos</p>
           <div class="alert-actions">
+            @if (alert.status === 'CLOSED') {
+              <a mat-stroked-button routerLink="/observations"
+                [queryParams]="{ childId: alert.childId, alertId: alert.id }">Ir al historial</a>
+            }
             @if (alert.status === 'ACTIVE') {
               <button mat-stroked-button type="button" [disabled]="busy()" (click)="attend(alert)">
                 Marcar como atendida

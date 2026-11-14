@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,7 +19,7 @@ import { CaregiverAuthorizationJsonServerAdapter } from '../../infrastructure/ca
 @Component({
   selector: 'app-crisis-alert-list',
   standalone: true,
-  imports: [DatePipe, FormsModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatIconModule],
+  imports: [DatePipe, FormsModule, RouterLink, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatIconModule],
   providers: [
     CrisisAlertService,
     { provide: CrisisAlertRepository, useClass: CrisisAlertJsonServerRepository },

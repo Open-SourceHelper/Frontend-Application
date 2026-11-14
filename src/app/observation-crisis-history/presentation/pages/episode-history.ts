@@ -189,6 +189,11 @@ export class EpisodeHistory implements OnInit {
       if (this.childId) await this.load();
       if (this.denied()) return;
       const alertId = this.route.snapshot.queryParamMap.get('alertId');
+      const existing = alertId ? this.records().find(record => record.alertId === alertId) : undefined;
+      if (existing) {
+        this.selected.set(existing);
+        return;
+      }
       const alert = this.pending().find(item => item.id === alertId);
       if (!this.professional() && (alert || (!alertId && this.route.snapshot.url.at(-1)?.path === 'new'))) {
         this.begin(alert);
