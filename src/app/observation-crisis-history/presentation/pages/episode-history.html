@@ -1,0 +1,60 @@
+<section class="history" aria-labelledby="history-title">
+  @if (demo) {
+    <section class="demo" aria-label="Perfiles de demostración">
+      <strong>Ver como · Demo local</strong>
+      <div class="actions">
+        @for (profile of profiles; track profile.key) {
+          <button type="button" class="secondary" (click)="switchProfile(profile.key)"
+            [attr.aria-pressed]="user()?.email === profile.key + '@bc05.example'" [disabled]="busy()">
+            <span aria-hidden="true" class="avatar">{{ profile.label[0] }}</span> {{ profile.label }}
+          </button>
+        }
+      </div>
+    </section>
+  }
+  <h1 id="history-title">Historial de episodios</h1>
+  @if (error() && !step() && !selected()) { <p role="alert">{{ error() }}</p> }
+  @if (busy()) { <p role="status">Cargando…</p> }
+  @if (user(); as user) {
+    <div class="history-header">
+    @if (children().length) {
+      <label for="history-child">¿De quién quieres ver el historial?</label>
+      <select id="history-child" [(ngModel)]="childId" (change)="message.set(''); load()" [disabled]="busy()">
+        @for (child of children(); track child.id) {
+          <option [value]="child.id">{{ child.firstName }} {{ child.lastName }}</option>
+        }
+      </select>
+    }
+    @if (false && childId && !professional() && !denied()) {
+      <button type="button" (click)="begin()" [disabled]="busy()">+ Registrar lo ocurrido</button>
+    }
+    </div>
+    @if (message() && !selected()) { <p role="status">{{ message() }}</p> }
+    @if (denied()) {
+      <article class="locked"><span aria-hidden="true">🔒</span><h2>Este historial no está disponible para tu cuenta</h2>
+        <p>Consulta con la familia responsable si necesitas acceso.</p></article>
+    } @else if (childId) {
+        <h2 class="timeline-title">Línea de tiempo</h2>
+        <div class="actions filters" aria-label="Filtrar historial">
+          <button type="button" class="secondary" [attr.aria-pressed]="filter() === 'all'" (click)="filter.set('all')">Todos</button>
+          <button type="button" class="secondary" [attr.aria-pressed]="filter() === 'crisis'" (click)="filter.set('crisis')">Crisis</button>
+          <button type="button" class="secondary" [attr.aria-pressed]="filter() === 'pending'" (click)="filter.set('pending')">Sin revisar · {{ reviewCount() }}</button>
+        </div>
+        @for (record of visible(); track record.id) {
+          <article class="timeline-entry" [class.crisis-entry]="record.isCrisis">
+            <time>{{ record.occurredAt | date:'dd/MM/yyyy HH:mm' }}</time>
+            <h2><span aria-hidden="true">{{ record.isCrisis ? '⚡' : '📝' }}</span> {{ record.isCrisis ? 'Episodio de desregulación' : 'Observación' }}</h2>
+            <p class="badge">{{ record.reviewedAt ? 'Revisado' : 'Sin revisar' }}</p>
+            <p>{{ record.description }}</p>
+          </article>
+        } @empty {
+          @if (!busy() && !error()) { <p>No hay registros con este filtro.</p> }
+        }
+    } @else if (!busy() && !error()) {
+      <p>Tu cuenta todavía no tiene un historial infantil asignado.</p>
+    }
+  } @else if (!busy()) {
+    <p>{{ demo ? "Elige un perfil de prueba para abrir el historial." : "Inicia sesión para consultar el historial." }}</p>
+    <a href="/login">Iniciar sesión</a>
+  }
+</section>

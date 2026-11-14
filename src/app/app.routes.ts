@@ -29,19 +29,15 @@ const routineActivityRoutes = () =>
   import('./routine-activity/routine-activity.routes')
     .then((m) => m.routineActivityRoutes);
 
-// BC05 - Clinical Guidance Management
+// Clinical Guidance Management (migrates to BC04)
 const clinicalGuidance = () =>
   import('./clinical-guidance/presentation/views/clinical-guideline-list/clinical-guideline-list')
     .then((m) => m.ClinicalGuidelineList);
 
-// BC06 - Observation & Crisis Management
-const observationList = () =>
-  import('./observation-crisis-history/presentation/pages/observation-list.component')
-    .then((m) => m.ObservationListComponent);
-
-const observationForm = () =>
-  import('./observation-crisis-history/presentation/pages/observation-form.component')
-    .then((m) => m.ObservationFormComponent);
+// BC05 - Observation & Crisis History Management
+const episodeHistory = () =>
+  import('./observation-crisis-history/presentation/pages/episode-history')
+    .then((m) => m.EpisodeHistory);
 
 // BC07 - Dashboard & Reporting
 const dashboardReporting = () =>
@@ -119,23 +115,23 @@ export const routes: Routes = [
     title: `${baseTitle} - Rutinas`
   },
 
-  // BC05 - Clinical Guidance Management
+  // Clinical Guidance Management (migrates to BC04)
   {
     path: 'clinical-guidance',
     loadComponent: clinicalGuidance,
     title: `${baseTitle} - Orientaciones Clínicas`
   },
 
-  // BC06 - Observation & Crisis Management
+  // BC05 - Observation & Crisis History Management
   {
     path: 'observations/new',
-    loadComponent: observationForm,
+    loadComponent: episodeHistory,
     title: `${baseTitle} - Registrar observación`
   },
   {
     path: 'observations',
-    loadComponent: observationList,
-    title: `${baseTitle} - Observaciones y crisis`
+    loadComponent: episodeHistory,
+    title: `${baseTitle} - Historial de episodios`
   },
 
   // BC07 - Dashboard & Reporting

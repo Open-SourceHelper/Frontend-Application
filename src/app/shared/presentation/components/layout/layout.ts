@@ -36,11 +36,11 @@ export class Layout {
     // BC04 - Routine & Activity Management
     { link: '/routine-activity/routines', label: 'Rutinas', icon: 'event_note' },
 
-    // BC05 - Clinical Guidance Management
+    // Clinical Guidance Management (migrates to BC04)
     { link: '/clinical-guidance', label: 'Orientaciones Clínicas', icon: 'medical_services' },
 
-    // BC06 - Observation & Crisis Management
-    { link: '/observations', label: 'Observaciones y crisis', icon: 'assignment' },
+    // BC05 - Observation & Crisis History Management
+    { link: '/observations', label: 'Historial de episodios', icon: 'assignment' },
 
     // BC07 - Dashboard & Reporting
     { link: '/children/1/dashboard', label: 'Dashboard', icon: 'dashboard' },
