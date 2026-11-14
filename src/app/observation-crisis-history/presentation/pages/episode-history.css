@@ -90,6 +90,10 @@ article.crisis-entry { border-inline-start-color: #c45d0f; }
 .dialog-header h2 { margin-bottom: 0; }
 .close-dialog { flex: none; }
 .dialog-origin { padding: .65rem .85rem; border-radius: .6rem; background: #fff1d9; color: #673a0c; }
+.details-dialog { inset: 0 0 0 auto; margin: 0; width: min(30rem, 100vw); max-width: 100vw; height: 100dvh; max-height: 100dvh; border-radius: 1rem 0 0 1rem; }
+.episode-description { padding: .8rem; background: #f6f0fb; border-radius: .6rem; overflow-wrap: anywhere; white-space: pre-wrap; }
+@media (max-width: 32rem) { .details-dialog { border-radius: 0; } }
+
 .weekly-chart { margin-top: 1rem; padding-top: .75rem; border-top: 1px solid #e4d7ed; }
 .weekly-chart h3 { margin: 0 0 .5rem; font-size: 1rem; }
 .weekly-chart ul { padding: 0; margin: 0; list-style: none; }

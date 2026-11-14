@@ -167,10 +167,44 @@
             <h2><span aria-hidden="true">{{ record.isCrisis ? '⚡' : '📝' }}</span> {{ record.isCrisis ? 'Episodio de desregulación' : 'Observación' }}</h2>
             <p class="badge">{{ record.reviewedAt ? 'Revisado' : 'Sin revisar' }}</p>
             <p>{{ record.description }}</p>
+            <button type="button" class="secondary" [attr.aria-expanded]="selected()?.id === record.id"
+              aria-haspopup="dialog" (click)="selected.set(record); error.set(''); message.set('')">
+              Ver detalles
+            </button>
           </article>
         } @empty {
           @if (!busy() && !error()) { <p>No hay registros con este filtro.</p> }
         }
+        <dialog #detailsDialog class="history-dialog details-dialog" aria-labelledby="details-title"
+          (cancel)="$event.preventDefault(); dismissDetails()">
+            @if (selected(); as record) {
+              <header class="dialog-header">
+                <div>
+                  <h2 id="details-title">{{ record.isCrisis ? 'Episodio de desregulación' : 'Observación' }}</h2>
+                  <time>{{ record.occurredAt | date:'dd/MM/yyyy HH:mm' }}</time>
+                </div>
+                <button type="button" class="secondary close-dialog" autofocus (click)="dismissDetails()">Cerrar</button>
+              </header>
+              @if (record.alertId) { <p class="dialog-origin">Viene de una alerta cerrada</p> }
+              <p class="badge">{{ record.reviewedAt ? 'Revisado' : 'Sin revisar' }}</p>
+              <p class="episode-description">{{ record.description }}</p>
+              @if (error()) { <p role="alert">{{ error() }}</p> }
+              @if (message()) { <p role="status">{{ message() }}</p> }
+              @if (record.crisisSeverity) {
+                @for (level of levels; track level.value) {
+                  @if (level.value === record.crisisSeverity) { <p><strong>Intensidad</strong> · {{ level.label }}</p> }
+                }
+              }
+              @if (record.durationMinutes) { <p><strong>Duración</strong> · {{ record.durationMinutes }} min</p> }
+              @if (record.trigger) { <p><strong>Qué pasó antes</strong> · {{ record.trigger }}</p> }
+              @if (record.helped) { <p><strong>Qué ayudó</strong> · {{ record.helped }}</p> }
+              <app-observation-comments [observationId]="record.id" [psychologistId]="professional() ? user.id : ''"
+                [childId]="childId" />
+              @if (professional() && !record.reviewedAt) {
+                <button type="button" (click)="review(record)" [disabled]="busy()">Marcar como revisado</button>
+              }
+            }
+        </dialog>
     } @else if (!busy() && !error()) {
       <p>Tu cuenta todavía no tiene un historial infantil asignado.</p>
     }

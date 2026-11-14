@@ -7,10 +7,11 @@ import { CrisisSeverity } from '../../domain/model/crisis-severity.enum';
 import { Observation } from '../../domain/model/observation.entity';
 import { ClosedAlert, HistoryContextService } from '../../infrastructure/services/history-context.service';
 import { ObservationService } from '../../infrastructure/services/observation.service';
+import { ObservationCommentsComponent } from '../components/observation-comments.component';
 
 @Component({
   selector: 'app-episode-history',
-  imports: [DatePipe, FormsModule],
+  imports: [DatePipe, FormsModule, ObservationCommentsComponent],
   templateUrl: './episode-history.html',
   styleUrl: './episode-history.css',
 })
@@ -20,13 +21,20 @@ export class EpisodeHistory implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly registrationDialog = viewChild<ElementRef<HTMLDialogElement>>('registrationDialog');
+  private readonly detailsDialog = viewChild<ElementRef<HTMLDialogElement>>('detailsDialog');
 
   constructor() {
     effect(() => this.showDialog(this.registrationDialog()?.nativeElement, this.step() > 0));
+    effect(() => this.showDialog(this.detailsDialog()?.nativeElement, this.selected() !== null));
   }
 
   dismissRegistration() {
     this.step.set(0);
+    this.error.set('');
+  }
+
+  dismissDetails() {
+    this.selected.set(null);
     this.error.set('');
   }
 
