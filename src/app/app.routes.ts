@@ -36,11 +36,11 @@ const clinicalGuidance = () =>
 
 // BC06 - Observation & Crisis Management
 const observationList = () =>
-  import('./observation-crisis/presentation/pages/observation-list.component')
+  import('./observation-crisis-history/presentation/pages/observation-list.component')
     .then((m) => m.ObservationListComponent);
 
 const observationForm = () =>
-  import('./observation-crisis/presentation/pages/observation-form.component')
+  import('./observation-crisis-history/presentation/pages/observation-form.component')
     .then((m) => m.ObservationFormComponent);
 
 // BC07 - Dashboard & Reporting
