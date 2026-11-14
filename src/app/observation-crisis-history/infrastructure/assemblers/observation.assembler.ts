@@ -18,6 +18,12 @@ export class ObservationAssembler {
     entity: Observation
   ): ObservationResource {
     return {
+      alertId: entity.alertId,
+      durationMinutes: entity.durationMinutes,
+      trigger: entity.trigger,
+      helped: entity.helped,
+      reviewedAt: entity.reviewedAt,
+      reviewedBy: entity.reviewedBy,
       id: entity.id,
       childId: entity.childId,
       caregiverId: entity.caregiverId,

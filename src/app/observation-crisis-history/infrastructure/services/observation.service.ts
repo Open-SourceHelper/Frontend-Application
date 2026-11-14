@@ -14,7 +14,7 @@ export class ObservationService {
   private readonly http = inject(HttpClient);
 
   private readonly endpoint =
-    `${environment.platformProviderApiBaseUrl}/observations`;
+    `${environment.platformProviderApiBaseUrl}/observations1`;
 
   getByChildId(childId: string): Observable<Observation[]> {
     return this.http

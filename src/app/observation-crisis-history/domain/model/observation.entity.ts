@@ -1,6 +1,13 @@
 import { CrisisSeverity } from './crisis-severity.enum';
 
 export interface ObservationProps {
+  alertId?: string;
+  durationMinutes?: number;
+  trigger?: string;
+  helped?: string;
+  reviewedAt?: string;
+  reviewedBy?: string;
+
   id: string;
   childId: string;
   caregiverId: string;
@@ -10,6 +17,13 @@ export interface ObservationProps {
 }
 
 export class Observation {
+  readonly alertId?: string;
+  readonly durationMinutes?: number;
+  readonly trigger?: string;
+  readonly helped?: string;
+  readonly reviewedAt?: string;
+  readonly reviewedBy?: string;
+
   readonly id: string;
   readonly childId: string;
   readonly caregiverId: string;
@@ -30,6 +44,12 @@ export class Observation {
       throw new Error('La fecha de la observación no es válida.');
     }
 
+    this.alertId = props.alertId;
+    this.durationMinutes = props.durationMinutes;
+    this.trigger = props.trigger;
+    this.helped = props.helped;
+    this.reviewedAt = props.reviewedAt;
+    this.reviewedBy = props.reviewedBy;
     this.id = props.id;
     this.childId = props.childId;
     this.caregiverId = props.caregiverId;

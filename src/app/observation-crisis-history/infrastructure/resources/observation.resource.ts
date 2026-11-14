@@ -1,6 +1,13 @@
 import { CrisisSeverity } from '../../domain/model/crisis-severity.enum';
 
 export interface ObservationResource {
+  alertId?: string;
+  durationMinutes?: number;
+  trigger?: string;
+  helped?: string;
+  reviewedAt?: string;
+  reviewedBy?: string;
+
   id: string;
   childId: string;
   caregiverId: string;
