@@ -65,4 +65,6 @@ Arranca `Backend-Application` con el perfil `local` en el puerto 8080. En este f
 
 La vista usa el proxy de desarrollo de Angular para enviar `/api/v1` a Spring Boot. Elige **Familia**, **Cuidador** o **Psicóloga**. Las tres cuentas de prueba comparten el mismo perfil infantil de H2. Puedes crear y completar una rutina, cerrar una alerta, registrarla como episodio y revisarla con la cuenta profesional.
 
-La vista requiere la versión del backend con `GET /api/v1/local-demo/session`. Los datos de prueba se restablecen al reiniciar Spring Boot. El modo público y las pantallas previas de demostración conservan su configuración.
+La vista requiere la versión del backend con `GET /api/v1/local-demo/session`. Los datos de prueba se restablecen al reiniciar Spring Boot. Desde la vista local puedes abrir **Alertas de cuidado** e **Historial de episodios** en el menú habitual. Ambas pantallas consultan la API Spring Boot con la misma cuenta de prueba. La alerta cerrada abre el formulario del historial con su descripción, fecha e identificador. El historial muestra los registros, estadísticas y comentarios que devuelve Spring Boot.
+
+En esta sesión, el menú muestra las pantallas conectadas al backend. Para probar perfiles, rutinas y orientaciones, usa **Prueba local**. La demo pública sigue disponible con los datos ficticios.
