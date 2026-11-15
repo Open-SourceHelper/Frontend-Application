@@ -14,6 +14,36 @@
     </div>
   </header>
 
+  @if (springSession) {
+    @if (springError()) { <p class="error-message" role="alert">{{ springError() }}</p> }
+    @if (springMessage()) { <p class="success-message" role="status">{{ springMessage() }}</p> }
+    @if (busy()) { <p role="status">Actualizando red de cuidado…</p> }
+    @if (network(); as care) {
+      <section class="invitation-section">
+        <app-care-network-invitation-form [loading]="busy()" [success]="springMessage() === 'Invitación registrada.'"
+          (invitationSubmitted)="onInviteCaregiver($event)" />
+      </section>
+      <section class="content-section">
+        <h2>Integrantes de la red</h2>
+        @for (member of care.members; track member.id) {
+          <p>
+            Cuidador {{ member.caregiverId }} · {{ member.status === 'ACTIVE' ? 'Activo' : 'Acceso retirado' }}
+            @if (member.status === 'ACTIVE') {
+              <button mat-stroked-button type="button" [disabled]="busy()" (click)="onRevokeMember(member.id.toString())">
+                Retirar acceso
+              </button>
+            }
+          </p>
+        } @empty { <p>La red todavía no tiene integrantes.</p> }
+      </section>
+      <section class="content-section">
+        <h2>Invitaciones</h2>
+        @for (invitation of care.invitations; track invitation.id) {
+          <p>{{ invitation.inviteeEmail }} · {{ invitation.status === 'PENDING' ? 'Pendiente' : 'Procesada' }}</p>
+        } @empty { <p>Todavía no hay invitaciones.</p> }
+      </section>
+    }
+  } @else {
   <section class="summary-grid">
 
     <div class="summary-card">
@@ -146,4 +176,5 @@
     }
   </section>
 
+  }
 </div>
