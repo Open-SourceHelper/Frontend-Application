@@ -1,15 +1,50 @@
-.layout-container { min-height: 100vh; }
-.sidenav { width: 230px; transition: width 180ms ease; }
-.sidenav.collapsed { width: 72px; }
-.brand { height: 64px;
+.layout-container { min-height: 100dvh; background: #f8f6fc; }
+.sidenav {
+  width: 260px;
+  background: #f0e9fa;
+  border-inline-end: 1px solid #dbcde9;
+  border-radius: 0;
+}
+.brand {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 0 12px;
-  font-weight: 600;
-  white-space: nowrap; }
-.active { background: var(--mat-sys-secondary-container); }
-.content-shell { min-height: 100vh; display: flex; flex-direction: column; }
-.page-content { flex: 1; padding: 24px; }
-
-.account-bar { display: flex; justify-content: flex-end; padding: .5rem 1.5rem; }
+  gap: .75rem;
+  min-height: 68px;
+  padding-inline: 1.1rem;
+  text-decoration: none;
+  color: #422566;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.brand-mark { display: grid; place-items: center; flex: none; width: 2.2rem; height: 2.2rem; border-radius: .7rem; background: #583487; color: #fff; }
+mat-nav-list { padding: .65rem .55rem; }
+mat-nav-list a {
+  min-height: 48px;
+  height: auto;
+  margin-block: .15rem;
+  border-inline-start: 3px solid transparent;
+  border-radius: .65rem;
+  --mat-list-list-item-label-text-color: #35284a;
+  --mat-list-list-item-leading-icon-color: #65478b;
+}
+mat-nav-list a.active {
+  background: #e2d4f4;
+  border-inline-start-color: #663ca0;
+  --mat-list-list-item-label-text-color: #3c1e61;
+}
+.content-shell { min-height: 100dvh; display: flex; flex-direction: column; }
+.account-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 56px;
+  padding-inline: clamp(.75rem, 3vw, 2rem);
+  color: #422566;
+}
+.account-actions { display: flex; align-items: center; gap: .75rem; margin-inline-start: auto; }
+.language-control { display: flex; align-items: center; padding: .15rem; gap: .15rem; border: 1px solid #dfd2ed; border-radius: .7rem; }
+.language-control button { min-width: 44px; min-height: 36px; border: 0; border-radius: .5rem; background: transparent; color: #422566; font: inherit; cursor: pointer; }
+.language-control button[aria-pressed='true'] { background: #e5d7f4; font-weight: 700; }
+.brand:focus-visible, .language-control button:focus-visible { outline: 2px solid #663ca0; outline-offset: 2px; }
+.account-link { border-radius: .65rem; background: #f2ebfa; }
+.page-content { flex: 1; padding: clamp(.8rem, 3vw, 2rem); min-width: 0; }

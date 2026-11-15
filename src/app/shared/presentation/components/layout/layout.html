@@ -1,21 +1,16 @@
-<mat-sidenav-container class="layout-container" autosize>
-  <mat-sidenav mode="side" opened [class.collapsed]="collapsed()" class="sidenav">
-    <div class="brand">
-      <button mat-icon-button (click)="toggleMenu()" aria-label="Toggle navigation">
-        <mat-icon>menu</mat-icon>
-      </button>
-      @if (!collapsed()) {
-        <span>Kinemo</span>
-      }
-    </div>
-
-    <mat-nav-list>
+<mat-sidenav-container class="layout-container">
+  <mat-sidenav id="module-menu" [mode]="narrow() ? 'over' : 'side'" [opened]="!narrow() || mobileOpen()"
+    (closedStart)="mobileOpen.set(false)" class="sidenav">
+    <a class="brand" routerLink="/child-profile" (click)="mobileOpen.set(false)">
+      <span class="brand-mark"><mat-icon aria-hidden="true">volunteer_activism</mat-icon></span>
+      <span>Kinemo</span>
+    </a>
+    <mat-nav-list aria-label="Módulos de Kinemo">
       @for (option of options; track option.link) {
-        <a mat-list-item [routerLink]="option.link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-          <mat-icon matListItemIcon>{{ option.icon }}</mat-icon>
-          @if (!collapsed()) {
-            <span matListItemTitle>{{ option.label }}</span>
-          }
+        <a mat-list-item [routerLink]="option.link" routerLinkActive="active" ariaCurrentWhenActive="page"
+          [attr.aria-label]="option.label" (click)="mobileOpen.set(false)">
+          <mat-icon matListItemIcon aria-hidden="true">{{ option.icon }}</mat-icon>
+          <span matListItemTitle>{{ option.label }}</span>
         </a>
       }
     </mat-nav-list>
@@ -23,13 +18,21 @@
 
   <mat-sidenav-content class="content-shell">
     <header class="account-bar">
-      <a mat-button [routerLink]="auth.isAuthenticated() ? '/profile' : '/login'">
-        <mat-icon>account_circle</mat-icon>{{ auth.isAuthenticated() ? 'Mi perfil' : 'Iniciar sesión' }}
-      </a>
+      @if (narrow()) {
+        <button mat-icon-button type="button" (click)="mobileOpen.set(!mobileOpen())"
+          aria-label="Menú de módulos" aria-controls="module-menu" [attr.aria-expanded]="mobileOpen()">
+          <mat-icon>menu</mat-icon>
+        </button>
+      }
+      <div class="account-actions">
+        <a mat-button class="account-link" [routerLink]="auth.isAuthenticated() ? '/profile' : '/login'">
+          <mat-icon>account_circle</mat-icon>{{ auth.isAuthenticated() ? 'Mi perfil' : 'Iniciar sesión' }}
+        </a>
+      </div>
     </header>
-    <main class="page-content">
-      <router-outlet/>
+    <main class="page-content kinemo-workspace">
+      <router-outlet />
     </main>
-    <app-footer-content/>
+    <app-footer-content />
   </mat-sidenav-content>
 </mat-sidenav-container>

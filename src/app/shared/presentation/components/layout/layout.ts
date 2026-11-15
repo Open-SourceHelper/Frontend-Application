@@ -6,6 +6,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { AuthService } from '../../../../identity-access/infrastructure/services/auth.service';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
 import { FooterContent } from '../footer-content/footer-content';
 
 @Component({
@@ -25,28 +28,30 @@ import { FooterContent } from '../footer-content/footer-content';
 })
 export class Layout {
   readonly auth = inject(AuthService);
-  readonly collapsed = signal(false);
+  readonly mobileOpen = signal(false);
+  readonly narrow = toSignal(inject(BreakpointObserver).observe('(max-width: 760px)').pipe(
+    map(result => result.matches),
+  ), { initialValue: false });
+
 
   readonly options = [
     // BC02 - Child Profile & Care Network Management
-    { link: '/child-profile', label: 'Child Profile', icon: 'child_care' },
-    { link: '/clinical-profile', label: 'Clinical Profile', icon: 'health_and_safety' },
-    { link: '/care-networks/1', label: 'Red de Cuidado', icon: 'groups' },
+    { link: '/child-profile', label: 'Perfil infantil', icon: 'child_care' },
+    { link: '/clinical-profile', label: 'Perfil clínico', icon: 'health_and_safety' },
+    { link: '/care-networks/1', label: 'Red de cuidado', icon: 'groups' },
 
     // BC03 - Crisis Alert Management
     { link: '/crisis-alerts', label: 'Alertas SOS', icon: 'notification_important' },
 
     // BC04 - Clinical Guidance & Routine Management
-    { link: '/clinical-guidance-routine-management', label: 'Orientaciones y Rutinas', icon: 'health_and_safety' },
+    { link: '/clinical-guidance-routine-management', label: 'Orientaciones y rutinas', icon: 'health_and_safety' },
 
     // BC05 - Observation & Crisis History Management
     { link: '/observations', label: 'Historial de episodios', icon: 'assignment' },
 
     // BC07 - Dashboard & Reporting
-    { link: '/children/1/dashboard', label: 'Dashboard', icon: 'dashboard' },
+    { link: '/children/1/dashboard', label: 'Panel de seguimiento', icon: 'dashboard' },
 
   ];
-  toggleMenu(): void {
-    this.collapsed.update((value) => !value);
-  }
+
 }
