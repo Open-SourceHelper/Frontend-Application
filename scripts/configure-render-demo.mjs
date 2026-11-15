@@ -1,15 +1,19 @@
 import { writeFileSync } from 'node:fs';
 
-const value = process.env.KINEMO_PUBLIC_API_BASE?.trim();
-let springDemoApi = '';
-if (value) {
+function configuredOrigin(name) {
+  const value = process.env[name]?.trim();
+  if (!value) return '';
+
   const url = new URL(value);
   const loopback = ['localhost', '127.0.0.1'].includes(url.hostname);
   if ((url.protocol !== 'https:' && !(loopback && url.protocol === 'http:'))
     || url.username || url.password || url.search || url.hash || url.pathname !== '/') {
-    throw new Error('KINEMO_PUBLIC_API_BASE debe ser el origen HTTPS de la API, sin ruta.');
+    throw new Error(name + ' debe ser el origen HTTPS de la API, sin ruta.');
   }
-  springDemoApi = url.origin;
+  return url.origin;
 }
+
+const springDemoApi = configuredOrigin('KINEMO_PUBLIC_API_BASE');
+const evaluationApi = configuredOrigin('KINEMO_EVALUATION_API_BASE');
 writeFileSync(new URL('../public/kinemo-runtime.json', import.meta.url),
-  JSON.stringify({ springDemoApi }) + '\n');
+  JSON.stringify({ springDemoApi, evaluationApi }) + '\n');

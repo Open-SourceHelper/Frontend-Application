@@ -23,11 +23,14 @@ export interface PublicDemoSnapshot {
 export class PublicSpringDemo {
   private readonly http = inject(HttpClient);
 
-  readonly base = this.http.get<{ springDemoApi?: string }>('/kinemo-runtime.json', { timeout: 5000 }).pipe(
-    map(config => config.springDemoApi ?? ''),
-    catchError(() => of('')),
+  private readonly configuration = this.http.get<{ springDemoApi?: string; evaluationApi?: string }>('/kinemo-runtime.json', { timeout: 5000 }).pipe(
+    catchError(() => of(null)),
+
     shareReplay({ bufferSize: 1, refCount: false }),
   );
+
+  readonly base = this.configuration.pipe(map(config => config?.springDemoApi ?? ''));
+  readonly evaluationBase = this.configuration.pipe(map(config => config?.evaluationApi ?? ''));
 
   readonly snapshot = this.base.pipe(
     switchMap(base => base
