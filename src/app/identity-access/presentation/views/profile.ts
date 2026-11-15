@@ -1,4 +1,4 @@
-﻿import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -42,11 +42,12 @@ export class Profile implements OnInit {
 
   private readonly apiUrl = `${environment.platformProviderApiBaseUrl}/userProfiles`;
 
-  profile: UserProfileData | null = null;
+  readonly profile = signal<UserProfileData | null>(null);
   email = '';
   role = '';
 
   loading = signal(false);
+  private hasProfile = false;
   message = signal('');
   errorMessage = signal('');
 
@@ -59,17 +60,17 @@ export class Profile implements OnInit {
     }
 
     this.email = user.email;
-    this.role = user.role;
-
-    this.http.get<UserProfileData[]>(
-      `${this.apiUrl}?userId=${encodeURIComponent(user.id)}`
-    ).subscribe({
+    this.role = {
+      PARENT: 'Padre, madre o tutor',
+      CAREGIVER: 'Cuidador',
+      PSYCHOLOGIST: 'Profesional de psicología',
+    }[user.role];
+    this.http.get<UserProfileData[]>(this.apiUrl, { params: { userId: user.id } }).subscribe({
       next: profiles => {
-        this.profile = profiles[0] ?? null;
-
-        if (!this.profile) {
-          this.errorMessage.set('No se encontrÃ³ el perfil del usuario');
-        }
+        this.hasProfile = profiles.length > 0;
+        this.profile.set(profiles[0] ?? {
+          id: crypto.randomUUID(), userId: user.id, firstName: '', lastName: '', phone: '', updatedAt: '',
+        });
       },
       error: () => {
         this.errorMessage.set('No se pudo cargar el perfil');
@@ -78,23 +79,27 @@ export class Profile implements OnInit {
   }
 
   saveProfile(): void {
-    if (!this.profile) return;
+    const profile = this.profile();
+    if (!profile || this.loading() || !profile.firstName.trim() || !profile.lastName.trim()) return;
 
     this.loading.set(true);
     this.message.set('');
     this.errorMessage.set('');
 
     const updatedProfile: UserProfileData = {
-      ...this.profile,
+      ...profile,
+      firstName: profile.firstName.trim(),
+      lastName: profile.lastName.trim(),
       updatedAt: new Date().toISOString()
     };
 
-    this.http.patch<UserProfileData>(
-      `${this.apiUrl}/${this.profile.id}`,
-      updatedProfile
-    ).subscribe({
+    const request = this.hasProfile
+      ? this.http.patch<UserProfileData>(this.apiUrl + '/' + encodeURIComponent(updatedProfile.id), updatedProfile)
+      : this.http.post<UserProfileData>(this.apiUrl, updatedProfile);
+    request.subscribe({
       next: profile => {
-        this.profile = profile;
+        this.hasProfile = true;
+        this.profile.set(profile);
         this.loading.set(false);
         this.message.set('Perfil actualizado correctamente');
       },

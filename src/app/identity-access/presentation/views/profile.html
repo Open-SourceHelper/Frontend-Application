@@ -9,7 +9,7 @@
     </mat-card-header>
 
     <mat-card-content>
-      <form *ngIf="profile" (ngSubmit)="saveProfile()">
+      <form *ngIf="profile() as profile" #profileForm="ngForm" (ngSubmit)="saveProfile()">
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Nombres</mat-label>
@@ -44,9 +44,10 @@
         </p>
 
         <button mat-flat-button type="submit"
-                class="save-button" [disabled]="loading()">
+                class="save-button" [disabled]="loading() || profileForm.invalid">
           {{ loading() ? 'Guardando...' : 'Guardar cambios' }}
         </button>
+      </form>
         <button
           mat-stroked-button
           type="button"
@@ -56,7 +57,6 @@
           Cerrar sesión
         </button>
 
-      </form>
 
       <p *ngIf="errorMessage()" class="error-message">
         {{ errorMessage() }}
