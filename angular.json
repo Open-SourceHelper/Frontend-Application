@@ -66,7 +66,8 @@
               "buildTarget": "frontend-application-OP:build:production"
             },
             "development": {
-              "buildTarget": "frontend-application-OP:build:development"
+              "buildTarget": "frontend-application-OP:build:development",
+              "proxyConfig": "proxy.local.json"
             }
           },
           "defaultConfiguration": "development"
