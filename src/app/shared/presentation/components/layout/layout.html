@@ -30,8 +30,8 @@
           <button type="button" lang="en" aria-label="English" [attr.aria-pressed]="language() === 'en'" (click)="setLanguage('en')">EN</button>
         </div>
         @if (localSession()) {
-          <a mat-button routerLink="/backend-local">
-            <mat-icon>account_circle</mat-icon>{{ language() === 'es' ? 'Prueba local' : 'Local test' }}
+          <a mat-button [routerLink]="localSession()?.localSpring?.evaluation ? '/evaluacion' : '/backend-local'">
+            <mat-icon>account_circle</mat-icon>{{ localSession()?.localSpring?.evaluation ? (language() === 'es' ? 'Cambiar cuenta' : 'Switch account') : (language() === 'es' ? 'Prueba local' : 'Local test') }}
           </a>
           <button mat-button type="button" (click)="leaveLocalSession()">
             {{ language() === 'es' ? 'Salir' : 'Sign out' }}

@@ -77,6 +77,7 @@ export class Layout {
   });
 
   leaveLocalSession(): void {
+    this.spring.clearEvaluation();
     this.auth.signOut();
     void this.router.navigate(['/login']);
   }

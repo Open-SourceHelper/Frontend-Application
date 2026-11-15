@@ -8,12 +8,12 @@ import { UserRole } from './identity-access/domain/model/user-role.enum';
 const requireSession: CanActivateChildFn = (route, state) => {
   const auth = inject(AuthService);
   const user = auth.getCurrentUser();
-  if (!environment.production && user?.localSpring) {
+  if (user?.localSpring) {
     const localPaths = ['observations', 'observations/new', 'crisis-alerts', 'clinical-guidance-routine-management'];
     if (user.role !== UserRole.PSYCHOLOGIST) localPaths.push('child-profile', 'clinical-profile');
     if (user.role === UserRole.PARENT) localPaths.push('care-networks/:careNetworkId');
     if (!route.pathFromRoot.some(segment => localPaths.includes(segment.routeConfig?.path ?? ''))) {
-      return inject(Router).createUrlTree(['/backend-local']);
+      return inject(Router).createUrlTree([user.localSpring.evaluation ? '/evaluacion' : '/backend-local']);
     }
   }
   if (auth.isAuthenticated()
@@ -84,6 +84,11 @@ const subscriptionPaymentRoutes = () =>
 const baseTitle = 'Kinemo';
 
 export const routes: Routes = [
+  {
+    path: 'evaluacion',
+    loadComponent: () => import('./shared/presentation/views/evaluation-login').then(m => m.EvaluationLogin),
+    title: 'Kinemo - Evaluación',
+  },
   ...(environment.production ? [] : [{
     path: 'backend-local',
     loadComponent: () =>
@@ -95,7 +100,7 @@ export const routes: Routes = [
     redirectTo: () => {
       const user = inject(AuthService).getCurrentUser();
       if (!user) return '/login';
-      return !environment.production && user.localSpring ? '/observations' : '/child-profile';
+      return user.localSpring ? '/observations' : '/child-profile';
     },
     pathMatch: 'full'
   },

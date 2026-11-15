@@ -17,7 +17,7 @@ export interface AuthUser {
 
 type CurrentUser = Omit<AuthUser, 'password'> & {
   publicDemo?: true;
-  localSpring?: { childId: string; profile: string };
+  localSpring?: { childId: string; profile: string; evaluation?: true };
 };
 
 export interface SignInRequest {
@@ -110,6 +110,15 @@ export class AuthService {
       id, role, isValidated: true, email: profile + '@kinemo.example',
       createdAt: new Date().toISOString(),
       localSpring: { childId, profile },
+    });
+  }
+
+  startEvaluation(id: string, profile: string, role: UserRole, childId: string): void {
+    this.signOut();
+    this.session.set({
+      id, role, isValidated: true, email: profile + '@kinemo.example',
+      createdAt: new Date().toISOString(),
+      localSpring: { childId, profile, evaluation: true },
     });
   }
 
