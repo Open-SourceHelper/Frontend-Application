@@ -245,7 +245,7 @@ export class EpisodeHistory implements OnInit {
       const checks = children.map(child => this.context.canAccess(String(child.id)));
       const allowed = checks.length ? await firstValueFrom(forkJoin(checks)) : [];
       this.children.set(children.filter((_, index) => allowed[index]));
-      this.childId = requested ?? String(this.children()[0]?.id ?? '');
+      this.childId = requested ?? String(this.children()[0]?.id ?? this.user()?.localSpring?.childId ?? '');
       if (this.childId) await this.load();
       if (this.denied()) return;
       const alertId = this.route.snapshot.queryParamMap.get('alertId');
