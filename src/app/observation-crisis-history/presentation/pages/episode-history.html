@@ -1,11 +1,11 @@
 <section class="history" aria-labelledby="history-title">
   @if (demo) {
     <section class="demo" aria-label="Perfiles de demostración">
-      <strong>Ver como · Demo local</strong>
+      <strong>{{ publicDemo ? 'Ver como · Datos ficticios' : 'Ver como · Demo local' }}</strong>
       <div class="actions">
         @for (profile of profiles; track profile.key) {
           <button type="button" class="secondary" (click)="switchProfile(profile.key)"
-            [attr.aria-pressed]="user()?.email === profile.key + '@bc05.example'" [disabled]="busy()">
+            [attr.aria-pressed]="activeDemoProfile() === profile.key" [disabled]="busy()">
             <span aria-hidden="true" class="avatar">{{ profile.label[0] }}</span> {{ profile.label }}
           </button>
         }
@@ -16,6 +16,7 @@
     <span class="history-icon" aria-hidden="true">▤</span>
     <h1 id="history-title">Historial de episodios</h1>
   </header>
+  @if (publicDemo) { <p>Historial ficticio de solo lectura.</p> }
   @if (error() && !step() && !selected()) { <p role="alert">{{ error() }}</p> }
   @if (busy()) { <p role="status">Cargando…</p> }
   @if (user(); as user) {
@@ -28,7 +29,7 @@
         }
       </select>
     }
-    @if (childId && !professional() && !denied()) {
+    @if (childId && !publicDemo && !professional() && !denied()) {
       <button type="button" (click)="begin()" [disabled]="busy()">+ Registrar lo ocurrido</button>
     }
     </div>
@@ -97,7 +98,7 @@
         </form>
       }
       </dialog>
-        @if (!professional()) {
+        @if (!publicDemo && !professional()) {
           @for (alert of pending(); track alert.id) {
             <article class="pending">
               <h2>Episodio pendiente de documentar</h2>
@@ -201,10 +202,17 @@
               @if (record.durationMinutes) { <p><strong>Duración</strong> · {{ record.durationMinutes }} min</p> }
               @if (record.trigger) { <p><strong>Qué pasó antes</strong> · {{ record.trigger }}</p> }
               @if (record.helped) { <p><strong>Qué ayudó</strong> · {{ record.helped }}</p> }
+              @if (publicDemo) {
+                @if (record.reviewedAt) {
+                  <h3>Revisión de ejemplo</h3>
+                  <p>La psicóloga anotó que la pausa ayudó a retomar la actividad.</p>
+                }
+              } @else {
               <app-observation-comments [observationId]="record.id" [psychologistId]="professional() ? user.id : ''"
                 [childId]="childId" />
               @if (professional() && !record.reviewedAt) {
                 <button type="button" (click)="review(record)" [disabled]="busy()">Marcar como revisado</button>
+              }
               }
             }
         </dialog>

@@ -1,3 +1,4 @@
+import { exampleChild, exampleEpisodes } from './public-history-examples';
 import { DatePipe } from '@angular/common';
 import { Component, computed, effect, ElementRef, inject, OnInit, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -49,7 +50,12 @@ export class EpisodeHistory implements OnInit {
 
   readonly user = signal(this.context.currentUser());
   readonly professional = computed(() => this.user()?.role === this.context.roles.PSYCHOLOGIST);
-  readonly demo = this.context.demo;
+  readonly publicDemo = this.user()?.publicDemo === true;
+  readonly demo = this.context.demo || this.publicDemo;
+  private readonly exampleProfile = signal('familia');
+  readonly activeDemoProfile = computed(() => this.publicDemo
+    ? this.exampleProfile()
+    : this.user()?.email.split('@')[0]);
   readonly profiles = [
     { key: 'familia', label: 'Familia' },
     { key: 'cuidador', label: 'Cuidador autorizado' },
@@ -125,6 +131,13 @@ export class EpisodeHistory implements OnInit {
 
   async switchProfile(profile: string) {
     if (!this.demo || this.busy() || !this.profiles.some(item => item.key === profile)) return;
+    if (this.publicDemo) {
+      this.exampleProfile.set(profile);
+      this.filter.set('all');
+      this.month.set('');
+      this.showExampleHistory();
+      return;
+    }
     this.busy.set(true);
     this.error.set('');
     try {
@@ -168,7 +181,20 @@ export class EpisodeHistory implements OnInit {
   draft = this.newDraft();
 
   ngOnInit() {
+    if (this.publicDemo) {
+      this.showExampleHistory();
+      return;
+    }
     return this.initialize(this.route.snapshot.queryParamMap.get('childId'));
+  }
+
+  private showExampleHistory(): void {
+    const allowed = this.exampleProfile() !== 'retirado';
+    this.denied.set(!allowed);
+    this.selected.set(null);
+    this.children.set(allowed ? [exampleChild] : []);
+    this.childId = allowed ? exampleChild.id : '';
+    this.records.set(allowed ? exampleEpisodes() : []);
   }
 
   private async initialize(requested: string | null) {
@@ -206,6 +232,7 @@ export class EpisodeHistory implements OnInit {
   }
 
   async load() {
+    if (this.publicDemo) return;
     this.busy.set(true);
     this.records.set([]);
     this.alerts.set([]);
