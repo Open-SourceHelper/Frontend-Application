@@ -58,3 +58,11 @@ LOGO CREATED WITH https://editor.method.ac/
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Prueba local con Spring Boot
+
+Arranca `Backend-Application` con el perfil `local` en el puerto 8080. En este frontend, ejecuta `npm ci` y `npm start`. En la pantalla de inicio de sesión, pulsa **Probar con el backend local**, o abre `http://localhost:4200/backend-local`.
+
+La vista usa el proxy de desarrollo de Angular para enviar `/api/v1` a Spring Boot. Elige **Familia**, **Cuidador** o **Psicóloga**. Las tres cuentas de prueba comparten el mismo perfil infantil de H2. Puedes crear y completar una rutina, cerrar una alerta, registrarla como episodio y revisarla con la cuenta profesional.
+
+La vista requiere la versión del backend con `GET /api/v1/local-demo/session`. Los datos de prueba se restablecen al reiniciar Spring Boot. El modo público y las pantallas previas de demostración conservan su configuración.
