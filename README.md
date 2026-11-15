@@ -67,4 +67,6 @@ La vista usa el proxy de desarrollo de Angular para enviar `/api/v1` a Spring Bo
 
 La vista requiere la versión del backend con `GET /api/v1/local-demo/session`. Los datos de prueba se restablecen al reiniciar Spring Boot. Desde la vista local puedes abrir **Alertas de cuidado** e **Historial de episodios** en el menú habitual. Ambas pantallas consultan la API Spring Boot con la misma cuenta de prueba. La alerta cerrada abre el formulario del historial con su descripción, fecha e identificador. El historial muestra los registros, estadísticas y comentarios que devuelve Spring Boot.
 
-En esta sesión, el menú muestra las pantallas conectadas al backend. Para probar perfiles, rutinas y orientaciones, usa **Prueba local**. La demo pública sigue disponible con los datos ficticios.
+Desde ese menú también puedes usar **Perfil infantil**, **Perfil clínico**, **Red de cuidado** y **Orientaciones y rutinas** con Spring Boot. La familia administra el perfil y la red y puede crear rutinas. El cuidador autorizado consulta el perfil y completa actividades. La psicóloga puede publicar pautas, ver sus pacientes y revisar episodios. Una vez retirado el acceso del cuidador, Spring Boot bloquea las consultas al perfil, las rutinas y el historial.
+
+Las invitaciones se registran en la red de cuidado. Su aceptación con cuentas reales requiere IAM y correo verificado. La demo pública sigue disponible con los datos ficticios.
