@@ -1,0 +1,178 @@
+<main class="workspace">
+  <header class="top">
+    <a routerLink="/login">← Kinemo</a>
+    <h1>Prueba local con Spring Boot</h1>
+    <p>Elige una cuenta de prueba para consultar y guardar datos en el backend de tu computadora.</p>
+    <div class="actions" aria-label="Cuentas de prueba">
+      @for (account of accounts; track account.id) {
+        <button type="button" [disabled]="busy()" (click)="signIn(account.id)">{{ account.name }}</button>
+      }
+    </div>
+  </header>
+
+  @if (busy()) { <p role="status">Consultando la API…</p> }
+  @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
+  @if (message()) { <p class="notice" role="status">{{ message() }}</p> }
+
+  @if (session(); as current) {
+    <div class="session">
+      <strong>{{ labels[current.role] }} · Perfil infantil {{ current.childId }}</strong>
+      <button type="button" class="secondary" [disabled]="busy()" (click)="refresh()">Actualizar datos</button>
+    </div>
+
+    <div [inert]="busy()">
+    @if (child; as profile) {
+      <section aria-labelledby="profile-heading">
+        <h2 id="profile-heading">Perfil infantil y red de cuidado</h2>
+        @if (current.role === 'FAMILY') {
+          <form (ngSubmit)="saveChild()" #profileForm="ngForm">
+            <div class="fields">
+              <label>Nombre <input name="firstName" [(ngModel)]="profile.firstName" maxlength="100" required></label>
+              <label>Apellido <input name="lastName" [(ngModel)]="profile.lastName" maxlength="100" required></label>
+              <label>Nacimiento <input name="birthDate" type="date" [(ngModel)]="profile.birthDate" required></label>
+            </div>
+            <button [disabled]="busy() || profileForm.invalid">Guardar perfil infantil</button>
+          </form>
+          @if (clinical; as details) {
+            <form (ngSubmit)="saveClinical()">
+              <div class="fields">
+                <label>Necesidades <input name="needs" [(ngModel)]="details.specialNeeds" maxlength="255"></label>
+                <label>Detonantes <input name="triggers" [(ngModel)]="details.triggers" maxlength="255"></label>
+                <label>Apoyos <input name="regulators" [(ngModel)]="details.regulators" maxlength="255"></label>
+              </div>
+              <button [disabled]="busy()">Guardar perfil clínico</button>
+            </form>
+          }
+          @if (network; as care) {
+            <h3>Red de cuidado</h3>
+            <ul>
+              @for (member of care.members; track member.id) {
+                <li>Cuenta {{ member.caregiverId }} · {{ member.status }}</li>
+              } @empty { <li>No hay cuidadores en la red.</li> }
+            </ul>
+          }
+        } @else {
+          <p>{{ profile.firstName }} {{ profile.lastName }} · {{ profile.birthDate }}</p>
+          @if (clinical; as details) {
+            <p>{{ details.specialNeeds }} {{ details.triggers }} {{ details.regulators }}</p>
+          }
+        }
+      </section>
+
+      <section aria-labelledby="alerts-heading">
+        <h2 id="alerts-heading">Alertas de cuidado</h2>
+        <form (ngSubmit)="activateAlert()">
+          <label>Qué está ocurriendo <input name="alertText" [(ngModel)]="alertText" maxlength="500"></label>
+          <button [disabled]="busy()">Crear alerta</button>
+        </form>
+        @for (alert of alerts; track alert.id) {
+          <article>
+            <h3>{{ alert.description || 'Alerta de cuidado' }}</h3>
+            <p>{{ alert.status === 'ACTIVE' ? 'Activa' : alert.status === 'ATTENDED' ? 'Atendida' : 'Cerrada' }}</p>
+            @if (alert.status !== 'CLOSED') {
+              <button type="button" [disabled]="busy()" (click)="advanceAlert(alert)">
+                {{ alert.status === 'ACTIVE' ? 'Atender alerta' : 'Cerrar alerta' }}
+              </button>
+            }
+          </article>
+        } @empty { <p>Sin alertas registradas.</p> }
+      </section>
+    }
+
+    <section aria-labelledby="routines-heading">
+      <h2 id="routines-heading">Rutinas y orientaciones</h2>
+      @if (current.role === 'FAMILY') {
+        <form (ngSubmit)="createRoutine()" #routine="ngForm">
+          <div class="fields">
+            <label>Nombre de la rutina <input name="routineTitle" [(ngModel)]="routineTitle" maxlength="120" required></label>
+            <label>Fecha <input name="routineDate" type="date" [(ngModel)]="routineDate" required></label>
+            <label>Primera actividad <input name="activityTitle" [(ngModel)]="activityTitle" maxlength="120" required></label>
+          </div>
+          <button [disabled]="busy() || routine.invalid">Crear rutina</button>
+        </form>
+      }
+      @for (routine of routines; track routine.id) {
+        <article>
+          <h3>{{ routine.title }}</h3>
+          <p>{{ routine.scheduledDate }}</p>
+          <ul>
+            @for (activity of routine.activities; track activity.id) {
+              <li>
+                {{ activity.title }} · {{ activity.status === 'COMPLETED' ? 'Completada' : activity.status === 'SKIPPED' ? 'Omitida' : 'Pendiente' }}
+                @if (activity.status === 'PENDING') {
+                  <button type="button" class="secondary" [disabled]="busy()" (click)="completeActivity(routine, activity)">Completar actividad</button>
+                }
+              </li>
+            }
+          </ul>
+        </article>
+      } @empty { <p>Sin rutinas guardadas.</p> }
+
+      <h3>Pautas clínicas</h3>
+      @if (current.role === 'PSYCHOLOGIST') {
+        <form (ngSubmit)="createGuideline()" #guideline="ngForm">
+          <label>Título de la pauta <input name="guidelineTitle" [(ngModel)]="guidelineTitle" maxlength="160" required></label>
+          <label>Indicaciones <textarea name="guidelineText" [(ngModel)]="guidelineText" maxlength="2000" required></textarea></label>
+          <button [disabled]="busy() || guideline.invalid">Guardar pauta</button>
+        </form>
+      }
+      @for (guideline of guidelines; track guideline.id) {
+        <article>
+          <h3>{{ guideline.title }}</h3>
+          <p>{{ guideline.instructions }}</p>
+          @if (current.role === 'PSYCHOLOGIST' && guideline.status === 'DRAFT') {
+            <button type="button" [disabled]="busy()" (click)="publishGuideline(guideline)">Publicar pauta</button>
+          }
+        </article>
+      } @empty { <p>Sin pautas disponibles.</p> }
+    </section>
+
+    <section aria-labelledby="history-heading">
+      <h2 id="history-heading">Historial de episodios</h2>
+      @if (current.role !== 'PSYCHOLOGIST') {
+        <form (ngSubmit)="createEpisode()" #episode="ngForm">
+          <label>Qué ocurrió <textarea name="episodeText" [(ngModel)]="episodeText" maxlength="1000" required></textarea></label>
+          <label>Alerta cerrada
+            <select name="linkedAlertId" [(ngModel)]="linkedAlertId">
+              <option value="">Sin alerta vinculada</option>
+              @for (alert of alerts; track alert.id) {
+                @if (alert.status === 'CLOSED') { <option [value]="alert.id">{{ alert.description || alert.id }}</option> }
+              }
+            </select>
+          </label>
+          @if (linkedAlertId) {
+            <label>Intensidad
+              <select name="severity" [(ngModel)]="severity" required>
+                <option value="">Selecciona una intensidad</option>
+                <option value="mild">Leve</option>
+                <option value="moderate">Moderada</option>
+                <option value="severe">Severa</option>
+              </select>
+            </label>
+          }
+          <button [disabled]="busy() || episode.invalid">Guardar episodio</button>
+        </form>
+      }
+      @for (episode of episodes; track episode.id) {
+        <article>
+          <h3>{{ episode.description }}</h3>
+          <p>{{ episode.reviewedAt ? 'Revisado' : 'Sin revisar' }}</p>
+          @if (episode.alertId) { <p>Vinculado a una alerta cerrada.</p> }
+          @for (comment of episode.comments; track comment.id) { <p class="comment">{{ comment.text }}</p> }
+          @if (current.role === 'PSYCHOLOGIST' && !episode.reviewedAt) {
+            <form (ngSubmit)="comment(episode)">
+              <label>Comentario profesional
+                <input name="comment" [(ngModel)]="comments[episode.id]" maxlength="1000" required>
+              </label>
+              <div class="actions">
+                <button [disabled]="busy() || !comments[episode.id]?.trim()">Guardar comentario</button>
+                <button type="button" class="secondary" [disabled]="busy()" (click)="review(episode)">Marcar revisado</button>
+              </div>
+            </form>
+          }
+        </article>
+      } @empty { <p>Sin episodios registrados.</p> }
+    </section>
+    </div>
+  }
+</main>

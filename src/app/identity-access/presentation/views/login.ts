@@ -1,4 +1,4 @@
-﻿
+
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -35,6 +35,7 @@ export class Login {
   private readonly route = inject(ActivatedRoute);
 
   readonly publicDemo = environment.publicDemo;
+  readonly localBackend = !environment.production;
   readonly demoAvailable = this.publicDemo || !environment.production;
   useDemo = this.demoAvailable;
   email = '';

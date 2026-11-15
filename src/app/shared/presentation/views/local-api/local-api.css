@@ -1,0 +1,68 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #f7f4fa;
+  color: #211533;
+}
+
+.workspace {
+  width: min(100% - 2rem, 64rem);
+  margin: 0 auto;
+  padding: 2.5rem 0 4rem;
+}
+
+.top { margin-bottom: 1.5rem; }
+.top a { color: #512681; font-weight: 700; }
+h1 { margin: 0.6rem 0; font-size: clamp(1.8rem, 4vw, 2.8rem); }
+h2 { margin-top: 0; }
+h3 { margin: 0 0 0.5rem; }
+p { line-height: 1.5; }
+
+section, .session, article {
+  border: 1px solid #ded4e8;
+  border-radius: 0.8rem;
+  padding: 1rem;
+}
+
+section {
+  margin: 1rem 0;
+  background: #fff;
+  padding: clamp(1rem, 4vw, 1.6rem);
+}
+
+.session, .actions { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.session { justify-content: space-between; background: #efe7f8; }
+article { margin: 0.75rem 0; background: #fbf9fd; }
+form { display: grid; gap: 0.75rem; margin-bottom: 1rem; }
+form > button { justify-self: start; }
+.fields { display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr)); }
+label { display: grid; gap: 0.3rem; font-weight: 600; }
+input, textarea, select, button { font: inherit; }
+input, textarea, select {
+  border: 1px solid #8b779e;
+  border-radius: 0.4rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.7rem;
+  color: inherit;
+  background: #fff;
+}
+
+textarea { min-height: 5rem; resize: vertical; }
+button {
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #512681;
+  border-radius: 0.5rem;
+  color: #fff;
+  background: #512681;
+  font-weight: 700;
+  cursor: pointer;
+}
+button.secondary { background: #fff; color: #512681; }
+button:disabled { opacity: 0.55; cursor: default; }
+li + li { margin-top: 0.4rem; }
+li button { margin: 0.25rem; }
+.comment, .notice, .error { padding: 0.75rem; border-radius: 0.5rem; }
+.comment { background: #efe7f8; }
+.notice { background: #e1f4e7; color: #19432c; }
+.error { background: #fce8e7; color: #812324; }

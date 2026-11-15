@@ -85,6 +85,10 @@
       </form>
     </mat-card-content>
 
+    @if (localBackend) {
+      <p class="register-link"><a routerLink="/backend-local">Probar con el backend local</a></p>
+    }
+
     <p class="register-link">
         ¿No tienes una cuenta?
       <a routerLink="/register">Crear cuenta</a>

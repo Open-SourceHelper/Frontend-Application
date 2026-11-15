@@ -73,6 +73,12 @@ const subscriptionPaymentRoutes = () =>
 const baseTitle = 'Kinemo';
 
 export const routes: Routes = [
+  ...(environment.production ? [] : [{
+    path: 'backend-local',
+    loadComponent: () =>
+      import('./shared/presentation/views/local-api/local-api').then(m => m.LocalApi),
+    title: baseTitle + ' - API local',
+  }]),
   {
     path: '',
     redirectTo: () => inject(AuthService).isAuthenticated() ? '/child-profile' : '/login',
