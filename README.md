@@ -72,3 +72,9 @@ Desde ese menú también puedes usar **Perfil infantil**, **Perfil clínico**, *
 Desde **Rutinas**, la familia puede duplicar o archivar una rutina. En **Editar actividades** puede agregar actividades y subir apoyos visuales JPG o PNG. El cuidador autorizado puede abrir esos apoyos y usar el temporizador de transición.
 
 Las invitaciones se registran en la red de cuidado. Su aceptación con cuentas reales requiere IAM y correo verificado. La demo pública sigue disponible con los datos ficticios.
+
+## Demo pública desde Spring Boot en Render
+
+En el sitio estático, usa la rama que contiene `build:render`, **Build Command** `npm ci && npm run build:render` y **Publish Directory** `dist/frontend-application-OP/browser`. Define `KINEMO_PUBLIC_API_BASE` con el origen HTTPS del Web Service de Spring Boot, sin ruta ni barra final. Conserva el rewrite de `/*` a `/index.html`.
+
+En la web, elige **Entrar a la demo** y abre **Historial de episodios** u **Orientaciones y rutinas**. Con la API configurada, ambas pantallas muestran datos ficticios de Spring Boot en modo de solo lectura.
