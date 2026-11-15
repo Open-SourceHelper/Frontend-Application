@@ -1,7 +1,27 @@
+import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
+import { LocalSpringApi } from '../shared/infrastructure/local-spring-api';
+
+const springRoutes: Routes = [
+  { path: '', pathMatch: 'full', data: { section: 'overview' } },
+  { path: 'routines', data: { section: 'routines' } },
+  { path: 'routines/new', data: { section: 'new' } },
+  { path: 'routines/:id/execution', data: { section: 'routines' } },
+  { path: 'routines/:id/edit', data: { section: 'edit' } },
+  { path: 'guidelines', data: { section: 'guidelines' } },
+  { path: 'guides', data: { section: 'guides' } },
+  { path: 'patients', data: { section: 'patients' } },
+];
+
+for (const route of springRoutes) {
+  route.canMatch = [() => !!inject(LocalSpringApi).session];
+  route.loadComponent = () => import('./presentation/views/spring-guidance-routine')
+    .then(module => module.SpringGuidanceRoutine);
+}
 
 /** Lazy-loaded BC04 route tree, following care-network-management conventions. */
 export const CLINICAL_GUIDANCE_ROUTINE_MANAGEMENT_ROUTES: Routes = [
+  ...springRoutes,
   {
     path: '',
     loadComponent: () => import('./presentation/views/guidance-routine-overview')

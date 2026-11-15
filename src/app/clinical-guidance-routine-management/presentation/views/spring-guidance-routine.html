@@ -1,0 +1,154 @@
+<div class="care-overview-container">
+  <header class="page-header">
+    <div class="header-icon"><mat-icon aria-hidden="true">health_and_safety</mat-icon></div>
+    <div class="header-content">
+      <h1>Orientaciones clínicas y rutinas</h1>
+      <p>Perfil infantil {{ childId }}</p>
+    </div>
+  </header>
+
+  <nav class="quick-links" aria-label="Orientaciones y rutinas">
+    <a [routerLink]="base" routerLinkActive="selected" [routerLinkActiveOptions]="{ exact: true }">Resumen</a>
+    <a [routerLink]="base + '/routines'" routerLinkActive="selected" [routerLinkActiveOptions]="{ exact: true }">Rutinas</a>
+    @if (canManage) {
+      <a [routerLink]="base + '/routines/new'" routerLinkActive="selected">Crear rutina</a>
+    }
+    <a [routerLink]="base + '/guidelines'" routerLinkActive="selected">Pautas clínicas</a>
+    <a [routerLink]="base + '/guides'" routerLinkActive="selected">Guías prácticas</a>
+    @if (professional) {
+      <a [routerLink]="base + '/patients'" routerLinkActive="selected">Pacientes vinculados</a>
+    }
+  </nav>
+
+  @if (busy()) { <p role="status">Consultando Spring Boot…</p> }
+  @if (error()) { <p class="error-message" role="alert">{{ error() }}</p> }
+  @if (feedback()) { <p class="notice" role="status">{{ feedback() }}</p> }
+
+  @if (section === 'overview') {
+    <section class="summary-grid" aria-label="Resumen de orientaciones y rutinas">
+      <a class="summary-card" [routerLink]="base + '/routines'"><strong>Rutinas</strong><span>{{ routines().length }}</span></a>
+      <a class="summary-card" [routerLink]="base + '/guidelines'"><strong>Pautas clínicas</strong><span>{{ guidelines().length }}</span></a>
+      <a class="summary-card" [routerLink]="base + '/guides'"><strong>Guías prácticas</strong><span>{{ guides().length }}</span></a>
+      @if (professional) {
+        <a class="summary-card" [routerLink]="base + '/patients'"><strong>Pacientes vinculados</strong><span>{{ patients().length }}</span></a>
+      }
+    </section>
+  }
+
+  @if (section === 'routines' || section === 'new' || section === 'edit') {
+    <section class="content-section" [inert]="busy()" aria-labelledby="routine-section">
+      <h2 id="routine-section">Rutinas</h2>
+      @if (section === 'new' && canManage) {
+        <form (ngSubmit)="createRoutine()" #routineForm="ngForm">
+          <label>Nombre de la rutina <input [disabled]="busy()" name="routineTitle" [(ngModel)]="routineTitle" maxlength="120" required></label>
+          <label>Fecha <input [disabled]="busy()" name="routineDate" type="date" [(ngModel)]="routineDate" required></label>
+          <label>Primera actividad <input [disabled]="busy()" name="activityTitle" [(ngModel)]="activityTitle" maxlength="120" required></label>
+          <label>Duración en minutos <input [disabled]="busy()" name="duration" type="number" [(ngModel)]="duration" min="1" max="240" required></label>
+          <button [disabled]="busy() || routineForm.invalid || !routineTitle.trim() || !activityTitle.trim()">Guardar rutina</button>
+        </form>
+      }
+      @for (routine of displayedRoutines; track routine.id) {
+        <article class="entry">
+          <h3>{{ routine.title }}</h3>
+          <p>{{ routine.scheduledDate }}</p>
+          @if (section === 'routines' && canManage) {
+            <a [routerLink]="[base, 'routines', routine.id, 'edit']">Editar actividades</a>
+          }
+          <ul>
+            @for (activity of routine.activities; track activity.id) {
+              <li>
+                <span>{{ activity.title }} · {{ activity.durationMinutes }} min · {{ activity.status === 'COMPLETED' ? 'Completada' : activity.status === 'SKIPPED' ? 'Omitida' : 'Pendiente' }}</span>
+                @if (activity.status === 'PENDING' && section === 'edit' && canManage) {
+                  @if (editingActivity; as draft) {
+                    @if (draft.id === activity.id) {
+                      <form (ngSubmit)="saveActivity(routine)" #activityForm="ngForm">
+                        <label>Nombre de la actividad <input [disabled]="busy()" name="activityTitle" [(ngModel)]="draft.title" maxlength="120" required></label>
+                        <label>Duración en minutos <input [disabled]="busy()" name="activityDuration" type="number" [(ngModel)]="draft.durationMinutes" min="1" max="240" required></label>
+                        <div class="entry-actions">
+                          <button [disabled]="activityForm.invalid || !draft.title.trim()">Guardar actividad</button>
+                          <button class="secondary" type="button" (click)="editingActivity = null">Cancelar edición</button>
+                        </div>
+                      </form>
+                    }
+                  }
+                  <button class="secondary" type="button" (click)="editActivity(activity)">Editar actividad</button>
+                }
+                @if (activity.status === 'PENDING' && section !== 'edit') {
+                  <div class="entry-actions">
+                    <button type="button" (click)="finishActivity(routine, activity, 'complete')">Completar actividad</button>
+                    <button class="secondary" type="button" (click)="finishActivity(routine, activity, 'skip')">Omitir actividad</button>
+                  </div>
+                }
+              </li>
+            }
+          </ul>
+        </article>
+      } @empty {
+        @if (!busy() && !error()) { <p>No hay rutinas para mostrar.</p> }
+      }
+    </section>
+  }
+
+  @if (section === 'guidelines') {
+    <section class="content-section" [inert]="busy()" aria-labelledby="guidelines-section">
+      <h2 id="guidelines-section">Pautas clínicas</h2>
+      @if (professional) {
+        <form (ngSubmit)="saveGuideline()" #guidelineForm="ngForm">
+          <label>Título de la pauta <input [disabled]="busy()" name="title" [(ngModel)]="guidelineTitle" maxlength="160" required></label>
+          <label>Indicaciones <textarea [disabled]="busy()" name="instructions" [(ngModel)]="instructions" maxlength="4000" required></textarea></label>
+          <div class="entry-actions">
+            <button [disabled]="busy() || guidelineForm.invalid || !guidelineTitle.trim() || !instructions.trim()">Guardar pauta</button>
+            @if (editingGuideline) { <button class="secondary" type="button" (click)="cancelEdit()">Cancelar edición</button> }
+          </div>
+        </form>
+      }
+      @for (guideline of guidelines(); track guideline.id) {
+        <article class="entry">
+          <h3>{{ guideline.title }}</h3>
+          <p>{{ guideline.instructions }}</p>
+          <p>{{ guideline.status === 'PUBLISHED' ? 'Publicada' : guideline.status === 'ARCHIVED' ? 'Archivada' : 'Borrador' }}</p>
+          @if (professional && guideline.status !== 'ARCHIVED') {
+            <div class="entry-actions">
+              @if (guideline.status === 'DRAFT') {
+                <button type="button" (click)="startEdit(guideline)">Editar pauta</button>
+                <button type="button" (click)="changeGuidelineStatus(guideline, 'publish')">Publicar pauta</button>
+              }
+              @if (guideline.status === 'PUBLISHED') {
+                <button class="secondary" type="button" (click)="changeGuidelineStatus(guideline, 'archive')">Archivar pauta</button>
+              }
+            </div>
+          }
+        </article>
+      } @empty {
+        @if (!busy() && !error()) { <p>No hay pautas para mostrar.</p> }
+      }
+    </section>
+  }
+
+  @if (section === 'guides') {
+    <section class="content-section">
+      <h2>Guías prácticas</h2>
+      <label>Buscar guía <input type="search" [(ngModel)]="guideQuery"></label>
+      @for (guide of matchingGuides; track guide.id) {
+        <article class="entry"><h3>{{ guide.title }}</h3><p>{{ guide.content }}</p></article>
+      } @empty {
+        @if (!busy() && !error()) { <p>No se encontraron guías.</p> }
+      }
+    </section>
+  }
+
+  @if (section === 'patients') {
+    <section class="content-section">
+      <h2>Pacientes vinculados</h2>
+      @if (professional) {
+        <ul>
+          @for (patient of patients(); track patient.childId) {
+            <li><a routerLink="/observations" [queryParams]="{ childId: patient.childId }">Historial del perfil {{ patient.childId }}</a></li>
+          } @empty { <li>No hay pacientes vinculados.</li> }
+        </ul>
+      } @else {
+        <p>Las asignaciones están disponibles para la cuenta profesional.</p>
+      }
+    </section>
+  }
+</div>
