@@ -59,6 +59,13 @@
           <a routerLink="/forgot-password">¿Olvidaste tu contraseña?</a>
         </p>
 
+        @if (demoAvailable) {
+          <label class="demo-option">
+            <input type="checkbox" name="useDemo" [(ngModel)]="useDemo">
+            <span><strong>Usar cuenta de demostración</strong><small>Escribe un correo de prueba y cualquier contraseña.</small></span>
+          </label>
+        }
+
         <p *ngIf="errorMessage()" class="error-message" role="alert">
           {{ errorMessage() }}
         </p>

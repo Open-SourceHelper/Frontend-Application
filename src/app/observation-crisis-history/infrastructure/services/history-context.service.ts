@@ -25,7 +25,7 @@ export class HistoryContextService {
   readonly demo = !environment.production;
 
   signInForDemo(profile: string) {
-    return this.auth.signIn({ email: profile + '@bc05.example', password: 'KinemoDemo05!' });
+    return this.auth.signInForDemo(profile);
   }
 
   saveDemoSession(user: Parameters<AuthService['saveSession']>[0]) {

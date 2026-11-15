@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../infrastructure/services/auth.service';
 
 @Component({
@@ -33,6 +34,8 @@ export class Login {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
+  readonly demoAvailable = !environment.production;
+  useDemo = this.demoAvailable;
   email = '';
   password = '';
 
@@ -55,7 +58,10 @@ export class Login {
     this.loading.set(true);
     this.errorMessage.set('');
 
-    this.authService.signIn({ email, password: this.password }).subscribe({
+    const session = this.demoAvailable && this.useDemo
+      ? this.authService.signInForDemo()
+      : this.authService.signIn({ email, password: this.password });
+    session.subscribe({
       next: user => {
         this.authService.saveSession(user);
         this.authService.startSession(user);

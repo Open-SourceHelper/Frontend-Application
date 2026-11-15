@@ -54,6 +54,13 @@ export class AuthService {
     );
   }
 
+  signInForDemo(profile = 'familia'): Observable<AuthUser> {
+    if (environment.production) {
+      return throwError(() => new Error('La demostración solo está disponible en desarrollo.'));
+    }
+    return this.signIn({ email: profile + '@bc05.example', password: 'KinemoDemo05!' });
+  }
+
   signUp(data: SignUpRequest): Observable<AuthUser> {
     const params = new HttpParams().set('email', data.email);
 
