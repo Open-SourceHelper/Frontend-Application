@@ -55,11 +55,20 @@ export class LocalSpringApi {
     return this.send<T>(user.id, method, path, body);
   }
 
+  readFile(path: string): Observable<Blob> {
+    const user = this.session;
+    if (!user) return throwError(() => new Error('Elige una cuenta de prueba.'));
+    return this.http.get('/api/v1' + path, { ...this.requestOptions(user.id), responseType: 'blob' });
+  }
+
   private send<T>(accountId: string, method: string, path: string, body?: unknown): Observable<T> {
     return this.http.request<T>(method, '/api/v1' + path, {
       body,
-      headers: { Authorization: 'Basic ' + btoa(accountId + ':demo123') },
-      timeout: 10000,
+      ...this.requestOptions(accountId),
     });
+  }
+
+  private requestOptions(accountId: string) {
+    return { headers: { Authorization: 'Basic ' + btoa(accountId + ':demo123') }, timeout: 10000 };
   }
 }
