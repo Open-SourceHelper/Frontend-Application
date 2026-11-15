@@ -1,5 +1,5 @@
 
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map, switchMap, throwError } from 'rxjs';
 import { UserRole } from '../../domain/model/user-role.enum';
@@ -79,8 +79,11 @@ export class AuthService {
     );
   }
 
+  private readonly session = signal(this.readSession());
+
   signOut(): void {
     sessionStorage.removeItem('kinemo-user');
+    this.session.set(null);
   }
 
   saveSession(user: AuthUser): void {
@@ -90,9 +93,14 @@ export class AuthService {
       'kinemo-user',
       JSON.stringify(safeUser)
     );
+    this.session.set(safeUser);
   }
 
   getCurrentUser(): Omit<AuthUser, 'password'> | null {
+    return this.session();
+  }
+
+  private readSession(): Omit<AuthUser, 'password'> | null {
     const stored = sessionStorage.getItem('kinemo-user');
 
     return stored ? JSON.parse(stored) : null;
