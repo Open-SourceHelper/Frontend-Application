@@ -16,6 +16,9 @@
     </mat-card-header>
 
     <mat-card-content>
+      @if (publicDemo) {
+        <button mat-stroked-button type="button" class="full-width" (click)="enterPublicDemo()">Entrar a la demo</button>
+      }
       <form (ngSubmit)="login()">
 
         <mat-form-field appearance="outline" class="full-width">
@@ -62,7 +65,7 @@
         @if (demoAvailable) {
           <label class="demo-option">
             <input type="checkbox" name="useDemo" [(ngModel)]="useDemo">
-            <span><strong>Usar cuenta de demostración</strong><small>Escribe un correo de prueba y cualquier contraseña.</small></span>
+            <span><strong>Usar cuenta de demostración</strong><small>{{ publicDemo ? 'Puedes entrar sin completar los campos. La demo es de solo lectura.' : 'Escribe un correo de prueba y cualquier contraseña.' }}</small></span>
           </label>
         }
 

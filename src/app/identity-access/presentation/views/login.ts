@@ -34,7 +34,8 @@ export class Login {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
-  readonly demoAvailable = !environment.production;
+  readonly publicDemo = environment.publicDemo;
+  readonly demoAvailable = this.publicDemo || !environment.production;
   useDemo = this.demoAvailable;
   email = '';
   password = '';
@@ -45,6 +46,10 @@ export class Login {
 
   login(): void {
     if (this.loading()) return;
+    if (this.publicDemo && this.useDemo) {
+      this.enterPublicDemo();
+      return;
+    }
     const email = this.email.trim();
     if (!email || !this.password) {
       this.errorMessage.set('Completa todos los campos');
@@ -66,12 +71,7 @@ export class Login {
         this.authService.saveSession(user);
         this.authService.startSession(user);
         this.loading.set(false);
-        const destination = this.route.snapshot.queryParamMap.get('returnUrl');
-        if (destination?.startsWith('/') && !destination.startsWith('//')) {
-          void this.router.navigateByUrl(destination);
-        } else {
-          void this.router.navigate(['/child-profile']);
-        }
+        this.openWorkspace();
       },
       error: error => {
         this.errorMessage.set(
@@ -81,5 +81,19 @@ export class Login {
       }
     });
   }
-}
 
+  enterPublicDemo(): void {
+    if (!this.publicDemo) return;
+    this.authService.startPublicDemo();
+    this.openWorkspace();
+  }
+
+  private openWorkspace(): void {
+    const destination = this.route.snapshot.queryParamMap.get('returnUrl');
+    if (destination?.startsWith('/') && !destination.startsWith('//')) {
+      void this.router.navigateByUrl(destination);
+    } else {
+      void this.router.navigate(['/child-profile']);
+    }
+  }
+}

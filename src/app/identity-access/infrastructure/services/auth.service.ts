@@ -15,6 +15,8 @@ export interface AuthUser {
   createdAt: string;
 }
 
+type CurrentUser = Omit<AuthUser, 'password'> & { publicDemo?: true };
+
 export interface SignInRequest {
   email: string;
   password: string;
@@ -96,18 +98,31 @@ export class AuthService {
   saveSession(user: AuthUser): void {
     const { password, ...safeUser } = user;
 
-    sessionStorage.setItem(
-      'kinemo-user',
-      JSON.stringify(safeUser)
-    );
-    this.session.set(safeUser);
+    this.persistSession(safeUser);
   }
 
-  getCurrentUser(): Omit<AuthUser, 'password'> | null {
+  startPublicDemo(): void {
+    if (!environment.publicDemo) return;
+    this.persistSession({
+      id: 'public-demo',
+      email: 'visitante@kinemo.example',
+      role: UserRole.PARENT,
+      isValidated: true,
+      createdAt: new Date().toISOString(),
+      publicDemo: true,
+    });
+  }
+
+  private persistSession(user: CurrentUser): void {
+    sessionStorage.setItem('kinemo-user', JSON.stringify(user));
+    this.session.set(user);
+  }
+
+  getCurrentUser(): CurrentUser | null {
     return this.session();
   }
 
-  private readSession(): Omit<AuthUser, 'password'> | null {
+  private readSession(): CurrentUser | null {
     const stored = sessionStorage.getItem('kinemo-user');
 
     return stored ? JSON.parse(stored) : null;
@@ -136,7 +151,7 @@ export class AuthService {
   logout(): void {
     const user = this.getCurrentUser();
 
-    if (!user) {
+    if (!user || user.publicDemo) {
       this.signOut();
       return;
     }

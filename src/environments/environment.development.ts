@@ -1,4 +1,5 @@
 export const environment = {
+  publicDemo: false,
   production: false,
   // Fake backend (json-server) until the Spring Boot RESTful API is implemented
   platformProviderApiBaseUrl: 'http://localhost:3000',
