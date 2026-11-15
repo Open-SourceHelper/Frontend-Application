@@ -12,6 +12,10 @@
     </div>
   </header>
 
+  @if (!canManageAlerts) {
+    <p>Las alertas están disponibles para la familia y su red de cuidado autorizada.</p>
+    <a routerLink="/observations">Abrir Historial de episodios</a>
+  } @else {
   <div class="content-grid">
     <mat-card class="create-card">
       <mat-card-header>
@@ -22,12 +26,12 @@
         <form (ngSubmit)="activate()" class="alert-form">
           <mat-form-field appearance="outline">
             <mat-label>Perfil del niño</mat-label>
-            <input matInput name="childId" [(ngModel)]="childId" required maxlength="80">
+            <input matInput name="childId" [(ngModel)]="childId" [readonly]="!!springSession" required maxlength="80">
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>Cuidador responsable</mat-label>
-            <input matInput name="caregiverId" [(ngModel)]="caregiverId" required maxlength="80">
+            <input matInput name="caregiverId" [(ngModel)]="caregiverId" [readonly]="!!springSession" required maxlength="80">
           </mat-form-field>
 
           <mat-form-field appearance="outline">
@@ -115,7 +119,8 @@
             <span class="alert-date">{{ alert.createdAt | date:'dd/MM/yyyy · HH:mm' }}</span>
           </div>
           <p class="alert-description">{{ alert.description || 'Alerta sin descripción adicional.' }}</p>
-          <p class="alert-meta">Registrada por {{ alert.caregiverId }} · {{ alert.notifiedCaregiverIds.length }} destinatario(s) de avisos internos</p>
+          <p class="alert-meta">Registrada por {{ alert.caregiverId }}
+            @if (!springSession) { · {{ alert.notifiedCaregiverIds.length }} destinatario(s) de avisos internos }</p>
           <div class="alert-actions">
             @if (alert.status === 'CLOSED') {
               <a mat-stroked-button routerLink="/observations"
@@ -165,5 +170,6 @@
     <div class="empty-state small">
       <p>No tienes avisos internos registrados.</p>
     </div>
+  }
   }
 </section>

@@ -8,6 +8,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { finalize, Observable } from 'rxjs';
+import { LocalSpringApi } from '../../../shared/infrastructure/local-spring-api';
+import { UserRole } from '../../../identity-access/domain/model/user-role.enum';
 
 import { CrisisAlertService } from '../../application/crisis-alert.service';
 import { CrisisAlert, CrisisAlertNotification } from '../../domain/model/crisis-alert.model';
@@ -31,6 +33,8 @@ import { CaregiverAuthorizationJsonServerAdapter } from '../../infrastructure/ca
 export class CrisisAlertList implements OnInit {
   private readonly service = inject(CrisisAlertService);
   private readonly route = inject(ActivatedRoute);
+  readonly springSession = inject(LocalSpringApi).session;
+  readonly canManageAlerts = this.springSession?.role !== UserRole.PSYCHOLOGIST;
 
   readonly alerts = signal<CrisisAlert[]>([]);
   readonly notifications = signal<CrisisAlertNotification[]>([]);
@@ -44,11 +48,15 @@ export class CrisisAlertList implements OnInit {
   description = '';
 
   ngOnInit(): void {
-    this.childId = this.route.snapshot.queryParamMap.get('childId') || this.childId;
+    this.childId = this.springSession?.localSpring?.childId
+      ?? (this.route.snapshot.queryParamMap.get('childId') || this.childId);
+    this.caregiverId = this.springSession?.id ?? this.caregiverId;
+    if (!this.canManageAlerts) return;
     this.refresh();
   }
 
   refresh(): void {
+    if (!this.canManageAlerts) return;
     this.error.set('');
     this.loading.set(true);
     this.service.list(this.childId).pipe(finalize(() => this.loading.set(false))).subscribe({
@@ -62,7 +70,7 @@ export class CrisisAlertList implements OnInit {
   }
 
   activate(): void {
-    if (this.busy()) return;
+    if (this.busy() || !this.canManageAlerts) return;
     this.busy.set(true);
     this.error.set('');
     this.success.set('');
@@ -95,7 +103,7 @@ export class CrisisAlertList implements OnInit {
   }
 
   private changeStatus(request: Observable<CrisisAlert>): void {
-    if (this.busy()) return;
+    if (this.busy() || !this.canManageAlerts) return;
     this.busy.set(true);
     this.error.set('');
     this.success.set('');

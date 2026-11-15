@@ -1,8 +1,10 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { firstValueFrom, Observable } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
+
+import { localAccounts, LocalSpringApi } from '../../../infrastructure/local-spring-api';
 
 type Role = 'FAMILY' | 'CAREGIVER' | 'PSYCHOLOGIST';
 
@@ -67,15 +69,8 @@ interface Episode {
   styleUrl: './local-api.css',
 })
 export class LocalApi {
-  private readonly http = inject(HttpClient);
-  private readonly api = '/api/v1';
-
-  private authorization = '';
-  readonly accounts = [
-    { name: 'Familia', id: '7001' },
-    { name: 'Cuidador', id: '7002' },
-    { name: 'Psicóloga', id: '7003' },
-  ];
+  private readonly spring = inject(LocalSpringApi);
+  readonly accounts = localAccounts;
 
   readonly labels: Record<Role, string> = {
     FAMILY: 'Familia',
@@ -114,8 +109,7 @@ export class LocalApi {
     await this.run(async () => {
       this.session.set(null);
       this.clearRecords();
-      this.authorization = 'Basic ' + btoa(accountId + ':demo123');
-      const session = await this.request<Session>('GET', '/local-demo/session');
+      const session = await firstValueFrom(this.spring.signIn(accountId));
       this.session.set(session);
       await this.load();
     });
@@ -256,12 +250,7 @@ export class LocalApi {
   }
 
   private request<T>(method: string, path: string, body?: unknown): Promise<T> {
-    const result: Observable<T> = this.http.request<T>(method, this.api + path, {
-      body,
-      headers: { Authorization: this.authorization },
-      timeout: 10000,
-    });
-    return firstValueFrom(result);
+    return firstValueFrom(this.spring.request<T>(method, path, body));
   }
 
   private errorText(error: unknown): string {

@@ -20,24 +20,49 @@ import { createCrisisAlert, transitionCrisisAlert } from '../domain/model/crisis
 import { CaregiverAuthorizationPort } from '../domain/ports/caregiver-authorization.port';
 import { CrisisAlertRepository } from '../domain/repositories/crisis-alert.repository';
 
+import { LocalSpringApi } from '../../shared/infrastructure/local-spring-api';
+
+type SpringAlert = Omit<CrisisAlert, 'notifiedCaregiverIds'>;
+
 @Injectable()
 export class CrisisAlertService {
   private readonly repository = inject(CrisisAlertRepository);
+  private readonly spring = inject(LocalSpringApi);
+
+  private fromSpring(alert: SpringAlert): CrisisAlert {
+    return { ...alert, notifiedCaregiverIds: [] };
+  }
   private readonly authorizations = inject(CaregiverAuthorizationPort);
 
   list(childId: string): Observable<CrisisAlert[]> {
+    if (this.spring.session) {
+      return this.spring.request<SpringAlert[]>('GET', '/crisis-alerts?childId=' + encodeURIComponent(childId)).pipe(
+        map(alerts => alerts.map(alert => this.fromSpring(alert))),
+      );
+    }
     return this.repository.findByChild(childId.trim()).pipe(
       map(items => [...items].sort((a, b) => b.createdAt.localeCompare(a.createdAt)))
     );
   }
 
   inbox(caregiverId: string): Observable<CrisisAlertNotification[]> {
+    if (this.spring.session) {
+      return this.spring.request<CrisisAlertNotification[]>('GET', '/crisis-alerts/notifications');
+    }
     return this.repository.findNotifications(caregiverId.trim()).pipe(
       map(items => [...items].sort((a, b) => b.createdAt.localeCompare(a.createdAt)))
     );
   }
 
   activate(command: ActivateCrisisAlertCommand): Observable<AlertActivationResult> {
+    if (this.spring.session) {
+      const { childId, description } = command;
+      return this.spring.request<{ alert: SpringAlert; queuedNotices: number }>(
+        'POST', '/crisis-alerts', { childId, description },
+      ).pipe(map(result => ({
+        alert: this.fromSpring(result.alert), queuedCount: result.queuedNotices, failedCount: 0,
+      })));
+    }
     const childId = command.childId.trim();
     const caregiverId = command.caregiverId.trim();
     if (!childId || !caregiverId) {
@@ -107,6 +132,11 @@ export class CrisisAlertService {
     caregiverId: string,
     nextStatus: 'ATTENDED' | 'CLOSED'
   ): Observable<CrisisAlert> {
+    if (this.spring.session) {
+      const action = nextStatus === 'ATTENDED' ? '/attend' : '/close';
+      return this.spring.request<SpringAlert>('PATCH', '/crisis-alerts/' + encodeURIComponent(alert.id) + action)
+        .pipe(map(updated => this.fromSpring(updated)));
+    }
     return this.authorizedActors(alert.childId, caregiverId).pipe(
       switchMap(() => this.repository.update(
         transitionCrisisAlert(alert, nextStatus, caregiverId, new Date().toISOString())

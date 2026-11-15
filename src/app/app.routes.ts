@@ -5,7 +5,14 @@ import { environment } from '../environments/environment';
 import { AuthService } from './identity-access/infrastructure/services/auth.service';
 
 const requireSession: CanActivateChildFn = (route, state) => {
-  if (inject(AuthService).isAuthenticated()
+  const auth = inject(AuthService);
+  if (!environment.production && auth.getCurrentUser()?.localSpring) {
+    const localPaths = ['observations', 'observations/new', 'crisis-alerts'];
+    if (!localPaths.includes(route.routeConfig?.path ?? '')) {
+      return inject(Router).createUrlTree(['/backend-local']);
+    }
+  }
+  if (auth.isAuthenticated()
     || (!environment.production && route.routeConfig?.path === 'observations')) {
     return true;
   }
@@ -81,7 +88,11 @@ export const routes: Routes = [
   }]),
   {
     path: '',
-    redirectTo: () => inject(AuthService).isAuthenticated() ? '/child-profile' : '/login',
+    redirectTo: () => {
+      const user = inject(AuthService).getCurrentUser();
+      if (!user) return '/login';
+      return !environment.production && user.localSpring ? '/observations' : '/child-profile';
+    },
     pathMatch: 'full'
   },
 

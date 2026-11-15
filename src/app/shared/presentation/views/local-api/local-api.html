@@ -17,7 +17,13 @@
   @if (session(); as current) {
     <div class="session">
       <strong>{{ labels[current.role] }} · Perfil infantil {{ current.childId }}</strong>
-      <button type="button" class="secondary" [disabled]="busy()" (click)="refresh()">Actualizar datos</button>
+      <div class="actions">
+        @if (current.role !== 'PSYCHOLOGIST') {
+          <a routerLink="/crisis-alerts">Abrir Alertas de cuidado</a>
+        }
+        <a routerLink="/observations">Abrir Historial de episodios</a>
+        <button type="button" class="secondary" [disabled]="busy()" (click)="refresh()">Actualizar datos</button>
+      </div>
     </div>
 
     <div [inert]="busy()">

@@ -1,6 +1,6 @@
 
-import { Component, inject, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Component, computed, inject, signal } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,6 +10,8 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { FooterContent } from '../footer-content/footer-content';
+import { LocalSpringApi } from '../../../infrastructure/local-spring-api';
+import { UserRole } from '../../../../identity-access/domain/model/user-role.enum';
 
 @Component({
   selector: 'app-layout',
@@ -28,6 +30,9 @@ import { FooterContent } from '../footer-content/footer-content';
 })
 export class Layout {
   readonly auth = inject(AuthService);
+  private readonly spring = inject(LocalSpringApi);
+  private readonly router = inject(Router);
+  readonly localSession = computed(() => this.spring.session);
   readonly language = signal<'es' | 'en'>(localStorage.getItem('kinemo-navigation-language') === 'en' ? 'en' : 'es');
   readonly labels = {
     es: { modules: 'Módulos de Kinemo', menu: 'Menú de módulos', profile: 'Mi perfil', login: 'Iniciar sesión', language: 'Idioma de navegación' },
@@ -58,6 +63,18 @@ export class Layout {
     { link: '/children/1/dashboard', label: { es: 'Panel de seguimiento', en: 'Progress dashboard' }, icon: 'dashboard' },
 
   ];
+  readonly visibleOptions = computed(() => {
+    const user = this.localSession();
+    if (!user) return this.options;
+    return this.options.filter(option => option.link === '/observations'
+      || (option.link === '/crisis-alerts' && user.role !== UserRole.PSYCHOLOGIST));
+  });
+
+  leaveLocalSession(): void {
+    this.auth.signOut();
+    void this.router.navigate(['/login']);
+  }
+
   setLanguage(language: 'es' | 'en'): void {
     this.language.set(language);
     localStorage.setItem('kinemo-navigation-language', language);
