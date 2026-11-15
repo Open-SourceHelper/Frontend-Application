@@ -85,7 +85,7 @@ export class RoutineForm {
   private createdAt = new Date();
   private updatedAt = new Date();
   private originalActivities: RoutineActivity[] = [];
-  private patched = false;
+  readonly editReady = signal(false);
   private waitingForSave = false;
   private initialCompleted = this.store.operationsCompleted();
 
@@ -111,9 +111,10 @@ export class RoutineForm {
     // The store may still be loading when the page is opened directly: patch once it is available.
     effect(() => {
       const current = routine();
-      if (current && !this.patched) {
-        this.patched = true;
+      if (current && !this.editReady()) {
+
         this.patchRoutine(current);
+        this.editReady.set(true);
       }
     });
   }

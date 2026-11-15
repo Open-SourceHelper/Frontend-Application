@@ -1,4 +1,11 @@
 <h1 class="title">{{ isEdit ? 'Editar rutina' : 'Nueva rutina' }}</h1>
+@if (isEdit && !editReady()) {
+  @if (store.loading()) {
+    <p role="status">Cargando rutina…</p>
+  } @else {
+    <p role="alert">No se pudo abrir esta rutina.</p>
+  }
+} @else {
 <form [formGroup]="form" (ngSubmit)="submit()">
   <mat-form-field><mat-label>Nombre</mat-label><input matInput formControlName="name" placeholder="Ej. Rutina de la mañana">@if (form.controls.name.hasError('required')) { <mat-error>El nombre es obligatorio</mat-error> }</mat-form-field>
   <mat-form-field><mat-label>Descripción</mat-label><textarea matInput formControlName="description" rows="2"></textarea></mat-form-field>
@@ -49,3 +56,4 @@
     <button mat-flat-button type="submit" [disabled]="form.invalid || store.loading()">{{ isEdit ? 'Actualizar' : 'Crear' }}</button>
   </div>
 </form>
+}
