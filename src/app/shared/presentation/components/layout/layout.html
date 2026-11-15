@@ -1,32 +1,36 @@
 <mat-sidenav-container class="layout-container">
   <mat-sidenav id="module-menu" [mode]="narrow() ? 'over' : 'side'" [opened]="!narrow() || mobileOpen()"
-    (closedStart)="mobileOpen.set(false)" class="sidenav">
+    (closedStart)="mobileOpen.set(false)" class="sidenav" [attr.lang]="language()">
     <a class="brand" routerLink="/child-profile" (click)="mobileOpen.set(false)">
       <span class="brand-mark"><mat-icon aria-hidden="true">volunteer_activism</mat-icon></span>
       <span>Kinemo</span>
     </a>
-    <mat-nav-list aria-label="Módulos de Kinemo">
+    <mat-nav-list [attr.aria-label]="labels[language()].modules">
       @for (option of options; track option.link) {
         <a mat-list-item [routerLink]="option.link" routerLinkActive="active" ariaCurrentWhenActive="page"
-          [attr.aria-label]="option.label" (click)="mobileOpen.set(false)">
+          [attr.aria-label]="option.label[language()]" (click)="mobileOpen.set(false)">
           <mat-icon matListItemIcon aria-hidden="true">{{ option.icon }}</mat-icon>
-          <span matListItemTitle>{{ option.label }}</span>
+          <span matListItemTitle>{{ option.label[language()] }}</span>
         </a>
       }
     </mat-nav-list>
   </mat-sidenav>
 
   <mat-sidenav-content class="content-shell">
-    <header class="account-bar">
+    <header class="account-bar" [attr.lang]="language()">
       @if (narrow()) {
         <button mat-icon-button type="button" (click)="mobileOpen.set(!mobileOpen())"
-          aria-label="Menú de módulos" aria-controls="module-menu" [attr.aria-expanded]="mobileOpen()">
+          [attr.aria-label]="labels[language()].menu" aria-controls="module-menu" [attr.aria-expanded]="mobileOpen()">
           <mat-icon>menu</mat-icon>
         </button>
       }
       <div class="account-actions">
+        <div class="language-control" role="group" [attr.aria-label]="labels[language()].language">
+          <button type="button" lang="es" aria-label="Español" [attr.aria-pressed]="language() === 'es'" (click)="setLanguage('es')">ES</button>
+          <button type="button" lang="en" aria-label="English" [attr.aria-pressed]="language() === 'en'" (click)="setLanguage('en')">EN</button>
+        </div>
         <a mat-button class="account-link" [routerLink]="auth.isAuthenticated() ? '/profile' : '/login'">
-          <mat-icon>account_circle</mat-icon>{{ auth.isAuthenticated() ? 'Mi perfil' : 'Iniciar sesión' }}
+          <mat-icon>account_circle</mat-icon>{{ auth.isAuthenticated() ? labels[language()].profile : labels[language()].login }}
         </a>
       </div>
     </header>
