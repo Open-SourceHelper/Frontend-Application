@@ -52,15 +52,16 @@ export class EpisodeHistory implements OnInit {
   readonly professional = computed(() => this.user()?.role === this.context.roles.PSYCHOLOGIST);
   readonly publicDemo = this.user()?.publicDemo === true;
   readonly demo = this.context.demo || this.publicDemo;
+  readonly spring = this.user()?.localSpring !== undefined;
   private readonly exampleProfile = signal('familia');
   readonly activeDemoProfile = computed(() => this.publicDemo
     ? this.exampleProfile()
-    : this.user()?.email.split('@')[0]);
+    : this.user()?.localSpring?.profile ?? this.user()?.email.split('@')[0]);
   readonly profiles = [
     { key: 'familia', label: 'Familia' },
     { key: 'cuidador', label: 'Cuidador autorizado' },
     { key: 'psicologa', label: 'Psicóloga' },
-    { key: 'retirado', label: 'Acceso retirado' },
+    ...(this.spring ? [] : [{ key: 'retirado', label: 'Acceso retirado' }]),
   ];
   readonly recentCrises = computed(() => {
     const start = new Date();
@@ -141,17 +142,20 @@ export class EpisodeHistory implements OnInit {
     this.busy.set(true);
     this.error.set('');
     try {
-      const user = await firstValueFrom(this.context.signInForDemo(profile));
-      this.context.saveDemoSession(user);
+      const user = this.spring
+        ? await firstValueFrom(this.context.switchLocalProfile(profile))
+        : await firstValueFrom(this.context.signInForDemo(profile));
+      if (!user) return;
+      if ('password' in user) this.context.saveDemoSession(user);
       this.user.set(user);
       this.message.set('');
       this.filter.set('all');
       this.month.set('');
       this.children.set([]);
-      const child = this.childId || 'child-001';
+      const child = this.context.currentUser()?.localSpring?.childId ?? (this.childId || 'child-001');
       await this.initialize(child);
     } catch {
-      this.error.set('No pudimos abrir el perfil de prueba. Comprueba que JSON Server esté corriendo.');
+      this.error.set('No pudimos abrir el perfil de prueba. Comprueba que el servidor local esté corriendo.');
     } finally {
       this.busy.set(false);
     }
@@ -316,9 +320,9 @@ export class EpisodeHistory implements OnInit {
     this.error.set('');
     try {
       if (!await this.checkAccess()) return;
-      const latest = await firstValueFrom(this.observations.getById(record.id));
+      const latest = await firstValueFrom(this.observations.getById(record.id, this.childId));
       if (latest.childId !== this.childId) return;
-      const reviewed = latest.reviewedAt ? latest : await firstValueFrom(this.observations.update(new Observation({
+      const reviewed = latest.reviewedAt ? latest : await firstValueFrom(this.observations.review(new Observation({
         ...latest, reviewedAt: new Date().toISOString(), reviewedBy: user.id,
       })));
       this.records.update(items => items.map(item => item.id === reviewed.id ? reviewed : item));

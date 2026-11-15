@@ -1,7 +1,7 @@
 <section class="history" aria-labelledby="history-title">
   @if (demo) {
     <section class="demo" aria-label="Perfiles de demostración">
-      <strong>{{ publicDemo ? 'Ver como · Datos ficticios' : 'Ver como · Demo local' }}</strong>
+      <strong>{{ publicDemo ? 'Ver como · Datos ficticios' : spring ? 'Ver como · Spring Boot local' : 'Ver como · Demo local' }}</strong>
       <div class="actions">
         @for (profile of profiles; track profile.key) {
           <button type="button" class="secondary" (click)="switchProfile(profile.key)"
@@ -208,7 +208,7 @@
                   <p>La psicóloga anotó que la pausa ayudó a retomar la actividad.</p>
                 }
               } @else {
-              <app-observation-comments [observationId]="record.id" [psychologistId]="professional() ? user.id : ''"
+              <app-observation-comments [observationId]="record.id" [psychologistId]="professional() && (!spring || !record.reviewedAt) ? user.id : ''"
                 [childId]="childId" />
               @if (professional() && !record.reviewedAt) {
                 <button type="button" (click)="review(record)" [disabled]="busy()">Marcar como revisado</button>

@@ -187,7 +187,7 @@ export class ObservationCommentsComponent implements OnChanges {
     this.loadError.set(null);
     this.comments.set([]);
 
-    this.service.getByObservationId(observationId)
+    this.service.getByObservationId(observationId, this.childId)
       .pipe(
         finalize(() => {
           if (this.observationId === observationId) {
@@ -250,7 +250,7 @@ export class ObservationCommentsComponent implements OnChanges {
       return;
     }
 
-    this.service.create(comment)
+    this.service.create(comment, this.childId)
       .pipe(
         finalize(() => this.saving.set(false))
       )

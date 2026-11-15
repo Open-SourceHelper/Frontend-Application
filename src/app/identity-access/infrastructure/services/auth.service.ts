@@ -15,7 +15,10 @@ export interface AuthUser {
   createdAt: string;
 }
 
-type CurrentUser = Omit<AuthUser, 'password'> & { publicDemo?: true };
+type CurrentUser = Omit<AuthUser, 'password'> & {
+  publicDemo?: true;
+  localSpring?: { childId: string; profile: string };
+};
 
 export interface SignInRequest {
   email: string;
@@ -101,6 +104,15 @@ export class AuthService {
     this.persistSession(safeUser);
   }
 
+  startLocalSpringDemo(id: string, profile: string, role: UserRole, childId: string): void {
+    if (environment.production) return;
+    this.persistSession({
+      id, role, isValidated: true, email: profile + '@kinemo.example',
+      createdAt: new Date().toISOString(),
+      localSpring: { childId, profile },
+    });
+  }
+
   startPublicDemo(): void {
     if (!environment.publicDemo) return;
     this.persistSession({
@@ -125,7 +137,8 @@ export class AuthService {
   private readSession(): CurrentUser | null {
     const stored = sessionStorage.getItem('kinemo-user');
 
-    return stored ? JSON.parse(stored) : null;
+    const user: CurrentUser | null = stored ? JSON.parse(stored) : null;
+    return environment.production && user?.localSpring ? null : user;
   }
 
   isAuthenticated(): boolean {
@@ -151,7 +164,7 @@ export class AuthService {
   logout(): void {
     const user = this.getCurrentUser();
 
-    if (!user || user.publicDemo) {
+    if (!user || user.publicDemo || user.localSpring) {
       this.signOut();
       return;
     }
