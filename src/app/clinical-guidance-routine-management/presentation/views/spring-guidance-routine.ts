@@ -7,6 +7,8 @@ import { firstValueFrom, interval, map } from 'rxjs';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { UserRole } from '../../../identity-access/domain/model/user-role.enum';
 import { LocalSpringApi } from '../../../shared/infrastructure/local-spring-api';
+import { PublicSpringDemo } from '../../../shared/infrastructure/public-spring-demo';
+import { AuthService } from '../../../identity-access/infrastructure/services/auth.service';
 
 interface VisualSupport {
   id: string;
@@ -57,6 +59,9 @@ interface Patient {
 })
 export class SpringGuidanceRoutine implements OnInit, OnDestroy {
   private readonly api = inject(LocalSpringApi);
+  private readonly publishedDemo = inject(PublicSpringDemo);
+  readonly publicDemo = inject(AuthService).getCurrentUser()?.publicDemo === true;
+  readonly demoChild = signal('');
   private readonly route = inject(ActivatedRoute);
   private readonly destroyRef = inject(DestroyRef);
   readonly childId = this.api.session?.localSpring?.childId ?? '';
@@ -228,6 +233,21 @@ export class SpringGuidanceRoutine implements OnInit, OnDestroy {
   }
 
   private async load(): Promise<void> {
+    if (this.publicDemo) {
+      const snapshot = await firstValueFrom(this.publishedDemo.snapshot);
+      if (!snapshot) throw new Error('Public API is not configured.');
+      this.demoChild.set(snapshot.child.firstName + ' ' + snapshot.child.lastName);
+      this.routines.set(snapshot.routines.map(routine => ({
+        ...routine,
+        activities: routine.activities.map((activity, index) => ({
+          ...activity, position: index + 1, visuals: [], transitionMinutes: 0,
+          alertType: 'VISUAL', timerStartedAt: null,
+        })),
+      })));
+      this.guidelines.set(snapshot.guidelines);
+      this.guides.set(snapshot.guides);
+      return;
+    }
     const query = '?childId=' + encodeURIComponent(this.childId);
     const [routines, guidelines, guides, patients] = await Promise.all([
       firstValueFrom(this.api.request<Routine[]>('GET', '/routines' + query)),
@@ -242,6 +262,7 @@ export class SpringGuidanceRoutine implements OnInit, OnDestroy {
   }
 
   private async save(method: string, path: string, body: unknown, message: string, reset?: () => void): Promise<void> {
+    if (this.publicDemo) return;
     await this.run(async () => {
       await firstValueFrom(this.api.request(method, path, body));
       reset?.();
@@ -258,7 +279,9 @@ export class SpringGuidanceRoutine implements OnInit, OnDestroy {
     try {
       await action();
     } catch (error) {
-      if (error instanceof HttpErrorResponse && error.status === 403) {
+      if (this.publicDemo) {
+        this.error.set('No se pudo consultar la demo de Spring Boot.');
+      } else if (error instanceof HttpErrorResponse && error.status === 403) {
         this.closePreview();
         this.routines.set([]);
         this.guidelines.set([]);

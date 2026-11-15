@@ -1,5 +1,8 @@
 import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
+import { map } from 'rxjs';
+import { AuthService } from '../identity-access/infrastructure/services/auth.service';
+import { PublicSpringDemo } from '../shared/infrastructure/public-spring-demo';
 import { LocalSpringApi } from '../shared/infrastructure/local-spring-api';
 
 const springRoutes: Routes = [
@@ -14,7 +17,11 @@ const springRoutes: Routes = [
 ];
 
 for (const route of springRoutes) {
-  route.canMatch = [() => !!inject(LocalSpringApi).session];
+  route.canMatch = [() => {
+    if (inject(LocalSpringApi).session) return true;
+    if (!inject(AuthService).getCurrentUser()?.publicDemo) return false;
+    return inject(PublicSpringDemo).base.pipe(map(Boolean));
+  }];
   route.loadComponent = () => import('./presentation/views/spring-guidance-routine')
     .then(module => module.SpringGuidanceRoutine);
 }

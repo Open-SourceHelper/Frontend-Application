@@ -3,7 +3,11 @@
     <div class="header-icon"><mat-icon aria-hidden="true">health_and_safety</mat-icon></div>
     <div class="header-content">
       <h1>Orientaciones clínicas y rutinas</h1>
-      <p>Perfil infantil {{ childId }}</p>
+      @if (publicDemo) {
+        @if (demoChild()) { <p>{{ demoChild() }} · Datos ficticios desde Spring Boot · Solo lectura</p> }
+      } @else {
+        <p>Perfil infantil {{ childId }}</p>
+      }
     </div>
   </header>
 
@@ -109,7 +113,7 @@
                     <button class="secondary" type="button" (click)="removeActivity(routine, activity)">Retirar actividad</button>
                   </div>
                 }
-                @if (activity.status === 'PENDING' && section !== 'edit') {
+                @if (!publicDemo && activity.status === 'PENDING' && section !== 'edit') {
                   <details>
                     <summary>Temporizador de transición</summary>
                     <form ngNativeValidate (ngSubmit)="configureTimer(routine, activity, timerMinutes.value)">

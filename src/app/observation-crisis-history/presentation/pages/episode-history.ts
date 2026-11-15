@@ -1,3 +1,5 @@
+import { PublicDemoSnapshot, PublicSpringDemo } from '../../../shared/infrastructure/public-spring-demo';
+import { toObservation, toComments } from '../../infrastructure/resources/spring-episode';
 import { exampleChild, exampleEpisodes } from './public-history-examples';
 import { DatePipe } from '@angular/common';
 import { Component, computed, effect, ElementRef, inject, OnInit, signal, viewChild } from '@angular/core';
@@ -19,6 +21,9 @@ import { ObservationCommentsComponent } from '../components/observation-comments
 export class EpisodeHistory implements OnInit {
   private readonly context = inject(HistoryContextService);
   private readonly observations = inject(ObservationService);
+  private readonly publishedDemo = inject(PublicSpringDemo);
+  readonly publicSnapshot = signal<PublicDemoSnapshot | null>(null);
+  private publicError = false;
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly registrationDialog = viewChild<ElementRef<HTMLDialogElement>>('registrationDialog');
@@ -185,20 +190,45 @@ export class EpisodeHistory implements OnInit {
   draft = this.newDraft();
 
   ngOnInit() {
-    if (this.publicDemo) {
-      this.showExampleHistory();
-      return;
-    }
+    if (this.publicDemo) return this.loadPublicHistory();
     return this.initialize(this.route.snapshot.queryParamMap.get('childId'));
   }
 
+  async loadPublicHistory(): Promise<void> {
+    this.busy.set(true);
+    this.error.set('');
+    this.publicError = false;
+    try {
+      this.publicSnapshot.set(await firstValueFrom(this.publishedDemo.snapshot));
+      this.showExampleHistory();
+    } catch {
+      this.publicSnapshot.set(null);
+      this.records.set([]);
+      this.children.set([]);
+      this.selected.set(null);
+      this.childId = '';
+      this.publicError = true;
+      this.error.set('No se pudo consultar la demo de Spring Boot.');
+    } finally {
+      this.busy.set(false);
+    }
+  }
+
+  publicComments(episodeId: string) {
+    const episode = this.publicSnapshot()?.episodes.find(item => item.id === episodeId);
+    return episode ? toComments(episode) : [];
+  }
+
   private showExampleHistory(): void {
+    if (this.publicError) return;
+    const snapshot = this.publicSnapshot();
+    const child = snapshot?.child ?? exampleChild;
     const allowed = this.exampleProfile() !== 'retirado';
     this.denied.set(!allowed);
     this.selected.set(null);
-    this.children.set(allowed ? [exampleChild] : []);
-    this.childId = allowed ? exampleChild.id : '';
-    this.records.set(allowed ? exampleEpisodes() : []);
+    this.children.set(allowed ? [child] : []);
+    this.childId = allowed ? child.id : '';
+    this.records.set(allowed ? snapshot?.episodes.map(toObservation) ?? exampleEpisodes() : []);
   }
 
   private async initialize(requested: string | null) {

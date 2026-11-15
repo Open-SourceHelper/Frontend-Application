@@ -16,7 +16,13 @@
     <span class="history-icon" aria-hidden="true">▤</span>
     <h1 id="history-title">Historial de episodios</h1>
   </header>
-  @if (publicDemo) { <p>Historial ficticio de solo lectura.</p> }
+    @if (publicDemo) {
+    @if (publicSnapshot()) { <p>Datos ficticios desde Spring Boot · Solo lectura</p> }
+    @else if (!busy() && !error()) { <p>Historial ficticio de solo lectura.</p> }
+    @if (error() && !busy()) {
+      <button class="secondary" type="button" (click)="loadPublicHistory()">Reintentar consulta</button>
+    }
+  }
   @if (error() && !step() && !selected()) { <p role="alert">{{ error() }}</p> }
   @if (busy()) { <p role="status">Cargando…</p> }
   @if (user(); as user) {
@@ -203,7 +209,11 @@
               @if (record.trigger) { <p><strong>Qué pasó antes</strong> · {{ record.trigger }}</p> }
               @if (record.helped) { <p><strong>Qué ayudó</strong> · {{ record.helped }}</p> }
               @if (publicDemo) {
-                @if (record.reviewedAt) {
+                @if (publicSnapshot()) {
+                  @for (comment of publicComments(record.id); track comment.id) {
+                    <p>{{ comment.content }}</p>
+                  }
+                } @else if (record.reviewedAt) {
                   <h3>Revisión de ejemplo</h3>
                   <p>La psicóloga anotó que la pausa ayudó a retomar la actividad.</p>
                 }
