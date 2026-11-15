@@ -12,7 +12,10 @@
       </div>
     </section>
   }
-  <h1 id="history-title">Historial de episodios</h1>
+  <header class="history-heading-shared">
+    <span class="history-icon" aria-hidden="true">▤</span>
+    <h1 id="history-title">Historial de episodios</h1>
+  </header>
   @if (error() && !step() && !selected()) { <p role="alert">{{ error() }}</p> }
   @if (busy()) { <p role="status">Cargando…</p> }
   @if (user(); as user) {

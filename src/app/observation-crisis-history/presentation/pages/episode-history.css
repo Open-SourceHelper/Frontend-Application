@@ -98,3 +98,7 @@ article.crisis-entry { border-inline-start-color: #c45d0f; }
 .weekly-chart h3 { margin: 0 0 .5rem; font-size: 1rem; }
 .weekly-chart ul { padding: 0; margin: 0; list-style: none; }
 .week-bar { display: grid; justify-items: center; align-items: end; text-align: center; }
+
+.history-heading-shared { display: flex; align-items: center; gap: .8rem; margin: 1rem 0; }
+.history-heading-shared h1 { margin: 0; }
+.history-icon { display: grid; place-items: center; flex: none; width: 3rem; height: 3rem; font-size: 1.5rem; }

@@ -11,3 +11,31 @@ body {
 .container-with-spacing {
   margin: 10px; /* Applies margin to all sides */
 }
+
+/* Shared visual styles for the signed-in workspace. */
+.kinemo-workspace {
+  --kinemo-ink: #2e2045;
+  --kinemo-muted: #594c69;
+  --kinemo-border: #e1d8ec;
+  --kinemo-panel: #fff;
+  --kinemo-icon-bg: #eee5fa;
+  --kinemo-icon: #5c368b;
+}
+.kinemo-workspace :is(.page-header, .page-hero, .history-heading-shared) h1 {
+  color: var(--kinemo-ink);
+  font-size: clamp(1.65rem, 3vw, 2.25rem);
+  line-height: 1.2;
+}
+.kinemo-workspace :is(.header-icon, .hero-icon, .history-icon) {
+  background: var(--kinemo-icon-bg);
+  color: var(--kinemo-icon);
+  border-radius: .85rem;
+}
+.kinemo-workspace :is(.page-header, .page-hero) p { color: var(--kinemo-muted); }
+.kinemo-workspace mat-card {
+  --mat-card-elevated-container-color: var(--kinemo-panel);
+  --mat-card-outlined-container-color: var(--kinemo-panel);
+  --mat-card-elevated-container-shape: .9rem;
+  --mat-card-outlined-container-shape: .9rem;
+  --mat-card-outlined-outline-color: var(--kinemo-border);
+}
