@@ -172,7 +172,7 @@
             <p class="badge">{{ record.reviewedAt ? 'Revisado' : 'Sin revisar' }}</p>
             <p>{{ record.description }}</p>
             <button type="button" class="secondary" [attr.aria-expanded]="selected()?.id === record.id"
-              aria-haspopup="dialog" (click)="selected.set(record); error.set(''); message.set('')">
+              aria-haspopup="dialog" [disabled]="busy()" (click)="selected.set(record); error.set(''); message.set('')">
               Ver detalles
             </button>
           </article>

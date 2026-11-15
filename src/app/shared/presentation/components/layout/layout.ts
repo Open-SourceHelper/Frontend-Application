@@ -66,8 +66,14 @@ export class Layout {
   readonly visibleOptions = computed(() => {
     const user = this.localSession();
     if (!user) return this.options;
-    return this.options.filter(option => option.link === '/observations'
-      || (option.link === '/crisis-alerts' && user.role !== UserRole.PSYCHOLOGIST));
+    return this.options.filter(option => {
+      if (option.link === '/observations' || option.link === '/clinical-guidance-routine-management') return true;
+      if (option.link === '/care-networks/1') return user.role === UserRole.PARENT;
+      return user.role !== UserRole.PSYCHOLOGIST
+        && (option.link === '/child-profile' || option.link === '/clinical-profile' || option.link === '/crisis-alerts');
+    }).map(option => option.link === '/care-networks/1'
+      ? { ...option, link: '/care-networks/' + user.localSpring?.childId }
+      : option);
   });
 
   leaveLocalSession(): void {

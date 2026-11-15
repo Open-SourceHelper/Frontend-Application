@@ -3,12 +3,16 @@ import { inject } from '@angular/core';
 import { CanActivateChildFn, Router, Routes } from '@angular/router';
 import { environment } from '../environments/environment';
 import { AuthService } from './identity-access/infrastructure/services/auth.service';
+import { UserRole } from './identity-access/domain/model/user-role.enum';
 
 const requireSession: CanActivateChildFn = (route, state) => {
   const auth = inject(AuthService);
-  if (!environment.production && auth.getCurrentUser()?.localSpring) {
-    const localPaths = ['observations', 'observations/new', 'crisis-alerts'];
-    if (!localPaths.includes(route.routeConfig?.path ?? '')) {
+  const user = auth.getCurrentUser();
+  if (!environment.production && user?.localSpring) {
+    const localPaths = ['observations', 'observations/new', 'crisis-alerts', 'clinical-guidance-routine-management'];
+    if (user.role !== UserRole.PSYCHOLOGIST) localPaths.push('child-profile', 'clinical-profile');
+    if (user.role === UserRole.PARENT) localPaths.push('care-networks/:careNetworkId');
+    if (!route.pathFromRoot.some(segment => localPaths.includes(segment.routeConfig?.path ?? ''))) {
       return inject(Router).createUrlTree(['/backend-local']);
     }
   }
