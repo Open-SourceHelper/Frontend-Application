@@ -81,6 +81,6 @@ En la web, elige **Entrar a la demo** y abre **Historial de episodios** u **Orie
 
 ## Evaluación en línea
 
-En el sitio estático de Render, selecciona la rama de evaluación y define `KINEMO_EVALUATION_API_BASE` con el origen HTTPS del Web Service que corre el perfil `evaluation`. Usa `npm ci && npm run build:render`, el directorio `dist/frontend-application-OP/browser` y el rewrite `/*` a `/index.html`. Si el sitio ya ofrece la demo pública, conserva su URL en `KINEMO_PUBLIC_API_BASE`.
+En el sitio estático de Render, selecciona la rama `master` y define `KINEMO_EVALUATION_API_BASE` con el origen HTTPS del Web Service que corre el perfil `evaluation`. Usa `npm ci && npm run build:render`, el directorio `dist/frontend-application-OP/browser` y el rewrite `/*` a `/index.html`. Si el sitio ya ofrece la demo pública, conserva su URL en `KINEMO_PUBLIC_API_BASE`.
 
 Abre `/evaluacion` y selecciona **Familia (7001)**, **Cuidador (7002)** o **Psicóloga (7003)**. Usa la contraseña correspondiente configurada en el backend. Al recargar la página, vuelve a iniciar sesión. Los cambios se guardan en la base de datos del Web Service.
