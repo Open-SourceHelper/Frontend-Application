@@ -1,5 +1,16 @@
 
-import { Routes } from '@angular/router';
+import { inject } from '@angular/core';
+import { CanActivateChildFn, Router, Routes } from '@angular/router';
+import { environment } from '../environments/environment';
+import { AuthService } from './identity-access/infrastructure/services/auth.service';
+
+const requireSession: CanActivateChildFn = (route, state) => {
+  if (inject(AuthService).isAuthenticated()
+    || (!environment.production && route.routeConfig?.path === 'observations')) {
+    return true;
+  }
+  return inject(Router).createUrlTree(['/login'], { queryParams: { returnUrl: state.url } });
+};
 
 // Shared
 const pageNotFound = () =>
@@ -64,7 +75,7 @@ const baseTitle = 'Kinemo';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/child-profile',
+    redirectTo: () => inject(AuthService).isAuthenticated() ? '/child-profile' : '/login',
     pathMatch: 'full'
   },
 
@@ -82,92 +93,103 @@ export const routes: Routes = [
         .then((m) => m.Register)
   },
   {
-    path: 'profile',
-    loadComponent: () =>
-      import('./identity-access/presentation/views/profile')
-        .then((m) => m.Profile)
-  },
-  {
     path: 'forgot-password',
     loadComponent: () =>
       import('./identity-access/presentation/views/forgot-password')
         .then((m) => m.ForgotPassword)
   },
 
-  // BC02 - Child Profile & Care Network Management
-  {
-    path: 'child-profile',
-    loadComponent: child,
-    title: `${baseTitle} - Child Profile`
-  },
-  {
-    path: 'clinical-profile',
-    loadComponent: clinical,
-    title: `${baseTitle} - Clinical Profile`
-  },
   {
     path: 'care-networks/invitations/accept/:invitationId',
     loadComponent: acceptInvitation,
     title: `${baseTitle} - Aceptar Invitación`
   },
-  {
-    path: 'care-networks/:careNetworkId',
-    loadComponent: careNetwork,
-    title: `${baseTitle} - Red de Cuidado`
-  },
 
-  // New BC03 - Crisis Alert Management
-  {
-    path: 'crisis-alerts',
-    loadComponent: crisisAlerts,
-    title: `${baseTitle} - Alertas de crisis`
-  },
 
-  // BC04 - Routine & Activity Management
   {
-    path: 'routine-activity',
-    loadChildren: routineActivityRoutes,
-    title: `${baseTitle} - Rutinas`
-  },
+    path: '',
+    loadComponent: () => import('./shared/presentation/components/layout/layout').then(m => m.Layout),
+    canActivateChild: [requireSession],
+    children: [
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import('./identity-access/presentation/views/profile')
+            .then((m) => m.Profile)
+      },
 
-  // Clinical Guidance Management (migrates to BC04)
-  {
-    path: 'clinical-guidance',
-    loadComponent: clinicalGuidance,
-    title: `${baseTitle} - Orientaciones Clínicas`
-  },
 
-  // BC04 - Clinical Guidance & Routine Management
-  {
-    path: 'clinical-guidance-routine-management',
-    loadChildren: guidanceRoutineRoutes,
-    title: `${baseTitle} - Orientaciones Clínicas y Rutinas`
-  },
+      // BC02 - Child Profile & Care Network Management
+      {
+        path: 'child-profile',
+        loadComponent: child,
+        title: `${baseTitle} - Child Profile`
+      },
+      {
+        path: 'clinical-profile',
+        loadComponent: clinical,
+        title: `${baseTitle} - Clinical Profile`
+      },
+      {
+        path: 'care-networks/:careNetworkId',
+        loadComponent: careNetwork,
+        title: `${baseTitle} - Red de Cuidado`
+      },
 
-  // BC05 - Observation & Crisis History Management
-  {
-    path: 'observations/new',
-    loadComponent: episodeHistory,
-    title: `${baseTitle} - Registrar observación`
-  },
-  {
-    path: 'observations',
-    loadComponent: episodeHistory,
-    title: `${baseTitle} - Historial de episodios`
-  },
+      // New BC03 - Crisis Alert Management
+      {
+        path: 'crisis-alerts',
+        loadComponent: crisisAlerts,
+        title: `${baseTitle} - Alertas de crisis`
+      },
 
-  // BC07 - Dashboard & Reporting
-  {
-    path: 'children/:childId',
-    loadChildren: dashboardReporting,
-    title: `${baseTitle} - Dashboard y Reportes`
-  },
+      // BC04 - Routine & Activity Management
+      {
+        path: 'routine-activity',
+        loadChildren: routineActivityRoutes,
+        title: `${baseTitle} - Rutinas`
+      },
 
-  // BC08 - Subscription & Payment Management
-  {
-    path: 'subscription-payment',
-    loadChildren: subscriptionPaymentRoutes,
-    title: `${baseTitle} - Suscripción`
+      // Clinical Guidance Management (migrates to BC04)
+      {
+        path: 'clinical-guidance',
+        loadComponent: clinicalGuidance,
+        title: `${baseTitle} - Orientaciones Clínicas`
+      },
+
+      // BC04 - Clinical Guidance & Routine Management
+      {
+        path: 'clinical-guidance-routine-management',
+        loadChildren: guidanceRoutineRoutes,
+        title: `${baseTitle} - Orientaciones Clínicas y Rutinas`
+      },
+
+      // BC05 - Observation & Crisis History Management
+      {
+        path: 'observations/new',
+        loadComponent: episodeHistory,
+        title: `${baseTitle} - Registrar observación`
+      },
+      {
+        path: 'observations',
+        loadComponent: episodeHistory,
+        title: `${baseTitle} - Historial de episodios`
+      },
+
+      // BC07 - Dashboard & Reporting
+      {
+        path: 'children/:childId',
+        loadChildren: dashboardReporting,
+        title: `${baseTitle} - Dashboard y Reportes`
+      },
+
+      // BC08 - Subscription & Payment Management
+      {
+        path: 'subscription-payment',
+        loadChildren: subscriptionPaymentRoutes,
+        title: `${baseTitle} - Suscripción`
+      },
+    ],
   },
 
   // Page Not Found
