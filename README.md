@@ -69,4 +69,6 @@ La vista requiere la versión del backend con `GET /api/v1/local-demo/session`. 
 
 Desde ese menú también puedes usar **Perfil infantil**, **Perfil clínico**, **Red de cuidado** y **Orientaciones y rutinas** con Spring Boot. La familia administra el perfil y la red y puede crear rutinas. El cuidador autorizado consulta el perfil y completa actividades. La psicóloga puede publicar pautas, ver sus pacientes y revisar episodios. Una vez retirado el acceso del cuidador, Spring Boot bloquea las consultas al perfil, las rutinas y el historial.
 
+Desde **Rutinas**, la familia puede duplicar o archivar una rutina. En **Editar actividades** puede agregar actividades y subir apoyos visuales JPG o PNG. El cuidador autorizado puede abrir esos apoyos y usar el temporizador de transición.
+
 Las invitaciones se registran en la red de cuidado. Su aceptación con cuentas reales requiere IAM y correo verificado. La demo pública sigue disponible con los datos ficticios.
