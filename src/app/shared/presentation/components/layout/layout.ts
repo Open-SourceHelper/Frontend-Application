@@ -1,10 +1,11 @@
 
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { AuthService } from '../../../../identity-access/infrastructure/services/auth.service';
 import { FooterContent } from '../footer-content/footer-content';
 
 @Component({
@@ -23,6 +24,7 @@ import { FooterContent } from '../footer-content/footer-content';
   styleUrl: './layout.css',
 })
 export class Layout {
+  readonly auth = inject(AuthService);
   readonly collapsed = signal(false);
 
   readonly options = [
@@ -43,8 +45,6 @@ export class Layout {
     // BC07 - Dashboard & Reporting
     { link: '/children/1/dashboard', label: 'Dashboard', icon: 'dashboard' },
 
-    // BC08 - Subscription & Payment Management
-    { link: '/subscription-payment/plans', label: 'Planes', icon: 'sell' },
   ];
   toggleMenu(): void {
     this.collapsed.update((value) => !value);

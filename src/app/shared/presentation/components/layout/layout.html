@@ -22,6 +22,11 @@
   </mat-sidenav>
 
   <mat-sidenav-content class="content-shell">
+    <header class="account-bar">
+      <a mat-button [routerLink]="auth.isAuthenticated() ? '/profile' : '/login'">
+        <mat-icon>account_circle</mat-icon>{{ auth.isAuthenticated() ? 'Mi perfil' : 'Iniciar sesión' }}
+      </a>
+    </header>
     <main class="page-content">
       <router-outlet/>
     </main>
