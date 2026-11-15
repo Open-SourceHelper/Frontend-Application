@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,6 +10,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
 import { AuthService } from '../../infrastructure/services/auth.service';
+import type { SubscriptionResource } from '../../../subscription-payment/infrastructure/subscriptions-response';
+import type { SubscriptionPlanResource } from '../../../subscription-payment/infrastructure/subscription-plans-response';
+import { switchMap, of } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 
 interface UserProfileData {
@@ -26,6 +29,7 @@ interface UserProfileData {
   standalone: true,
   imports: [
     CommonModule,
+    RouterLink,
     FormsModule,
     MatCardModule,
     MatFormFieldModule,
@@ -47,6 +51,7 @@ export class Profile implements OnInit {
   role = '';
 
   loading = signal(false);
+  planName = signal('Consultando plan…');
   private hasProfile = false;
   message = signal('');
   errorMessage = signal('');
@@ -65,6 +70,19 @@ export class Profile implements OnInit {
       CAREGIVER: 'Cuidador',
       PSYCHOLOGIST: 'Profesional de psicología',
     }[user.role];
+    const base = environment.platformProviderApiBaseUrl;
+    this.http.get<SubscriptionResource[]>(base + environment.platformProviderSubscriptionsEndpointPath, {
+      params: { userId: user.id, status: 'ACTIVE' },
+    }).pipe(switchMap(subscriptions => {
+      const active = subscriptions[0];
+      return active ? this.http.get<SubscriptionPlanResource>(
+        base + environment.platformProviderSubscriptionPlansEndpointPath + '/' + encodeURIComponent(active.planId)
+      ) : of(null);
+    })).subscribe({
+      next: plan => this.planName.set(plan?.name ?? 'Sin plan activo'),
+      error: () => this.planName.set('No se pudo consultar el plan'),
+    });
+
     this.http.get<UserProfileData[]>(this.apiUrl, { params: { userId: user.id } }).subscribe({
       next: profiles => {
         this.hasProfile = profiles.length > 0;

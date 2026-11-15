@@ -48,6 +48,11 @@
           {{ loading() ? 'Guardando...' : 'Guardar cambios' }}
         </button>
       </form>
+      <section class="profile-plan" aria-labelledby="profile-plan-title">
+        <h2 id="profile-plan-title">Mi plan</h2>
+        <p role="status">{{ planName() }}</p>
+        <a mat-stroked-button routerLink="/subscription-payment/plans">Ver planes</a>
+      </section>
         <button
           mat-stroked-button
           type="button"
