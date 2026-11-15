@@ -19,3 +19,10 @@ textarea { min-height: 5rem; resize: vertical; }
 button { justify-self: start; color: #fff; background: #512681; border: 1px solid #512681; cursor: pointer; }
 button.secondary { color: #512681; background: #fff; }
 button:disabled { opacity: 0.55; cursor: default; }
+
+.entry details { margin-block: 0.75rem; }
+.entry details form { margin-block: 0.6rem; }
+.entry summary { cursor: pointer; font-weight: 600; }
+.visual-preview { margin: 1rem 0; }
+.visual-preview img { display: block; max-width: min(100%, 28rem); max-height: 22rem; object-fit: contain; }
+.visual-preview figcaption { margin: 0.3rem 0 0.6rem; }

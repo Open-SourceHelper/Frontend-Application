@@ -38,6 +38,13 @@
   @if (section === 'routines' || section === 'new' || section === 'edit') {
     <section class="content-section" [inert]="busy()" aria-labelledby="routine-section">
       <h2 id="routine-section">Rutinas</h2>
+      @if (preview(); as image) {
+        <figure class="visual-preview">
+          <img [src]="image.url" [alt]="image.name">
+          <figcaption>{{ image.name }}</figcaption>
+          <button type="button" class="secondary" (click)="closePreview()">Cerrar imagen</button>
+        </figure>
+      }
       @if (section === 'new' && canManage) {
         <form (ngSubmit)="createRoutine()" #routineForm="ngForm">
           <label>Nombre de la rutina <input [disabled]="busy()" name="routineTitle" [(ngModel)]="routineTitle" maxlength="120" required></label>
@@ -52,12 +59,38 @@
           <h3>{{ routine.title }}</h3>
           <p>{{ routine.scheduledDate }}</p>
           @if (section === 'routines' && canManage) {
-            <a [routerLink]="[base, 'routines', routine.id, 'edit']">Editar actividades</a>
+            <div class="entry-actions">
+              <a [routerLink]="[base, 'routines', routine.id, 'edit']">Editar actividades</a>
+              <button type="button" class="secondary" (click)="duplicateFor = routine.id">Duplicar rutina</button>
+              <button type="button" class="secondary" (click)="archiveRoutine(routine)">Archivar rutina</button>
+            </div>
+            @if (duplicateFor === routine.id) {
+              <form (ngSubmit)="duplicateRoutine(routine)" #duplicate="ngForm">
+                <label>Fecha de la copia <input name="duplicateDate" type="date" [(ngModel)]="duplicateDate" required></label>
+                <div class="entry-actions">
+                  <button [disabled]="duplicate.invalid">Guardar copia</button>
+                  <button type="button" class="secondary" (click)="duplicateFor = ''; duplicateDate = ''">Cancelar copia</button>
+                </div>
+              </form>
+            }
           }
           <ul>
             @for (activity of routine.activities; track activity.id) {
               <li>
                 <span>{{ activity.title }} · {{ activity.durationMinutes }} min · {{ activity.status === 'COMPLETED' ? 'Completada' : activity.status === 'SKIPPED' ? 'Omitida' : 'Pendiente' }}</span>
+                @for (visual of activity.visuals; track visual.id) {
+                  <div class="entry-actions">
+                    <button type="button" class="secondary" (click)="openVisual(routine, activity, visual)">Ver {{ visual.filename }}</button>
+                    @if (section === 'edit' && canManage) {
+                      <button type="button" class="secondary" (click)="removeVisual(routine, activity, visual)">Quitar {{ visual.filename }}</button>
+                    }
+                  </div>
+                }
+                @if (section === 'edit' && canManage && activity.visuals.length < 5) {
+                  <label>Agregar apoyo visual a {{ activity.title }}
+                    <input type="file" accept="image/png,image/jpeg" #imageFile (change)="uploadVisual(routine, activity, imageFile)">
+                  </label>
+                }
                 @if (activity.status === 'PENDING' && section === 'edit' && canManage) {
                   @if (editingActivity; as draft) {
                     @if (draft.id === activity.id) {
@@ -71,9 +104,29 @@
                       </form>
                     }
                   }
-                  <button class="secondary" type="button" (click)="editActivity(activity)">Editar actividad</button>
+                  <div class="entry-actions">
+                    <button class="secondary" type="button" (click)="editActivity(activity)">Editar actividad</button>
+                    <button class="secondary" type="button" (click)="removeActivity(routine, activity)">Retirar actividad</button>
+                  </div>
                 }
                 @if (activity.status === 'PENDING' && section !== 'edit') {
+                  <details>
+                    <summary>Temporizador de transición</summary>
+                    <form ngNativeValidate (ngSubmit)="configureTimer(routine, activity, timerMinutes.value)">
+                      <label>Minutos de transición
+                        <input type="number" #timerMinutes [value]="activity.transitionMinutes" min="0" max="60" required>
+                      </label>
+                      <button>Guardar temporizador</button>
+                    </form>
+                    @if (activity.transitionMinutes > 0) {
+                      <button type="button" class="secondary" (click)="startTimer(routine, activity)">Iniciar temporizador</button>
+                    }
+                    @if (activity.timerStartedAt) {
+                      @let seconds = remainingSeconds(activity);
+                      @if (seconds > 0) { <p>Tiempo restante: {{ seconds }} s</p> }
+                      @else { <p role="status">La transición terminó.</p> }
+                    }
+                  </details>
                   <div class="entry-actions">
                     <button type="button" (click)="finishActivity(routine, activity, 'complete')">Completar actividad</button>
                     <button class="secondary" type="button" (click)="finishActivity(routine, activity, 'skip')">Omitir actividad</button>
@@ -82,6 +135,13 @@
               </li>
             }
           </ul>
+          @if (section === 'edit' && canManage) {
+            <form (ngSubmit)="addActivity(routine)" #extra="ngForm">
+              <label>Nueva actividad <input name="extraTitle" [(ngModel)]="extraActivity.title" maxlength="120" required></label>
+              <label>Duración de la nueva actividad <input name="extraDuration" type="number" [(ngModel)]="extraActivity.duration" min="1" max="240" required></label>
+              <button [disabled]="extra.invalid || !extraActivity.title.trim()">Agregar actividad</button>
+            </form>
+          }
         </article>
       } @empty {
         @if (!busy() && !error()) { <p>No hay rutinas para mostrar.</p> }
