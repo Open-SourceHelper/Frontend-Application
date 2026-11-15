@@ -12,8 +12,8 @@ export class ChildAssembler {
       resource.parentId,
       resource.firstName,
       resource.lastName,
-      new Date(resource.birthDate),
-      new DateTime(resource.createdAt)
+      new Date(resource.birthDate.slice(0, 10) + 'T00:00:00'),
+      resource.createdAt ? new DateTime(resource.createdAt) : null
     );
   }
 
@@ -26,7 +26,7 @@ export class ChildAssembler {
       firstName: entity.firstName,
       lastName: entity.lastName,
       birthDate: entity.birthDate.toISOString(),
-      createdAt: entity.createdAt.toString()
+      createdAt: entity.createdAt?.toString()
     };
   }
 

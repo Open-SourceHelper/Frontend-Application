@@ -9,9 +9,11 @@
     </div>
   </header>
 
-  <app-child-form
+  @if (canEdit) {
+    <app-child-form
     (childCreated)="onChildCreated($event)">
   </app-child-form>
+  }
 
   @if (store.loading()) {
     <p>Cargando información...</p>
@@ -90,6 +92,7 @@
                 {{ child.birthDate | date:'dd/MM/yyyy' }}
               </p>
 
+              @if (canEdit) {
               <div class="child-actions">
                 <button
                   mat-stroked-button
@@ -100,6 +103,7 @@
                   Editar
                 </button>
               </div>
+              }
             }
           </mat-card-content>
         </mat-card>

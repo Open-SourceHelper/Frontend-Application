@@ -10,6 +10,9 @@ import { ClinicalStore } from '../../../application/clinical.store';
 import { ClinicalForm } from '../../components/clinical-form/clinical-form';
 import { DateTime } from '../../../../shared/domain/model/date-time';
 
+import { LocalSpringApi } from '../../../../shared/infrastructure/local-spring-api';
+import { UserRole } from '../../../../identity-access/domain/model/user-role.enum';
+
 @Component({
   imports: [
     DatePipe,
@@ -24,6 +27,8 @@ import { DateTime } from '../../../../shared/domain/model/date-time';
 })
 export class ClinicalList implements OnInit {
   readonly store = inject(ClinicalStore);
+  private readonly spring = inject(LocalSpringApi);
+  readonly canEdit = !this.spring.session || this.spring.session.role === UserRole.PARENT;
   readonly editingProfile = signal<ClinicalProfile | null>(null);
 
   ngOnInit(): void {
@@ -45,7 +50,7 @@ export class ClinicalList implements OnInit {
       profile.specialNeeds,
       profile.triggers,
       profile.regulators,
-      new DateTime(profile.updatedAt.toString()),
+      profile.updatedAt,
       profile.child,
     );
   }

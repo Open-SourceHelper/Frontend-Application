@@ -11,6 +11,8 @@ import { Child } from '../../../domain/model/child.entity';
 import { DateTime } from '../../../../shared/domain/model/date-time';
 import { ChildStore } from '../../../application/child.store';
 
+import { LocalSpringApi } from '../../../../shared/infrastructure/local-spring-api';
+
 @Component({
   imports: [
     ReactiveFormsModule,
@@ -27,11 +29,12 @@ import { ChildStore } from '../../../application/child.store';
 export class ChildForm {
   private readonly formBuilder = inject(FormBuilder);
   private readonly childStore = inject(ChildStore);
+  readonly springParent = inject(LocalSpringApi).session?.id;
 
   @Output() childCreated = new EventEmitter<Child>();
 
   readonly form = this.formBuilder.nonNullable.group({
-    parentId: ['', [Validators.required, Validators.pattern(/\S/)]],
+    parentId: [this.springParent ?? '', [Validators.required, Validators.pattern(/\S/)]],
     firstName: ['', [Validators.required, Validators.pattern(/\S/)]],
     lastName: ['', [Validators.required, Validators.pattern(/\S/)]],
     birthDate: ['', Validators.required],
@@ -86,6 +89,6 @@ export class ChildForm {
     );
 
     this.childCreated.emit(child);
-    this.form.reset();
+    this.form.reset({ parentId: this.springParent ?? '' });
   }
 }

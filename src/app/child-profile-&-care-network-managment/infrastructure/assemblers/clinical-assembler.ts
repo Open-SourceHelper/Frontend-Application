@@ -13,7 +13,7 @@ export class ClinicalAssembler {
       resource.specialNeeds,
       resource.triggers,
       resource.regulators,
-      new DateTime(resource.updatedAt)
+      resource.updatedAt ? new DateTime(resource.updatedAt) : null
     );
   }
 
@@ -26,7 +26,7 @@ export class ClinicalAssembler {
       specialNeeds: entity.specialNeeds,
       triggers: entity.triggers,
       regulators: entity.regulators,
-      updatedAt: entity.updatedAt.toString()
+      updatedAt: entity.updatedAt?.toString()
     };
   }
 

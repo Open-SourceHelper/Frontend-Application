@@ -7,11 +7,11 @@ export class Child {
   #firstName: string;
   #lastName: string;
   #birthDate: Date;
-  #createdAt: DateTime;
+  #createdAt: DateTime | null;
 
   constructor(id: string, parentId: string,
               firstName: string, lastName: string,
-              birtDate: Date = new Date(), createdAt: DateTime) {
+              birtDate: Date = new Date(), createdAt: DateTime | null) {
     this.#id = id;
     this.#parentId = parentId;
     this.#firstName = firstName;
@@ -35,7 +35,7 @@ export class Child {
   get birthDate(): Date {
     return this.#birthDate;
   }
-  get createdAt(): DateTime {
+  get createdAt(): DateTime | null {
     return this.#createdAt;
   }
 }

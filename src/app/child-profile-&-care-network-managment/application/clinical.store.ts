@@ -57,10 +57,9 @@ export class ClinicalStore {
       .pipe(finalize(() => this.loadingState.set(false)))
       .subscribe({
         next: created => {
-          this.profilesState.update(items => [
-            ...items,
-            created
-          ]);
+          this.profilesState.update(items => items.some(item => item.id === created.id)
+            ? items.map(item => item.id === created.id ? created : item)
+            : [...items, created]);
         },
         error: () => {
           this.errorState.set(

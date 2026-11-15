@@ -6,7 +6,7 @@ export interface ChildResource {
   firstName: string;
   lastName: string;
   birthDate: string;
-  createdAt: string;
+  createdAt?: string;
 }
 
 export interface ChildResponse extends BaseResponse {

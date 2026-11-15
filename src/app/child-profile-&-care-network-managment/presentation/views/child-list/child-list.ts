@@ -9,7 +9,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { Child } from '../../../domain/model/child.entity';
 import { ChildStore } from '../../../application/child.store';
 import { ChildForm } from '../../components/child-form/child-form';
-import {DateTime} from '../../../../shared/domain/model/date-time';
+
+import { LocalSpringApi } from '../../../../shared/infrastructure/local-spring-api';
+import { UserRole } from '../../../../identity-access/domain/model/user-role.enum';
 
 @Component({
   imports: [
@@ -27,6 +29,8 @@ import {DateTime} from '../../../../shared/domain/model/date-time';
 })
 export class ChildList {
   readonly store = inject(ChildStore);
+  private readonly spring = inject(LocalSpringApi);
+  readonly canEdit = !this.spring.session || this.spring.session.role === UserRole.PARENT;
   readonly editingChild = signal<Child | null>(null);
 
   ngOnInit(): void {
@@ -49,7 +53,7 @@ export class ChildList {
       child.firstName,
       child.lastName,
       new Date(child.birthDate),
-      new DateTime(child.createdAt.toString())
+      child.createdAt
     );
   }
 
@@ -100,7 +104,7 @@ export class ChildList {
       trimmedFirstName,
       trimmedLastName,
       parsedBirthDate,
-      new DateTime(child.createdAt.toString())
+      child.createdAt
     );
 
     this.store.updateChild(updatedChild);

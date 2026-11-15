@@ -8,11 +8,11 @@ export class ClinicalProfile {
   #specialNeeds: string;
   #triggers: string;
   #regulators: string;
-  #updatedAt: DateTime;
+  #updatedAt: DateTime | null;
   #child: Child | null;
 
   constructor(id: string, childId: string, specialNeeds: string, triggers: string,
-              regulators: string, updatedAt: DateTime, child?: Child | null) {
+              regulators: string, updatedAt: DateTime | null, child?: Child | null) {
     this.#id = id;
     this.#childId = childId;
     this.#specialNeeds = specialNeeds;
@@ -37,7 +37,7 @@ export class ClinicalProfile {
   get regulators(): string {
     return this.#regulators;
   }
-  get updatedAt(): DateTime {
+  get updatedAt(): DateTime | null {
     return this.#updatedAt;
   }
   get child(): Child | null {
