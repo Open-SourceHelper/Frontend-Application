@@ -1,9 +1,15 @@
 
 <div class="login-container">
-  <mat-card class="login-card">
+  <div class="login-panel">
+    <section class="login-brand" aria-label="Kinemo">
+      <mat-icon aria-hidden="true">volunteer_activism</mat-icon>
+      <span>Kinemo</span>
+      <p>Organiza el cuidado y comparte lo importante con tu red de confianza.</p>
+    </section>
+    <mat-card class="login-card">
 
     <mat-card-header>
-      <mat-card-title>Bienvenido a Kinemo</mat-card-title>
+      <mat-card-title><h1>Bienvenido a Kinemo</h1></mat-card-title>
       <mat-card-subtitle>
         Inicia sesión para continuar
       </mat-card-subtitle>
@@ -18,6 +24,7 @@
             matInput
             type="email"
             name="email"
+            autocomplete="email"
             [(ngModel)]="email"
             required
           />
@@ -29,6 +36,7 @@
           <input
             matInput
             name="password"
+            autocomplete="current-password"
             [type]="hidePassword() ? 'password' : 'text'"
             [(ngModel)]="password"
             required
@@ -51,7 +59,7 @@
           <a routerLink="/forgot-password">¿Olvidaste tu contraseña?</a>
         </p>
 
-        <p *ngIf="errorMessage()" class="error-message">
+        <p *ngIf="errorMessage()" class="error-message" role="alert">
           {{ errorMessage() }}
         </p>
 
@@ -67,10 +75,11 @@
       </form>
     </mat-card-content>
 
-    <p>
+    <p class="register-link">
         ¿No tienes una cuenta?
-      <a routerLink="/register">Regístrate aquí</a>
+      <a routerLink="/register">Crear cuenta</a>
     </p>
 
-  </mat-card>
+    </mat-card>
+  </div>
 </div>
