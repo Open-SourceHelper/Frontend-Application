@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { PublicDemoSnapshot, PublicSpringDemo } from '../../../shared/infrastructure/public-spring-demo';
 import { toObservation, toComments } from '../../infrastructure/resources/spring-episode';
 import { exampleChild, exampleEpisodes } from './public-history-examples';
@@ -22,6 +23,7 @@ export class EpisodeHistory implements OnInit {
   private readonly context = inject(HistoryContextService);
   private readonly observations = inject(ObservationService);
   private readonly publishedDemo = inject(PublicSpringDemo);
+  private readonly timelineTitle = viewChild<ElementRef<HTMLElement>>('timelineTitle');
   readonly publicSnapshot = signal<PublicDemoSnapshot | null>(null);
   private publicError = false;
   private readonly route = inject(ActivatedRoute);
@@ -34,7 +36,14 @@ export class EpisodeHistory implements OnInit {
     effect(() => this.showDialog(this.detailsDialog()?.nativeElement, this.selected() !== null));
   }
 
+  openPending() {
+    this.filter.set('pending');
+    this.month.set('');
+    this.timelineTitle()?.nativeElement.focus();
+  }
+
   dismissRegistration() {
+    if (this.saving()) return;
     this.step.set(0);
     this.error.set('');
   }
@@ -178,6 +187,7 @@ export class EpisodeHistory implements OnInit {
   readonly selected = signal<Observation | null>(null);
   readonly step = signal(0);
   readonly busy = signal(false);
+  readonly saving = signal(false);
   readonly denied = signal(false);
   readonly message = signal('');
   readonly error = signal('');
@@ -315,30 +325,48 @@ export class EpisodeHistory implements OnInit {
       return;
     }
     this.busy.set(true);
+    this.saving.set(true);
     this.error.set('');
     try {
-      if (!await this.checkAccess()) return;
       const id = draft.alertId ? 'episode-' + draft.alertId : draft.id;
-      const records = await firstValueFrom(this.observations.getByChildId(this.childId));
-      if (!records.some(record => record.id === id || (draft.alertId && record.alertId === draft.alertId))) {
-        await firstValueFrom(this.observations.create(new Observation({
-          id, childId: this.childId, caregiverId: user.id, alertId: draft.alertId,
-          description: draft.description, occurredAt: time.toISOString(),
-          crisisSeverity: draft.crisis ? draft.severity || null : null,
-          durationMinutes: draft.crisis ? draft.durationMinutes ?? undefined : undefined,
-          trigger: draft.trigger.trim() || undefined, helped: draft.helped.trim() || undefined,
-        })));
+      const observation = new Observation({
+        id, childId: this.childId, caregiverId: user.id, alertId: draft.alertId,
+        description: draft.description, occurredAt: time.toISOString(),
+        crisisSeverity: draft.crisis ? draft.severity || null : null,
+        durationMinutes: draft.crisis ? draft.durationMinutes ?? undefined : undefined,
+        trigger: draft.trigger.trim() || undefined, helped: draft.helped.trim() || undefined,
+      });
+
+      if (this.spring) {
+        // Spring validates access and enforces uniqueness for episodes linked to an alert.
+        const saved = await firstValueFrom(this.observations.create(observation));
+        this.records.update(records => [...records.filter(record => record.id !== saved.id), saved]
+          .sort((a, b) => Date.parse(b.occurredAt) - Date.parse(a.occurredAt)));
+      } else {
+        if (!await this.checkAccess()) return;
+        const records = await firstValueFrom(this.observations.getByChildId(this.childId));
+        if (!records.some(record => record.id === id || (draft.alertId && record.alertId === draft.alertId))) {
+          await firstValueFrom(this.observations.create(observation));
+        }
       }
+
       this.step.set(0);
       if (this.route.snapshot.url.at(-1)?.path === 'new') {
         await this.router.navigate(['/observations'], { queryParams: { childId: this.childId } });
       } else {
-        await this.load();
+        if (!this.spring) await this.load();
         if (!this.denied() && !this.error()) this.message.set('Registro guardado en el historial.');
       }
-    } catch {
-      this.error.set('No pudimos guardar el registro. Tus respuestas siguen aquí.');
+    } catch (error) {
+      if (error instanceof HttpErrorResponse && error.status === 403) {
+        this.error.set('Tu cuenta ya no puede guardar en este historial. Tus respuestas siguen aquí.');
+      } else if (draft.alertId && error instanceof HttpErrorResponse && error.status === 409) {
+        this.error.set('No se pudo vincular esta alerta. Tus respuestas siguen aquí.');
+      } else {
+        this.error.set('No pudimos guardar el registro. Tus respuestas siguen aquí.');
+      }
     } finally {
+      this.saving.set(false);
       this.busy.set(false);
     }
   }

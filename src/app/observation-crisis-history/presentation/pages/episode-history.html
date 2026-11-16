@@ -24,8 +24,21 @@
     }
   }
   @if (error() && !step() && !selected()) { <p role="alert">{{ error() }}</p> }
-  @if (busy()) { <p role="status">Cargando…</p> }
+  @if (busy() && !saving()) { <p role="status">Cargando…</p> }
   @if (user(); as user) {
+    @if (professional() && childId && !busy() && !denied() && !error()) {
+      <section class="review-overview" aria-labelledby="review-title">
+        <div>
+          <h2 id="review-title">Revisión de episodios</h2>
+          <p>{{ reviewCount() ? 'Consulta los registros pendientes del perfil seleccionado.' : 'Este perfil no tiene episodios pendientes de revisión.' }}</p>
+        </div>
+        @if (reviewCount()) {
+          <button type="button" (click)="openPending()">
+            Ir a pendientes · {{ reviewCount() }}
+          </button>
+        }
+      </section>
+    }
     <div class="history-header">
     @if (children().length) {
       <label for="history-child">¿De quién quieres ver el historial?</label>
@@ -50,9 +63,10 @@
         <form class="episode-form" (ngSubmit)="step() === 1 ? step.set(2) : save()">
           <header class="dialog-header">
             <h2 id="registration-title">{{ draft.alertId ? 'Documentar episodio' : 'Nuevo registro' }}</h2>
-            <button type="button" class="secondary close-dialog" autofocus (click)="dismissRegistration()">Cerrar</button>
+            <button type="button" class="secondary close-dialog" autofocus [disabled]="saving()" (click)="dismissRegistration()">Cerrar</button>
           </header>
           @if (draft.alertId) { <p class="dialog-origin">Episodio vinculado a una alerta cerrada</p> }
+          @if (saving()) { <p role="status">Guardando el episodio…</p> }
           @if (error()) { <p role="alert">{{ error() }}</p> }
           <p role="status">Paso {{ step() }} de 2</p>
           <progress [value]="step()" max="2" aria-label="Avance del registro"></progress>
@@ -96,7 +110,7 @@
             <div class="actions">
               @if (step() === 2) { <button type="button" class="secondary" (click)="step.set(1)">Volver</button> }
               <button type="submit" [disabled]="step() === 1 ? !draft.description.trim() || !draft.occurredAt : draft.crisis && !draft.severity">
-                {{ step() === 1 ? 'Continuar' : 'Guardar registro' }}
+                {{ saving() ? 'Guardando…' : step() === 1 ? 'Continuar' : 'Guardar registro' }}
               </button>
               <button type="button" class="secondary" (click)="dismissRegistration()">Cancelar</button>
             </div>
@@ -165,7 +179,7 @@
           }
         </section>
         </div>
-        <h2 class="timeline-title">Línea de tiempo</h2>
+        <h2 #timelineTitle tabindex="-1" class="timeline-title">Línea de tiempo</h2>
         <div class="actions filters" aria-label="Filtrar historial">
           <button type="button" class="secondary" [attr.aria-pressed]="filter() === 'all'" (click)="filter.set('all')">Todos</button>
           <button type="button" class="secondary" [attr.aria-pressed]="filter() === 'crisis'" (click)="filter.set('crisis')">Crisis</button>

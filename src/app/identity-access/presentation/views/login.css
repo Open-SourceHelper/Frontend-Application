@@ -5,9 +5,10 @@
   padding: clamp(1rem, 4vw, 3rem);
   box-sizing: border-box;
   background:
-    radial-gradient(ellipse at 10% 20%, #d6c1f5 0%, transparent 50%),
-    radial-gradient(ellipse at 95% 90%, #d7eadf 0%, transparent 50%),
-    #f1ebfa;
+    radial-gradient(ellipse at 8% 15%, #e1d5fa, transparent 47%),
+    radial-gradient(ellipse at 90% 12%, #fff0db, transparent 44%),
+    radial-gradient(ellipse at 95% 90%, #d9f0e6, transparent 54%),
+    #f9f5ff;
 }
 
 .login-panel {
@@ -16,7 +17,9 @@
   width: min(100%, 54rem);
   overflow: hidden;
   border-radius: 1.5rem;
-  box-shadow: 0 1.5rem 4rem #3e276136;
+  isolation: isolate;
+  position: relative;
+  box-shadow: 0 1.25rem 3.5rem #3e276126;
 }
 
 .login-brand {
@@ -25,7 +28,7 @@
   justify-content: center;
   align-items: flex-start;
   padding: clamp(1.5rem, 4vw, 3rem);
-  background: radial-gradient(ellipse at 0 100%, #664b99, transparent 70%), linear-gradient(150deg, #2d1852, #4a2976);
+  background: radial-gradient(circle at 0 100%, #8466b4, transparent 72%), linear-gradient(145deg, #3c2468, #603b92);
   color: #fff;
 }
 
@@ -46,13 +49,40 @@ h1 { font-size: clamp(1.45rem, 4vw, 1.9rem); line-height: 1.2; margin: 0 0 .45re
 .login-button { width: 100%; min-height: 48px; margin-top: .75rem; border-radius: .6rem; }
 .error-message { color: #a61d32; margin-block: .75rem; }
 .register-link { margin: 1.25rem 1rem 0; text-align: center; }
-.demo-option { display: flex; align-items: center; min-height: 44px; gap: .65rem; padding: .65rem; border-radius: .6rem; background: #f4eefb; }
-.demo-option input { width: 1.2rem; height: 1.2rem; accent-color: #512e7f; flex: none; }
-.demo-option small { display: block; margin-top: .25rem; color: #4e3c60; }
 
 @media (max-width: 39rem) {
   .login-panel { grid-template-columns: 1fr; }
   .login-brand { flex-direction: row; align-items: center; gap: .6rem; padding: .8rem 1.25rem; }
   .login-brand mat-icon { margin: 0; }
   .login-brand p { display: none; }
+}
+
+@media (min-width: 58rem) {
+  .login-container {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+  }
+  .login-container::before,
+  .login-container::after {
+    position: absolute;
+    z-index: -1;
+    width: clamp(12rem, 32vw, 34rem);
+    aspect-ratio: 1;
+    border-radius: 42% 58% 66% 34%;
+    content: '';
+    pointer-events: none;
+  }
+  .login-container::before {
+    top: -13%;
+    left: -9%;
+    background: repeating-radial-gradient(circle at 58% 58%, #ffffff7a 0 2px, transparent 3px 22px), #c9b3ef70;
+    transform: rotate(-18deg);
+  }
+  .login-container::after {
+    right: -9%;
+    bottom: -20%;
+    background: repeating-radial-gradient(circle at 44% 38%, #ffffffa8 0 2px, transparent 3px 24px), #a9dfca85;
+    transform: rotate(19deg);
+  }
 }
