@@ -11,11 +11,12 @@ import { CrisisSeverity } from '../../domain/model/crisis-severity.enum';
 import { Observation } from '../../domain/model/observation.entity';
 import { ClosedAlert, HistoryContextService } from '../../infrastructure/services/history-context.service';
 import { ObservationService } from '../../infrastructure/services/observation.service';
+import { EpisodeCalendar } from '../components/episode-calendar';
 import { ObservationCommentsComponent } from '../components/observation-comments.component';
 
 @Component({
   selector: 'app-episode-history',
-  imports: [DatePipe, FormsModule, RouterLink, ObservationCommentsComponent],
+  imports: [DatePipe, FormsModule, RouterLink, ObservationCommentsComponent, EpisodeCalendar],
   templateUrl: './episode-history.html',
   styleUrl: './episode-history.css',
 })
@@ -28,6 +29,7 @@ export class EpisodeHistory implements OnInit {
   private publicError = false;
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  readonly calendar = this.route.snapshot.data["calendar"] === true;
   private readonly registrationDialog = viewChild<ElementRef<HTMLDialogElement>>('registrationDialog');
   private readonly detailsDialog = viewChild<ElementRef<HTMLDialogElement>>('detailsDialog');
 
@@ -144,6 +146,7 @@ export class EpisodeHistory implements OnInit {
   async selectPatient(id: string): Promise<void> {
     if (this.busy() || this.childId === id) return;
     this.childId = id;
+    this.context.rememberPatient(id);
     this.filter.set('all');
     this.month.set('');
     this.message.set('');
@@ -264,7 +267,9 @@ export class EpisodeHistory implements OnInit {
       const children = await firstValueFrom(this.context.availableChildren());
       if (this.spring && this.professional()) {
         this.children.set(children);
-        this.childId = children.find(child => child.id === requested)?.id ?? children[0]?.id ?? '';
+        const preferred = requested ?? this.context.rememberedPatient();
+        this.childId = children.find(child => child.id === preferred)?.id ?? children[0]?.id ?? '';
+        this.context.rememberPatient(this.childId);
       } else {
         const checks = children.map(child => this.context.canAccess(String(child.id)));
         const allowed = checks.length ? await firstValueFrom(forkJoin(checks)) : [];

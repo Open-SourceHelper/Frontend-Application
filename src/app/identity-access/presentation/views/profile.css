@@ -54,3 +54,7 @@ mat-card-title {
 
 .profile-plan { margin-top: 24px; padding-top: 16px; border-top: 1px solid #ddd; }
 .profile-plan h2 { margin: 0; font-size: 1.15rem; }
+
+.account-details { display: grid; gap: .35rem; margin-block: 1.25rem; }
+.account-details dt { color: #514466; font-weight: 600; }
+.account-details dd { margin: 0 0 .65rem; overflow-wrap: anywhere; }

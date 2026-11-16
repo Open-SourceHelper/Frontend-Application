@@ -14,7 +14,7 @@
   }
   <header class="history-heading-shared">
     <span class="history-icon" aria-hidden="true">▤</span>
-    <h1 id="history-title">Historial de episodios</h1>
+    <h1 id="history-title">{{ calendar ? "Calendario de episodios" : "Historial de episodios" }}</h1>
   </header>
     @if (publicDemo) {
     @if (publicSnapshot()) { <p>Datos ficticios desde Spring Boot · Solo lectura</p> }
@@ -39,7 +39,11 @@
             @if (!busy() && !error()) { <p>No tienes pacientes vinculados.</p> }
           }
         </section>
-        @if (childId && !denied() && !error()) {
+        @if (calendar) {
+          @if (childId && !busy() && !denied() && !error()) {
+            <app-episode-calendar [records]="records()" (episodeOpened)="selected.set($event); message.set('')" />
+          }
+        } @else if (childId && !denied() && !error()) {
           <section class="review-overview" aria-labelledby="review-title" [attr.aria-busy]="busy()">
             <div>
               <h2 id="review-title">Revisión de episodios</h2>
@@ -161,6 +165,7 @@
             </article>
           }
         }
+        @if (!calendar) {
         <div class="overview">
         <section class="summary" aria-label="Resumen de los últimos 30 días">
           <div><span>Episodios registrados</span><strong>{{ crisisCount() }}</strong><small>Últimos 30 días</small></div>
@@ -232,6 +237,7 @@
           </article>
         } @empty {
           @if (!busy() && !error()) { <p>No hay registros con este filtro.</p> }
+        }
         }
         <dialog #detailsDialog class="history-dialog details-dialog" aria-labelledby="details-title"
           (cancel)="$event.preventDefault(); dismissDetails()">

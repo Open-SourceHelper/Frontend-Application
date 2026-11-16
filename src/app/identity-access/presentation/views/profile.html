@@ -4,11 +4,19 @@
     <mat-card-header>
       <mat-card-title>Mi perfil</mat-card-title>
       <mat-card-subtitle>
-        Consulta y actualiza tus datos personales
+        {{ springProfile ? 'Datos de tu cuenta' : 'Consulta y actualiza tus datos personales' }}
       </mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
+      @if (springProfile) {
+        <dl class="account-details">
+          <dt>Correo electrónico</dt>
+          <dd>{{ email }}</dd>
+          <dt>Rol</dt>
+          <dd>{{ role }}</dd>
+        </dl>
+      } @else {
       <form *ngIf="profile() as profile" #profileForm="ngForm" (ngSubmit)="saveProfile()">
 
         <mat-form-field appearance="outline" class="full-width">
@@ -53,6 +61,7 @@
         <p role="status">{{ planName() }}</p>
         <a mat-stroked-button routerLink="/subscription-payment/plans">Ver planes</a>
       </section>
+      }
         <button
           mat-stroked-button
           type="button"

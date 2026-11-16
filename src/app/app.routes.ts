@@ -8,8 +8,12 @@ import { UserRole } from './identity-access/domain/model/user-role.enum';
 const requireSession: CanActivateChildFn = (route, state) => {
   const auth = inject(AuthService);
   const user = auth.getCurrentUser();
+  if (user && route.routeConfig?.path === 'observations/calendar'
+    && (!user.localSpring || user.role !== UserRole.PSYCHOLOGIST)) {
+    return inject(Router).createUrlTree(['/observations']);
+  }
   if (user?.localSpring) {
-    const localPaths = ['observations', 'observations/new', 'crisis-alerts', 'clinical-guidance-routine-management'];
+    const localPaths = ['observations', 'observations/new', 'observations/calendar', 'profile', 'crisis-alerts', 'clinical-guidance-routine-management'];
     if (user.role !== UserRole.PSYCHOLOGIST) localPaths.push('child-profile', 'clinical-profile');
     if (user.role === UserRole.PARENT) localPaths.push('care-networks/:careNetworkId');
     if (!route.pathFromRoot.some(segment => localPaths.includes(segment.routeConfig?.path ?? ''))) {
@@ -191,6 +195,12 @@ export const routes: Routes = [
       },
 
       // BC05 - Observation & Crisis History Management
+      {
+        path: 'observations/calendar',
+        loadComponent: episodeHistory,
+        data: { calendar: true },
+        title: `${baseTitle} - Calendario de episodios`,
+      },
       {
         path: 'observations/new',
         loadComponent: episodeHistory,

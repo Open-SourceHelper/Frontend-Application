@@ -27,6 +27,16 @@ export class HistoryContextService {
   readonly roles = UserRole;
 
   readonly demo = !environment.production;
+  private selection?: { accountId: string; childId: string };
+
+  rememberedPatient(): string | undefined {
+    return this.selection?.accountId === this.spring.session?.id ? this.selection?.childId : undefined;
+  }
+
+  rememberPatient(childId: string): void {
+    const user = this.spring.session;
+    if (user) this.selection = { accountId: user.id, childId };
+  }
 
   signInForDemo(profile: string) {
     return this.auth.signInForDemo(profile);

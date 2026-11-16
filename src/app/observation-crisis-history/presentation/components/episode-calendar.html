@@ -1,0 +1,44 @@
+<section class="calendar" aria-labelledby="calendar-month">
+  <div class="calendar-header">
+    <h2 id="calendar-month" aria-live="polite">{{ month() | date:'MMMM yyyy':undefined:'es-PE' }}</h2>
+    <div class="controls">
+      <button type="button" aria-label="Mes anterior" (click)="changeMonth(-1)"><mat-icon>chevron_left</mat-icon></button>
+      <button type="button" (click)="goToToday()">Hoy</button>
+      <button type="button" aria-label="Mes siguiente" (click)="changeMonth(1)"><mat-icon>chevron_right</mat-icon></button>
+    </div>
+  </div>
+
+  <div class="month-grid">
+    @for (weekday of weekdays; track weekday) {
+      <span class="weekday" aria-hidden="true">{{ weekday }}</span>
+    }
+    @for (day of days(); track $index) {
+      @if (day) {
+        <button type="button" class="day" [attr.aria-pressed]="selected() === day.key"
+          [attr.aria-current]="day.key === dayKey(today) ? 'date' : null"
+          [attr.aria-label]="(day.date | date:'d MMMM yyyy':undefined:'es-PE') + ', ' + day.count + (day.count === 1 ? ' registro' : ' registros')"
+          (click)="selected.set(day.key)">
+          <span>{{ day.date | date:'d' }}</span>
+          @if (day.count) { <span class="count" aria-hidden="true">{{ day.count }}</span> }
+        </button>
+      } @else {
+        <span aria-hidden="true"></span>
+      }
+    }
+  </div>
+
+  <section class="day-details" aria-labelledby="calendar-day">
+    <h3 id="calendar-day">{{ selectedDate() | date:'d MMMM yyyy':undefined:'es-PE' }}</h3>
+    <p role="status">{{ selectedRecords().length ? selectedRecords().length + (selectedRecords().length === 1 ? ' registro' : ' registros') : 'Sin registros para este día.' }}</p>
+    @for (record of selectedRecords(); track record.id) {
+      <button class="episode" type="button" aria-haspopup="dialog" (click)="episodeOpened.emit(record)">
+        <span class="episode-meta">
+          <time>{{ record.occurredAt | date:'HH:mm' }}</time>
+          <span>{{ record.crisisSeverity ? severity[record.crisisSeverity] : record.isCrisis ? 'Desregulación' : 'Observación' }}</span>
+          <span>{{ record.reviewedAt ? 'Revisado' : 'Sin revisar' }}</span>
+        </span>
+        <strong>{{ record.description }}</strong>
+      </button>
+    }
+  </section>
+</section>

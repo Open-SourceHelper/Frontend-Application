@@ -4,6 +4,7 @@ import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/rou
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
 import { AuthService } from '../../../../identity-access/infrastructure/services/auth.service';
 import { BreakpointObserver } from '@angular/cdk/layout';
@@ -23,6 +24,7 @@ import { UserRole } from '../../../../identity-access/domain/model/user-role.enu
     MatButtonModule,
     MatIconModule,
     MatListModule,
+    MatMenuModule,
     FooterContent,
   ],
   templateUrl: './layout.html',
@@ -35,8 +37,8 @@ export class Layout {
   readonly localSession = computed(() => this.spring.session);
   readonly language = signal<'es' | 'en'>(localStorage.getItem('kinemo-navigation-language') === 'en' ? 'en' : 'es');
   readonly labels = {
-    es: { modules: 'Módulos de Kinemo', menu: 'Menú de módulos', profile: 'Mi perfil', login: 'Iniciar sesión', language: 'Idioma de navegación' },
-    en: { modules: 'Kinemo modules', menu: 'Module menu', profile: 'My profile', login: 'Sign in', language: 'Navigation language' },
+    es: { modules: 'Módulos de Kinemo', menu: 'Menú de módulos', profile: 'Mi perfil', login: 'Iniciar sesión', account: 'Menú de cuenta', logout: 'Cerrar sesión', language: 'Idioma de navegación' },
+    en: { modules: 'Kinemo modules', menu: 'Module menu', profile: 'My profile', login: 'Sign in', account: 'Account menu', logout: 'Sign out', language: 'Navigation language' },
   };
   readonly mobileOpen = signal(false);
   readonly narrow = toSignal(inject(BreakpointObserver).observe('(max-width: 760px)').pipe(
@@ -59,14 +61,17 @@ export class Layout {
     // BC05 - Observation & Crisis History Management
     { link: '/observations', label: { es: 'Historial de episodios', en: 'Episode history' }, icon: 'assignment' },
 
+    { link: '/observations/calendar', label: { es: 'Calendario de episodios', en: 'Episode calendar' }, icon: 'calendar_month' },
+
     // BC07 - Dashboard & Reporting
     { link: '/children/1/dashboard', label: { es: 'Panel de seguimiento', en: 'Progress dashboard' }, icon: 'dashboard' },
 
   ];
   readonly visibleOptions = computed(() => {
     const user = this.localSession();
-    if (!user) return this.options;
+    if (!user) return this.options.filter(option => option.link !== '/observations/calendar');
     return this.options.filter(option => {
+      if (option.link === '/observations/calendar') return user.role === UserRole.PSYCHOLOGIST;
       if (option.link === '/observations' || option.link === '/clinical-guidance-routine-management') return true;
       if (option.link === '/care-networks/1') return user.role === UserRole.PARENT;
       return user.role !== UserRole.PSYCHOLOGIST
@@ -76,9 +81,14 @@ export class Layout {
       : option);
   });
 
-  leaveLocalSession(): void {
+  readonly roleLabels = {
+    es: { PARENT: 'Familia', CAREGIVER: 'Cuidador', PSYCHOLOGIST: 'Psicología' },
+    en: { PARENT: 'Family', CAREGIVER: 'Caregiver', PSYCHOLOGIST: 'Psychology' },
+  };
+
+  leaveSession(): void {
     this.spring.clearEvaluation();
-    this.auth.signOut();
+    this.auth.logout();
     void this.router.navigate(['/login']);
   }
 

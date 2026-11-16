@@ -7,7 +7,7 @@
     </a>
     <mat-nav-list [attr.aria-label]="labels[language()].modules">
       @for (option of visibleOptions(); track option.link) {
-        <a mat-list-item [routerLink]="option.link" routerLinkActive="active" ariaCurrentWhenActive="page"
+        <a mat-list-item [routerLink]="option.link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: option.link === '/observations' }" ariaCurrentWhenActive="page"
           [attr.aria-label]="option.label[language()]" (click)="mobileOpen.set(false)">
           <mat-icon matListItemIcon aria-hidden="true">{{ option.icon }}</mat-icon>
           <span matListItemTitle>{{ option.label[language()] }}</span>
@@ -29,17 +29,33 @@
           <button type="button" lang="es" aria-label="Español" [attr.aria-pressed]="language() === 'es'" (click)="setLanguage('es')">ES</button>
           <button type="button" lang="en" aria-label="English" [attr.aria-pressed]="language() === 'en'" (click)="setLanguage('en')">EN</button>
         </div>
-        @if (localSession()) {
-          <a mat-button [routerLink]="localSession()?.localSpring?.evaluation ? '/login' : '/backend-local'">
-            <mat-icon>account_circle</mat-icon>{{ localSession()?.localSpring?.evaluation ? (language() === 'es' ? 'Cambiar cuenta' : 'Switch account') : (language() === 'es' ? 'Prueba local' : 'Local test') }}
-          </a>
-          <button mat-button type="button" (click)="leaveLocalSession()">
-            {{ language() === 'es' ? 'Salir' : 'Sign out' }}
+        @if (auth.getCurrentUser(); as user) {
+          <button mat-button type="button" class="account-link" [matMenuTriggerFor]="accountMenu"
+            [attr.aria-label]="labels[language()].account">
+            <mat-icon>account_circle</mat-icon>
+            <span>{{ roleLabels[language()][user.role] }}</span>
           </button>
+          <mat-menu #accountMenu="matMenu" xPosition="before">
+            <div class="account-summary">
+              <strong>{{ roleLabels[language()][user.role] }}</strong>
+              <span>{{ user.email }}</span>
+            </div>
+            <a mat-menu-item routerLink="/profile">
+              <mat-icon>person</mat-icon>{{ labels[language()].profile }}
+            </a>
+            @if (user.localSpring && !user.localSpring.evaluation) {
+              <a mat-menu-item routerLink="/backend-local">
+                <mat-icon>science</mat-icon>{{ language() === 'es' ? 'Prueba local' : 'Local test' }}
+              </a>
+            }
+            <button mat-menu-item type="button" (click)="leaveSession()">
+              <mat-icon>logout</mat-icon>{{ labels[language()].logout }}
+            </button>
+          </mat-menu>
         } @else {
-        <a mat-button class="account-link" [routerLink]="auth.isAuthenticated() ? '/profile' : '/login'">
-          <mat-icon>account_circle</mat-icon>{{ auth.isAuthenticated() ? labels[language()].profile : labels[language()].login }}
-        </a>
+          <a mat-button class="account-link" routerLink="/login">
+            <mat-icon>account_circle</mat-icon>{{ labels[language()].login }}
+          </a>
         }
       </div>
     </header>

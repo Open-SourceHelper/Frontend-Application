@@ -48,3 +48,15 @@ mat-nav-list a.active {
 .brand:focus-visible, .language-control button:focus-visible { outline: 2px solid #663ca0; outline-offset: 2px; }
 .account-link { border-radius: .65rem; background: #f2ebfa; }
 .page-content { flex: 1; padding: clamp(.8rem, 3vw, 2rem); min-width: 0; }
+
+.content-shell {
+  background: radial-gradient(ellipse at 95% 0, #e9f7f1, transparent 38%),
+    radial-gradient(ellipse at 8% 0, #ede2fc, transparent 42%), #fbf9fe;
+}
+.sidenav { background: linear-gradient(180deg, #f5edff, #fbf8ff 72%); }
+.account-bar {
+  background: #ffffffcc;
+  border-bottom: 1px solid #e7def2;
+}
+.account-summary { display: grid; gap: .2rem; padding: .65rem 1rem; color: #422566; }
+.account-summary span { font-size: .85rem; overflow-wrap: anywhere; }

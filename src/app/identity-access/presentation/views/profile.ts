@@ -47,6 +47,7 @@ export class Profile implements OnInit {
   private readonly apiUrl = `${environment.platformProviderApiBaseUrl}/userProfiles`;
 
   readonly profile = signal<UserProfileData | null>(null);
+  springProfile = false;
   email = '';
   role = '';
 
@@ -70,6 +71,8 @@ export class Profile implements OnInit {
       CAREGIVER: 'Cuidador',
       PSYCHOLOGIST: 'Profesional de psicología',
     }[user.role];
+    this.springProfile = !!user.localSpring;
+    if (this.springProfile) return;
     const base = environment.platformProviderApiBaseUrl;
     this.http.get<SubscriptionResource[]>(base + environment.platformProviderSubscriptionsEndpointPath, {
       params: { userId: user.id, status: 'ACTIVE' },

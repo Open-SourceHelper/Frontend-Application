@@ -1,0 +1,38 @@
+.calendar {
+  min-width: 0;
+  padding: clamp(.7rem, 2vw, 1.3rem);
+  border: 1px solid #ded7ed;
+  border-radius: 1rem;
+  background: #fff;
+  color: #352452;
+}
+.calendar-header, .controls, .episode-meta {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+}
+.calendar-header { justify-content: space-between; flex-wrap: wrap; margin-bottom: 1rem; }
+h2, h3 { margin: 0; }
+h2, h3 { text-transform: capitalize; }
+.month-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: clamp(.15rem, 1vw, .45rem); }
+.weekday { text-align: center; padding-block: .25rem; font-size: .8rem; }
+button {
+  color: inherit;
+  background: #fff;
+  border: 1px solid #ded7ed;
+  border-radius: .65rem;
+  font: inherit;
+  cursor: pointer;
+}
+button:hover { background: #f3edfc; }
+button:focus-visible { outline: 2px solid #6844a0; outline-offset: 2px; }
+.controls button { min-width: 44px; min-height: 44px; display: grid; place-items: center; }
+.day { display: grid; place-content: center; justify-items: center; gap: .1rem; min-height: 48px; padding: .15rem; }
+.day[aria-current=date] { border-color: #6844a0; font-weight: 700; }
+.day[aria-pressed=true] { background: #543485; color: #fff; border-color: #543485; }
+.count { min-width: 1.1rem; border-radius: 1rem; padding-inline: .15rem; background: #d9f2e8; color: #174c3c; font-size: .7rem; }
+.day-details { margin-top: 1.1rem; padding-top: .85rem; border-top: 1px solid #e7dff2; }
+.day-details p { margin: .35rem 0 .75rem; }
+.episode { display: grid; width: 100%; gap: .35rem; text-align: left; padding: .7rem; margin-top: .45rem; overflow-wrap: anywhere; }
+.episode-meta { flex-wrap: wrap; font-size: .78rem; }
+.episode-meta span { background: #f1ebfb; border-radius: 1rem; padding: .15rem .45rem; }
