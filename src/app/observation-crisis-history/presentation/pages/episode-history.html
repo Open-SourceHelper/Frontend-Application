@@ -26,21 +26,55 @@
   @if (error() && !step() && !selected()) { <p role="alert">{{ error() }}</p> }
   @if (busy() && !saving()) { <p role="status">Cargando…</p> }
   @if (user(); as user) {
-    @if (professional() && childId && !busy() && !denied() && !error()) {
-      <section class="review-overview" aria-labelledby="review-title">
-        <div>
-          <h2 id="review-title">Revisión de episodios</h2>
-          <p>{{ reviewCount() ? 'Consulta los registros pendientes del perfil seleccionado.' : 'Este perfil no tiene episodios pendientes de revisión.' }}</p>
-        </div>
-        @if (reviewCount()) {
-          <button type="button" (click)="openPending()">
-            Ir a pendientes · {{ reviewCount() }}
-          </button>
+    @if (professional() && spring && !publicDemo) {
+      <section class="professional-workspace" aria-label="Seguimiento de pacientes">
+        <section class="patient-list" aria-labelledby="patient-title">
+          <h2 id="patient-title">Pacientes vinculados</h2>
+          @for (child of children(); track child.id) {
+            <button type="button" class="secondary" [attr.aria-pressed]="child.id === childId"
+              (click)="selectPatient(child.id)" [disabled]="busy()">
+              {{ child.firstName }} {{ child.lastName }}
+            </button>
+          } @empty {
+            @if (!busy() && !error()) { <p>No tienes pacientes vinculados.</p> }
+          }
+        </section>
+        @if (childId && !denied() && !error()) {
+          <section class="review-overview" aria-labelledby="review-title" [attr.aria-busy]="busy()">
+            <div>
+              <h2 id="review-title">Revisión de episodios</h2>
+              @if (!busy()) {
+                @if (reviewCount()) {
+                  <p>{{ reviewCount() }} {{ reviewCount() === 1 ? 'episodio pendiente' : 'episodios pendientes' }}</p>
+                  <ul class="review-preview">
+                    @for (record of pendingReview().slice(0, 3); track record.id) {
+                      <li>
+                        <button type="button" class="secondary" aria-haspopup="dialog"
+                          (click)="selected.set(record); message.set('')">
+                          {{ record.description }} · {{ record.occurredAt | date:'dd/MM/yyyy' }}
+                        </button>
+                      </li>
+                    }
+                  </ul>
+                } @else {
+                  <p>Este perfil no tiene episodios pendientes de revisión.</p>
+                }
+              }
+            </div>
+            @if (!busy()) {
+              <div class="review-actions">
+                @if (reviewCount()) {
+                  <button type="button" (click)="openPending()">Ir a pendientes</button>
+                }
+                <a routerLink="/clinical-guidance-routine-management/guidelines" [queryParams]="{ childId }">Ver pautas clínicas</a>
+              </div>
+            }
+          </section>
         }
       </section>
     }
     <div class="history-header">
-    @if (children().length) {
+    @if (children().length && !(professional() && spring && !publicDemo)) {
       <label for="history-child">¿De quién quieres ver el historial?</label>
       <select id="history-child" [(ngModel)]="childId" (change)="message.set(''); load()" [disabled]="busy()">
         @for (child of children(); track child.id) {

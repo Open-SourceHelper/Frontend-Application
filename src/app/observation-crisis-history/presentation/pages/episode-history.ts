@@ -5,7 +5,7 @@ import { exampleChild, exampleEpisodes } from './public-history-examples';
 import { DatePipe } from '@angular/common';
 import { Component, computed, effect, ElementRef, inject, OnInit, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { catchError, firstValueFrom, forkJoin, of } from 'rxjs';
 import { CrisisSeverity } from '../../domain/model/crisis-severity.enum';
 import { Observation } from '../../domain/model/observation.entity';
@@ -15,7 +15,7 @@ import { ObservationCommentsComponent } from '../components/observation-comments
 
 @Component({
   selector: 'app-episode-history',
-  imports: [DatePipe, FormsModule, ObservationCommentsComponent],
+  imports: [DatePipe, FormsModule, RouterLink, ObservationCommentsComponent],
   templateUrl: './episode-history.html',
   styleUrl: './episode-history.css',
 })
@@ -138,7 +138,17 @@ export class EpisodeHistory implements OnInit {
   });
   readonly weeklyPeak = computed(() => Math.max(1, ...this.weeklyEpisodes().map(week => week.count)));
   readonly peak = computed(() => Math.max(1, ...this.monthlyEpisodes().map(month => month.count)));
-  readonly reviewCount = computed(() => this.records().filter(record => !record.reviewedAt).length);
+  readonly pendingReview = computed(() => this.records().filter(record => !record.reviewedAt));
+  readonly reviewCount = computed(() => this.pendingReview().length);
+
+  async selectPatient(id: string): Promise<void> {
+    if (this.busy() || this.childId === id) return;
+    this.childId = id;
+    this.filter.set('all');
+    this.month.set('');
+    this.message.set('');
+    await this.load();
+  }
   readonly averageDuration = computed(() => {
     const durations = this.recentCrises().flatMap(record => record.durationMinutes ? [record.durationMinutes] : []);
     return durations.length ? Math.round(durations.reduce((sum, duration) => sum + duration, 0) / durations.length) : null;
@@ -252,10 +262,15 @@ export class EpisodeHistory implements OnInit {
     this.busy.set(true);
     try {
       const children = await firstValueFrom(this.context.availableChildren());
-      const checks = children.map(child => this.context.canAccess(String(child.id)));
-      const allowed = checks.length ? await firstValueFrom(forkJoin(checks)) : [];
-      this.children.set(children.filter((_, index) => allowed[index]));
-      this.childId = requested ?? String(this.children()[0]?.id ?? this.user()?.localSpring?.childId ?? '');
+      if (this.spring && this.professional()) {
+        this.children.set(children);
+        this.childId = children.find(child => child.id === requested)?.id ?? children[0]?.id ?? '';
+      } else {
+        const checks = children.map(child => this.context.canAccess(String(child.id)));
+        const allowed = checks.length ? await firstValueFrom(forkJoin(checks)) : [];
+        this.children.set(children.filter((_, index) => allowed[index]));
+        this.childId = requested ?? String(this.children()[0]?.id ?? this.user()?.localSpring?.childId ?? '');
+      }
       if (this.childId) await this.load();
       if (this.denied()) return;
       const alertId = this.route.snapshot.queryParamMap.get('alertId');
@@ -282,17 +297,22 @@ export class EpisodeHistory implements OnInit {
     this.alerts.set([]);
     this.selected.set(null);
     this.step.set(0);
+    this.denied.set(false);
     this.error.set('');
     try {
-      if (!await this.checkAccess()) return;
+      if (!(this.spring && this.professional()) && !await this.checkAccess()) return;
       const [records, alerts] = await firstValueFrom(forkJoin([
         this.observations.getByChildId(this.childId),
         this.context.closedAlerts(this.childId).pipe(catchError(() => of([]))),
       ]));
       this.records.set(records.sort((a, b) => Date.parse(b.occurredAt) - Date.parse(a.occurredAt)));
       this.alerts.set(alerts);
-    } catch {
-      this.error.set('No pudimos cargar el historial. Vuelve a intentarlo.');
+    } catch (error) {
+      if (error instanceof HttpErrorResponse && [401, 403].includes(error.status)) {
+        this.denied.set(true);
+      } else {
+        this.error.set('No pudimos cargar el historial. Vuelve a intentarlo.');
+      }
     } finally {
       this.busy.set(false);
     }

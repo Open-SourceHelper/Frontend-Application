@@ -49,7 +49,12 @@ export class HistoryContextService {
     if (user?.localSpring) {
       const id = user.localSpring.childId;
       const fallback = [{ id, firstName: 'Perfil infantil', lastName: id }];
-      if (user.role === UserRole.PSYCHOLOGIST) return of(fallback);
+      if (user.role === UserRole.PSYCHOLOGIST) {
+        return this.spring.request<{ childId: string }[]>('GET', '/patients').pipe(
+          map(patients => [...new Set(patients.map(patient => patient.childId))]
+            .map(id => ({ id, firstName: 'Perfil infantil', lastName: id }))),
+        );
+      }
       return this.spring.request<{ id: number; firstName: string; lastName: string }>(
         'GET', '/children/' + encodeURIComponent(id),
       ).pipe(

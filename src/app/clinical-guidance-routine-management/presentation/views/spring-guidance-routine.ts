@@ -64,8 +64,9 @@ export class SpringGuidanceRoutine implements OnInit, OnDestroy {
   readonly demoChild = signal('');
   private readonly route = inject(ActivatedRoute);
   private readonly destroyRef = inject(DestroyRef);
-  readonly childId = this.api.session?.localSpring?.childId ?? '';
   readonly professional = this.api.session?.role === UserRole.PSYCHOLOGIST;
+  readonly childId = (this.professional ? this.route.snapshot.queryParamMap.get('childId') : null)
+    ?? this.api.session?.localSpring?.childId ?? '';
   readonly canManage = this.professional || this.api.session?.role === UserRole.PARENT;
   readonly section = this.route.snapshot.data['section'] as string;
   readonly selectedRoutine = this.route.snapshot.paramMap.get('id');

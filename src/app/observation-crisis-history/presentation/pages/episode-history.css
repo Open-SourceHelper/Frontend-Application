@@ -119,3 +119,28 @@ article.crisis-entry { border-inline-start-color: #c45d0f; }
 .review-overview h2 { margin: 0 0 .35rem; }
 .review-overview p { margin: 0; }
 .review-overview button { min-height: 44px; }
+.professional-workspace {
+  display: grid;
+  grid-template-columns: minmax(12rem, 2fr) minmax(0, 5fr);
+  gap: 1rem;
+  margin-block: 1rem;
+}
+.patient-list {
+  display: grid;
+  align-content: start;
+  gap: .55rem;
+  padding: 1rem;
+  border: 1px solid #d9d1ef;
+  border-radius: 1rem;
+  background: #fff;
+}
+.patient-list h2 { margin: 0 0 .35rem; font-size: 1rem; }
+.patient-list button { text-align: left; min-height: 44px; }
+.professional-workspace .review-overview { align-items: start; margin: 0; }
+.review-preview { padding: 0; list-style: none; margin: .75rem 0 0; }
+.review-preview button { text-align: left; overflow-wrap: anywhere; margin-bottom: .35rem; }
+.review-actions { display: flex; align-items: center; flex-wrap: wrap; gap: .75rem; }
+.review-actions a { display: inline-flex; align-items: center; min-height: 44px; color: #43236c; font-weight: 600; }
+@media (max-width: 44rem) {
+  .professional-workspace { grid-template-columns: minmax(0, 1fr); }
+}
