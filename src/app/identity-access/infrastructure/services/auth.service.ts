@@ -147,7 +147,7 @@ export class AuthService {
     const stored = sessionStorage.getItem('kinemo-user');
 
     const user: CurrentUser | null = stored ? JSON.parse(stored) : null;
-    return environment.production && user?.localSpring ? null : user;
+    return environment.production ? null : user;
   }
 
   isAuthenticated(): boolean {

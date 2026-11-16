@@ -16,9 +16,6 @@
     </mat-card-header>
 
     <mat-card-content>
-      @if (publicDemo) {
-        <button mat-stroked-button type="button" class="full-width" (click)="enterPublicDemo()">Entrar a la demo</button>
-      }
       <form (ngSubmit)="login()">
 
         <mat-form-field appearance="outline" class="full-width">
@@ -58,16 +55,7 @@
           </button>
         </mat-form-field>
 
-        <p>
-          <a routerLink="/forgot-password">¿Olvidaste tu contraseña?</a>
-        </p>
-
-        @if (demoAvailable) {
-          <label class="demo-option">
-            <input type="checkbox" name="useDemo" [(ngModel)]="useDemo">
-            <span><strong>Usar cuenta de demostración</strong><small>{{ publicDemo ? 'Puedes entrar sin completar los campos. La demo es de solo lectura.' : 'Escribe un correo de prueba y cualquier contraseña.' }}</small></span>
-          </label>
-        }
+        @if (localBackend) { <p><a routerLink="/forgot-password">¿Olvidaste tu contraseña?</a></p> }
 
         <p *ngIf="errorMessage()" class="error-message" role="alert">
           {{ errorMessage() }}
@@ -87,12 +75,8 @@
 
     @if (localBackend) {
       <p class="register-link"><a routerLink="/backend-local">Probar con el backend local</a></p>
+      <p class="register-link"><a routerLink="/register">Crear cuenta</a></p>
     }
-
-    <p class="register-link">
-        ¿No tienes una cuenta?
-      <a routerLink="/register">Crear cuenta</a>
-    </p>
 
     </mat-card>
   </div>

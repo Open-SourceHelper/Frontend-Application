@@ -71,16 +71,10 @@ Desde ese menú también puedes usar **Perfil infantil**, **Perfil clínico**, *
 
 Desde **Rutinas**, la familia puede duplicar o archivar una rutina. En **Editar actividades** puede agregar actividades y subir apoyos visuales JPG o PNG. El cuidador autorizado puede abrir esos apoyos y usar el temporizador de transición.
 
-Las invitaciones se registran en la red de cuidado. Su aceptación con cuentas reales requiere IAM y correo verificado. La demo pública sigue disponible con los datos ficticios.
-
-## Demo pública desde Spring Boot en Render
-
-En el sitio estático, usa la rama que contiene `build:render`, **Build Command** `npm ci && npm run build:render` y **Publish Directory** `dist/frontend-application-OP/browser`. Define `KINEMO_PUBLIC_API_BASE` con el origen HTTPS del Web Service de Spring Boot, sin ruta ni barra final. Conserva el rewrite de `/*` a `/index.html`.
-
-En la web, elige **Entrar a la demo** y abre **Historial de episodios** u **Orientaciones y rutinas**. Con la API configurada, ambas pantallas muestran datos ficticios de Spring Boot en modo de solo lectura.
+Las invitaciones se registran en la red de cuidado. Su aceptación con cuentas reales requiere IAM y correo verificado.
 
 ## Evaluación en línea
 
-En el sitio estático de Render, selecciona la rama `master` y define `KINEMO_EVALUATION_API_BASE` con el origen HTTPS del Web Service que corre el perfil `evaluation`. Usa `npm ci && npm run build:render`, el directorio `dist/frontend-application-OP/browser` y el rewrite `/*` a `/index.html`. Si el sitio ya ofrece la demo pública, conserva su URL en `KINEMO_PUBLIC_API_BASE`.
+En el sitio estático de Render, selecciona la rama `master` y define `KINEMO_EVALUATION_API_BASE` con el origen HTTPS del Web Service que corre el perfil `evaluation`. Usa `npm ci && npm run build:render`, el directorio `dist/frontend-application-OP/browser` y el rewrite `/*` a `/index.html`.
 
-Abre `/evaluacion` y selecciona **Familia (7001)**, **Cuidador (7002)** o **Psicóloga (7003)**. Usa la contraseña correspondiente configurada en el backend. Al recargar la página, vuelve a iniciar sesión. Los cambios se guardan en la base de datos del Web Service.
+Abre `/login` y usa `familia@kinemo.example` (7001), `cuidador@kinemo.example` (7002) o `psicologa@kinemo.example` (7003) con la contraseña correspondiente configurada en el backend. Al recargar la página, vuelve a iniciar sesión. Los cambios se guardan en la base de datos del Web Service.

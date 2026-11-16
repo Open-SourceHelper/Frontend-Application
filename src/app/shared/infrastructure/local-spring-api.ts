@@ -21,9 +21,9 @@ const roles: Record<DemoRole, UserRole> = {
 };
 
 export const localAccounts = [
-  { name: 'Familia', id: '7001', key: 'familia' },
-  { name: 'Cuidador', id: '7002', key: 'cuidador' },
-  { name: 'Psicóloga', id: '7003', key: 'psicologa' },
+  { name: 'Familia', id: '7001', key: 'familia', email: 'familia@kinemo.example' },
+  { name: 'Cuidador', id: '7002', key: 'cuidador', email: 'cuidador@kinemo.example' },
+  { name: 'Psicóloga', id: '7003', key: 'psicologa', email: 'psicologa@kinemo.example' },
 ];
 
 @Injectable({ providedIn: 'root' })

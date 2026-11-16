@@ -1,4 +1,5 @@
 
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -10,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { environment } from '../../../../environments/environment';
+import { LocalSpringApi, localAccounts } from '../../../shared/infrastructure/local-spring-api';
 import { AuthService } from '../../infrastructure/services/auth.service';
 
 @Component({
@@ -34,10 +36,8 @@ export class Login {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
-  readonly publicDemo = environment.publicDemo;
+  private readonly springApi = inject(LocalSpringApi);
   readonly localBackend = !environment.production;
-  readonly demoAvailable = this.publicDemo || !environment.production;
-  useDemo = this.demoAvailable;
   email = '';
   password = '';
 
@@ -47,10 +47,6 @@ export class Login {
 
   login(): void {
     if (this.loading()) return;
-    if (this.publicDemo && this.useDemo) {
-      this.enterPublicDemo();
-      return;
-    }
     const email = this.email.trim();
     if (!email || !this.password) {
       this.errorMessage.set('Completa todos los campos');
@@ -64,10 +60,30 @@ export class Login {
     this.loading.set(true);
     this.errorMessage.set('');
 
-    const session = this.demoAvailable && this.useDemo
-      ? this.authService.signInForDemo()
-      : this.authService.signIn({ email, password: this.password });
-    session.subscribe({
+    if (environment.production) {
+      const account = localAccounts.find(item => item.email === email.toLowerCase());
+      if (!account) {
+        this.loading.set(false);
+        this.errorMessage.set('Correo o contraseña incorrectos.');
+        return;
+      }
+      this.springApi.signInForEvaluation(account.id, this.password).subscribe({
+        next: () => {
+          this.password = '';
+          this.loading.set(false);
+          void this.router.navigate(['/observations']);
+        },
+        error: error => {
+          this.loading.set(false);
+          this.errorMessage.set(error instanceof HttpErrorResponse && error.status === 401
+            ? 'Correo o contraseña incorrectos.'
+            : 'No pudimos conectar con Kinemo. Intenta de nuevo.');
+        }
+      });
+      return;
+    }
+
+    this.authService.signIn({ email, password: this.password }).subscribe({
       next: user => {
         this.authService.saveSession(user);
         this.authService.startSession(user);
@@ -81,12 +97,6 @@ export class Login {
         this.loading.set(false);
       }
     });
-  }
-
-  enterPublicDemo(): void {
-    if (!this.publicDemo) return;
-    this.authService.startPublicDemo();
-    this.openWorkspace();
   }
 
   private openWorkspace(): void {

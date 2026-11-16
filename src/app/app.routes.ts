@@ -13,7 +13,7 @@ const requireSession: CanActivateChildFn = (route, state) => {
     if (user.role !== UserRole.PSYCHOLOGIST) localPaths.push('child-profile', 'clinical-profile');
     if (user.role === UserRole.PARENT) localPaths.push('care-networks/:careNetworkId');
     if (!route.pathFromRoot.some(segment => localPaths.includes(segment.routeConfig?.path ?? ''))) {
-      return inject(Router).createUrlTree([user.localSpring.evaluation ? '/evaluacion' : '/backend-local']);
+      return inject(Router).createUrlTree([user.localSpring.evaluation ? '/login' : '/backend-local']);
     }
   }
   if (auth.isAuthenticated()
@@ -86,8 +86,8 @@ const baseTitle = 'Kinemo';
 export const routes: Routes = [
   {
     path: 'evaluacion',
-    loadComponent: () => import('./shared/presentation/views/evaluation-login').then(m => m.EvaluationLogin),
-    title: 'Kinemo - Evaluación',
+    redirectTo: 'login',
+    pathMatch: 'full',
   },
   ...(environment.production ? [] : [{
     path: 'backend-local',
